@@ -6,7 +6,6 @@ const VideoOn = () => {
       height="1.5em"
       preserveAspectRatio="xMidYMid meet"
       viewBox="0 0 16 16"
-      className="swap-on"
     >
       <path
         fill="currentColor"

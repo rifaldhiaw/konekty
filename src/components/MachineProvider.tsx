@@ -8,7 +8,7 @@ export const GlobalStateContext = createContext({
 });
 
 export const GlobalStateProvider = (props: { children: ReactNode }) => {
-  const mainService = useInterpret(mainMachine, {});
+  const mainService = useInterpret(mainMachine);
 
   useEffect(() => {
     mainService.onTransition((state) => console.log(state));

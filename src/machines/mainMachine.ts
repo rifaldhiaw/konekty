@@ -10,13 +10,15 @@ export type Message = {
 };
 
 export const mainMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0ANgAsAJmwBWABzHDAZgsBGGadNW3AGhABPAwE4ZbDNbU0NHRysLFytDAF9Yry4cPEISckoqMAAnLNos7BViCQAzPORsJJ5U-kphFlpxSUxFRW01DSbtPQR9AHZew2wZQxNw4ysrGWNHPy9fBGM7bDs7Kzs-Yz9DVwsB43jEjBxYAAtaAHdKAFEcvIBxMHwAGQaSAFlIIjfaCBIqACUrgAVf4ATQA+ndgeC3lcACIASQAgq0kCB2ppMF1-BYLNhwlNbHZejYZhY5ohFstVutNttTLtDBYDiBKucMIRBAAxPIAVVg2QAcqhkGAqABlXkAITeCKB4MFSNhqNU6kx2J6jl6gSchl6flMMii4wNpgpPQCQVMtmGk1WuuZCVZR2w7N43L5AqywtFEulsvliuVjiUaIxnTR3X0pkceLc1pmDIiFg25sc62WhhkdmMKYGKwsdhZlVE9AYok5UCBtH+tFoyBo9EYInYnBdpcw5cr1dr9bqYgk6Gk8hV6LVEdA3XT5nCqwZ0XGJnJPkQbmWu2tUSi9osTOLLqwvYbdAYTFYHAqB8wR-7ryaLXkbXHQ6xkYMTOwAX1xhkVi1oRiXpzWjLZsH6ZN7F6Nw1n2J1KkPOsG2yXJ8kKEoykvbgEL7FtGhfB9Q1VDoXw1IxjGwbYRgCP8oMMQDgJzci-2olNfz8FNcX3LDr0QqhYXFcUkShcFAQAYSuBEADV4VHcMSLfBAU0GOxTBWZwjSZGRszTciXBMAIVj8CJXD8PwuOSHj6wlK5BThGErgEoSrlk58tAUsI4xMKDVJkAld3NOxf0sXzYzsExs3tcymCPKgkVEgBpezHOEsSJOkuEXOItzJ0QaxAiMuxHGMfUIhiXM03CIINiNUxTMcUx9TMuCrxi2FESRcFRIAeUFQUrlEoEER6kT+rSmTHzDVzXxyhYrD8SwbXTFxjDMAJjGAiJemwNwTCTXFbCsXpHUObiYvFEEriVEbxKk8bCLHLLpt0RAs3ItT6oZXcom0lcEENJZ3HTaxei1Excyak6LJiuEkSBDrut6-rBuG1LboyiaiPVBTNnIgZf13foVtqqZgJ27atlo1YXGsGIouwhtEXFBG+oGu6n0e0iivmrTwkMA0nEiVNfv0Rx7DAvw-xzerit83p4idTAfjgbR4MwXg0gEKB2axmb9AmLbs3pLNY3GRYNqmIIwpzbZArm4rHCi04LmuW4sgeZ5XmID4IC+H4SG1idnotGMgn6ekAgCKYrDTFShgmdZemJQKJb8Itmu4N1Kx5LJ+SFEUwAD+TdfWcwGuK4rekWMwImAkZPyt3Mc1UkkGSijsu0oHtEML7Kg6B6kGSO1OLGKwqY6sbAbBiBrXHsBw08h6Lu8mjmFKKpY9XsBlh9HxxgMtVP7GmdMbFniHnSwHunqjdSlgJFbINJdjgMWAGZnx6j2PYx14iAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0ARgBsATgDs2YwCYALLcPWArNZMAOcwBoQATwOHDS0N7azcZJ0MnczdjEwBfOO8uHDxCEnJKKjAAJ2zabOwVYgkAM3zkbGSeNP5KYRZacUlMRUVtNQ1m7T0EIzcnJ2wnGWtTUxiAZlMp81tvP17HK2mTW3C3QxlNmTcEpIwcWAALWgB3SgBRXPyAcTB8ABlGkgBZSCIX2ggSKgAlC4AKr8AJoAfRugNBLwuABEAJIAQTaSBAHU0mG6BmsWxk2EiI2sE3MFjchOM80QJishg8aycxlsFlsE1sTj2ICqpwwhEEADF8gBVWA5AByqGQYCoAIA8jcbg8LqCEQL4dLkap1OjMYsIrZsLMaTIJkTzMTrOTfFi3KYhqFNm5WTE1oYJuzOdzKPzskLReLJQBlAUAIRecIBoJFCOh6tRmq6KJ6RmsziG9PpplsZmtE2sFMWgTxIVi2ICLNMbMSHIO2C5vD5guF2TFEqogZDYYjUYuUkMShRaPjoETjnMuJzrlMxmM5kcxmNeYC1isazMkWJ4WsburtZ5UC9PqbfqlsvlioAanCYRc1fJ2nH0FoE-5bBtqeW7Kb7LZTXn9BNrdg5pOOWpiEuYxrGlu3CiPQDCiLuAK0L8tC0MgND0IwIjsJw1YwZgcEIUhKHIPUYgSA+LTyDGA4Udq+igUuoHAS4UwyKYgROAuVhEsBMjGE4EybMmTi7JWVRYMhqHoQwTCsBwlTVhJxGkc8zStLe-b3o+Q7+I4uIZqaNJktO1heJavQ5hM2CMpEmymlsU7mFBKSYJJaE5HkBRFKU5QKdwSmoSpTQUepfYap0tFPvmhg2lODLGKSEyOaZv5EoYQz-rMRp8XYoTGM5TBuVQ0L+v6CIQqC-wAMIXHCZ6wtRWkYlF+iOvqqzTkloxGmZCxJssgkMusmzbKJ+z+a5xGthcIowlCFyleV3YaeFWotcyNqmsMAwBKS4xzOZdr6hsjKgcy4QuAVAVoQiVUANLzYtFXVbV9Uwo1EXaboBjfnqs42OWMjhFMnHmQ6+qzFM-TTGMU5XZNUnQvCCKglV0oiiKFxVQCcLo5VWOvQ1K2xp9zU6b0abWdM5gMlMjLmKDfWuHqQPGDIxIDKZLh8fDRX+kCFxRvjNV1UTYUk2t5OtcM+o7PxL4Az1C6mniWyjsy2JJY4Y1VhNRUwgiAIo2jGNYzjeMvaL73EzRX2JvSuKmda2IMvTjMGIJVkOf+7NbbYrhOWJikI2h8L+ibmPY2Ld6k3Reks2sGaObO87mUYpi4hEppuP0E79AklaYF8cDaOJmC8OkAhQDHkvfYsGZLuzbNGsyL45wdfUuulkTNzlGzRCMBXHGclzXNkdyPM8xBvBAHxfCQNeDnX6c00MgRrEaoSJwu4TYEltKjAzGz0puQfcDunoNr6EqL5FUvBN+e-BC4EQ2KSFp9dMVgDGMFhTFOkQKzjRwHhAilBEJuVvnbAw7FNrsxLC+KYEw2ILiWNrCwoRuqXTPi5SBmlY4tXYulJKLJdRuCQSgtOARLD8WAuWASUQeY4KgWTZe2IRJ4mGMmIkJI7C-m-G4QC-FJzBHfBnU+CQgA */
   createMachine(
     {
       context: {
         roomId: "",
         peer: undefined,
-        localMediaStream: undefined,
+        localMediaStream: new MediaStream(),
+        localAudioStatus: false,
+        localVideoStatus: true,
         messages: [],
         streams: {},
         dataConnections: {},
@@ -27,7 +29,9 @@ export const mainMachine =
         context: {} as {
           roomId: string | undefined;
           peer: Peer | undefined;
-          localMediaStream: MediaStream | undefined;
+          localMediaStream: MediaStream;
+          localAudioStatus: boolean;
+          localVideoStatus: boolean;
           messages: Message[];
           streams: Record<string, MediaStream>;
           dataConnections: Record<string, DataConnection>;
@@ -36,6 +40,8 @@ export const mainMachine =
         events: {} as
           | { type: "RETRY_GET_MEDIA" }
           | { type: "SUBMIT_NAME" }
+          | { type: "TOGGLE_AUDIO" }
+          | { type: "TOGGLE_VIDEO" }
           | {
               type: "MEDIA_CONNECTION_RECEIVED";
               mediaConnection: MediaConnection;
@@ -63,6 +69,7 @@ export const mainMachine =
           };
         },
       },
+      predictableActionArguments: true,
       initial: "initializing",
       id: "main",
       states: {
@@ -92,6 +99,13 @@ export const mainMachine =
         },
         waitingForUserName: {
           on: {
+            TOGGLE_AUDIO: {
+              actions: "toggleAudio",
+            },
+            TOGGLE_VIDEO: {
+              target: "initializing",
+              actions: "toggleVideo",
+            },
             SUBMIT_NAME: [
               {
                 target: "inRoom",
@@ -165,6 +179,18 @@ export const mainMachine =
         saveLocalMediaStream: assign({
           localMediaStream: (context, event) => event.data,
         }),
+        toggleAudio: assign({
+          localAudioStatus: (context, event) => !context.localAudioStatus,
+          localMediaStream: (context, event) => {
+            context.localMediaStream
+              ?.getAudioTracks()
+              .forEach((v) => (v.enabled = !context.localAudioStatus));
+            return context.localMediaStream;
+          },
+        }),
+        toggleVideo: assign({
+          localVideoStatus: (context, event) => !context.localVideoStatus,
+        }),
         sendMessage: (context, event) => {
           const conn = context.dataConnections[event.to];
           conn.send(event.message);
@@ -225,11 +251,20 @@ export const mainMachine =
         }),
       },
       services: {
-        getLocalMedia: (context, event) => {
-          return navigator.mediaDevices.getUserMedia({
+        getLocalMedia: async (context, event) => {
+          if (context.localMediaStream && !context.localVideoStatus) {
+            context.localMediaStream.getVideoTracks().forEach((t) => t.stop());
+          }
+
+          const media = await navigator.mediaDevices.getUserMedia({
             audio: true,
-            video: true,
+            video: context.localVideoStatus,
           });
+
+          if (!context.localAudioStatus) {
+            media.getAudioTracks().forEach((v) => (v.enabled = false));
+          }
+          return media;
         },
         startMediaAndDataConnector: (context, event) => {
           return new Promise((resolve, reject) => {

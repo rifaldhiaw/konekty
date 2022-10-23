@@ -33,13 +33,15 @@ export interface Typegen0 {
     saveLocalMediaStream: "done.invoke.main.initializing:invocation[0]";
     saveMediaConnection: "MEDIA_CONNECTION_RECEIVED";
     savePendingMessage: "MESSAGE_RECEIVED";
-    saveRoomIdIfExist: "RETRY_GET_MEDIA" | "xstate.init";
+    saveRoomIdIfExist: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
     saveStream: "STREAM_RECEIVED";
     sendMessage: "SEND_MESSAGE";
+    toggleAudio: "TOGGLE_AUDIO";
+    toggleVideo: "TOGGLE_VIDEO";
     updatePendingMessage: "ACK_MESSAGE_RECEIVED";
   };
   eventsCausingServices: {
-    getLocalMedia: "RETRY_GET_MEDIA" | "xstate.init";
+    getLocalMedia: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
     startMediaAndDataConnector: "SUBMIT_NAME";
     startMediaAndDataListener:
       | "SUBMIT_NAME"

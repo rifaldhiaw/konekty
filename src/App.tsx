@@ -10,11 +10,7 @@ function App() {
   );
 
   const renderContent = () => {
-    if (initializing) {
-      return <div>Loading</div>;
-    }
-
-    if (waitingForUserName) {
+    if (initializing || waitingForUserName) {
       return <EntryView />;
     }
   };

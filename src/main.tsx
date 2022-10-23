@@ -5,9 +5,9 @@ import { GlobalStateProvider } from "./components/MachineProvider";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <GlobalStateProvider>
+  <GlobalStateProvider>
+    <React.StrictMode>
       <App />
-    </GlobalStateProvider>
-  </React.StrictMode>
+    </React.StrictMode>
+  </GlobalStateProvider>
 );
