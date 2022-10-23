@@ -10,17 +10,16 @@ module.exports = {
       {
         light: {
           ...require("daisyui/src/colors/themes")["[data-theme=light]"],
-          primary: "#bbf7d0",
-          "primary-content": "#1F2937",
-          "base-100": "#f8fafc",
+          primary: "#1a73e8",
+          "base-100": "#ffffff",
           "base-200": "#f1f5f9",
           "base-300": "#e2e8f0",
           error: "#DE1A27",
+          "--rounded-btn": "24px",
         },
         dark: {
           ...require("daisyui/src/colors/themes")["[data-theme=dark]"],
-          primary: "#065f46",
-          "primary-content": "#b9c1ce",
+          primary: "#1a73e8",
           error: "#DE1A27",
         },
       },

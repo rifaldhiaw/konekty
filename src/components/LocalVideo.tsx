@@ -10,12 +10,13 @@ const LocalVideo = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const service = useMainService();
 
+  const isInitializing = useSelector(service, (s) => s.matches("initializing"));
+
   const localStream = useSelector(service, (s) => s.context.localMediaStream);
   const isAudioOn = useSelector(service, (s) => s.context.localAudioStatus);
   const isVideoOn = useSelector(service, (s) => s.context.localVideoStatus);
 
   useEffect(() => {
-    console.log({ localStream });
     if (!videoRef.current) return;
     if (!localStream) {
       videoRef.current.srcObject = null;
@@ -43,7 +44,9 @@ const LocalVideo = () => {
       <div className="card w-full h-full relative">
         {localStream && !localStream.getVideoTracks().length && (
           <div className="absolute z-10 h-full w-full flex justify-center items-center">
-            <p className="text-2xl text-white">Camera is Off</p>
+            <p className="text-2xl text-white">
+              {isInitializing ? "Camera is Starting" : "Camera is Off"}
+            </p>
           </div>
         )}
         <video

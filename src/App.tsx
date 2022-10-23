@@ -13,10 +13,12 @@ function App() {
     if (initializing || waitingForUserName) {
       return <EntryView />;
     }
+
+    return <p>Waiting</p>;
   };
 
   return (
-    <div className="flex h-screen justify-center items-center bg-base-100">
+    <div className="flex h-screen justify-center items-center">
       {renderContent()}
     </div>
   );

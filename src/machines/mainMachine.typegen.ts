@@ -3,11 +3,6 @@
 export interface Typegen0 {
   "@@xstate/typegen": true;
   internalEvents: {
-    "done.invoke.main.connectingToRoom:invocation[0]": {
-      type: "done.invoke.main.connectingToRoom:invocation[0]";
-      data: unknown;
-      __tip: "See the XState TS docs to learn how to strongly type this.";
-    };
     "done.invoke.main.initializing:invocation[0]": {
       type: "done.invoke.main.initializing:invocation[0]";
       data: unknown;
@@ -27,11 +22,12 @@ export interface Typegen0 {
     delays: never;
   };
   eventsCausingActions: {
-    initPeer: "SUBMIT_NAME";
-    saveConnectionsFromConnector: "done.invoke.main.connectingToRoom:invocation[0]";
+    initPeer: "DISCONNECTED" | "done.invoke.main.initializing:invocation[0]";
+    saveConnectionsFromConnector: "CONNECTION_OPEN";
     saveDataConnection: "DATA_CONNECTION_RECEIVED";
     saveLocalMediaStream: "done.invoke.main.initializing:invocation[0]";
     saveMediaConnection: "MEDIA_CONNECTION_RECEIVED";
+    saveName: "SUBMIT_NAME";
     savePendingMessage: "MESSAGE_RECEIVED";
     saveRoomIdIfExist: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
     saveStream: "STREAM_RECEIVED";
@@ -39,13 +35,12 @@ export interface Typegen0 {
     toggleAudio: "TOGGLE_AUDIO";
     toggleVideo: "TOGGLE_VIDEO";
     updatePendingMessage: "ACK_MESSAGE_RECEIVED";
+    updateUrl: "CONNECTION_OPEN" | "SUBMIT_NAME";
   };
   eventsCausingServices: {
     getLocalMedia: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
     startMediaAndDataConnector: "SUBMIT_NAME";
-    startMediaAndDataListener:
-      | "SUBMIT_NAME"
-      | "done.invoke.main.connectingToRoom:invocation[0]";
+    startMediaAndDataListener: "CONNECTION_OPEN" | "SUBMIT_NAME";
   };
   eventsCausingGuards: {
     hasRoomId: "SUBMIT_NAME";
