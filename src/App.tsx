@@ -1,7 +1,27 @@
+import { useSelector } from "@xstate/react";
+import EntryView from "./components/EntryView";
+import { useMainService } from "./components/MachineProvider";
+
 function App() {
+  const service = useMainService();
+  const initializing = useSelector(service, (s) => s.matches("initializing"));
+  const waitingForUserName = useSelector(service, (s) =>
+    s.matches("waitingForUserName")
+  );
+
+  const renderContent = () => {
+    if (initializing) {
+      return <div>Loading</div>;
+    }
+
+    if (waitingForUserName) {
+      return <EntryView />;
+    }
+  };
+
   return (
-    <div className="flex h-screen justify-center items-center bg-blue-100">
-      Hi Mom
+    <div className="flex h-screen justify-center items-center bg-slate-100">
+      {renderContent()}
     </div>
   );
 }
