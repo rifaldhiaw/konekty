@@ -27,7 +27,7 @@ export interface Typegen0 {
     saveDataConnection: "DATA_CONNECTION_RECEIVED";
     saveLocalMediaStream: "done.invoke.main.initializing:invocation[0]";
     saveMediaConnection: "MEDIA_CONNECTION_RECEIVED";
-    saveName: "SUBMIT_NAME";
+    saveName: "CREATE_ROOM" | "JOIN_ROOM";
     savePendingMessage: "MESSAGE_RECEIVED";
     saveRoomIdIfExist: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
     saveStream: "STREAM_RECEIVED";
@@ -35,17 +35,14 @@ export interface Typegen0 {
     toggleAudio: "TOGGLE_AUDIO";
     toggleVideo: "TOGGLE_VIDEO";
     updatePendingMessage: "ACK_MESSAGE_RECEIVED";
-    updateUrl: "CONNECTION_OPEN" | "SUBMIT_NAME";
+    updateUrl: "CREATE_ROOM";
   };
   eventsCausingServices: {
     getLocalMedia: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
-    startMediaAndDataConnector: "SUBMIT_NAME";
-    startMediaAndDataListener: "CONNECTION_OPEN" | "SUBMIT_NAME";
+    startMediaAndDataConnector: "JOIN_ROOM";
+    startMediaAndDataListener: "CONNECTION_OPEN" | "CREATE_ROOM";
   };
-  eventsCausingGuards: {
-    hasRoomId: "SUBMIT_NAME";
-    noRoomId: "SUBMIT_NAME";
-  };
+  eventsCausingGuards: {};
   eventsCausingDelays: {};
   matchesStates:
     | "connectingToRoom"

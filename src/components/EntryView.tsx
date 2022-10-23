@@ -1,3 +1,4 @@
+import { useSelector } from "@xstate/react";
 import { FormEventHandler, useState } from "react";
 import LocalVideo from "./LocalVideo";
 import { useMainService } from "./MachineProvider";
@@ -5,13 +6,31 @@ import { useMainService } from "./MachineProvider";
 const EntryView = () => {
   const [name, setName] = useState("");
   const service = useMainService();
+  const roomId = useSelector(service, (s) => s.context.roomId);
 
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
     if (!name) return;
 
+    if (roomId) {
+      service.send({
+        type: "JOIN_ROOM",
+        name,
+      });
+    } else {
+      service.send({
+        type: "CREATE_ROOM",
+        name,
+      });
+    }
+  };
+
+  const handleForceCreateNew: FormEventHandler = (e) => {
+    e.preventDefault();
+    if (!name) return;
+
     service.send({
-      type: "SUBMIT_NAME",
+      type: "CREATE_ROOM",
       name,
     });
   };
@@ -36,7 +55,20 @@ const EntryView = () => {
               className="input input-bordered w-full max-w-xs bg-base-200 text-center"
             />
           </div>
-          <button className="btn btn-primary mt-5">Join</button>
+          <div className={"flex mt-6" + (roomId ? " w-[300px]" : "")}>
+            <button type="submit" className="btn btn-primary flex-1 mx-1">
+              {roomId ? "Join" : "Create Room"}
+            </button>
+
+            {roomId && (
+              <button
+                className="btn btn-primary btn-ghost flex-1 mx-1 shadow"
+                onClick={handleForceCreateNew}
+              >
+                Create New
+              </button>
+            )}
+          </div>
         </form>
       </div>
     </div>

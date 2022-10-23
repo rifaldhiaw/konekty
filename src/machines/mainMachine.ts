@@ -11,7 +11,7 @@ export type Message = {
 };
 
 export const mainMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0ARgBsATgDs2YwCYALLcPWArNZMAOcwBoQATwOHDS0N7azcZJ0MnczdjEwBfOO8uHDxCEnJKKjAAJ2zabOwVYgkAM3zkbGSeNP5KYRZacUlMRUVtNQ1m7T0EIzcAZjcra1MZfvNTSNC7bz8EfsNscJlnY37rcxljMacEpIwcWAALWgB3SgBRXPyAcTB8ABlGkgBZSCIX2ggSKgAlC4AKr8AJoAfRugNBLwuABEAJIAQTaSBAHU0mG6BmsMgC2H6-VsMlMblsJKcWy8vkQCyW5NW602236xj2ICqpwwhEEADF8gBVWA5AByqGQYCoAIA8jcbg8LqCEXz4ZLkap1OjMb1IsFsOYHGF8eYjaZrMZZli3KZsC43IYZGSYoTDP1WezOZRedkBcLReKpTK5aCAGpwmEXFXydrqroonpGUmLWKmFy2I32VOUub6QZW01OZMm8b4-Gug7YDm8Hn8wXZEViqgAZT5ACEXnCAaChQjoarUdH0FpY-5rM5rU5jOPTLYzJb1uatYFsMFbKbHDjnbZk6XuBWuVBPd7a77Gy22x2uz3DEoUWiY6A445NniR4ZTMZjOZHGt+vOAtYrISZiRBM4TWNuOCiPQDCiHuAK0L8tC0MgVAAMKSkKQoXChAJwuhoKSgAChcQq9reA4YkOvRrLY2BuB4wQDAMBJOPO8aLK4I7OBMIyOi6iRsmWWAIUhND0IwIjsJwgmYMJyD1GIEjka0kY3v2g73v4a7YFORqGG41jMh+Gyses-TYJu2oyEaOLvuY4FMLJWTXAURSlOUlTSbJ8nPM0ynXmqnTkZqRgBFa77GNO+mGeYxlUr04yLE4gx6mMWx2KELL8VUQmIch0INg2CIQqC-woRccJBrCpFqRRGm9LYThDJ+EUfsyIxjJmw5WKYCwReEto4jI9r2TlIkNsRMJQhcBVFRc1WBepugGLY-RWka5JOBEek8bY86hIs0TBKYJoreELgjTJuVUAiKEANJTTNxWleVlUwvNGqUfoqY0V+NjJkNSXJvOJK6nqq1uPmq1vpl+zcKNeWwoioJoRhWE4Xhz0VVVKkBR9dX6OOTjmT15gRatm7mCxcX6K4NFDdsEybRsLhbBdjkNkCFzdiVWEvdj-l9gttVLfV5K6vaE6kn9HW-kaS44psK3YsyjhuGzV0wgiAIIsj6GYdhuFCjzZVY29OOC3jIsE9s2AbJa2IRRTVNZgsZk2YMVnrSugTqyJ8INij+sAvzUZC8Fa504SU62V++Ksa+MjWoE0QQ64xK7KymBfHA2jZZgvDpAIUCh5bD5Tv+VnbGMK2knRu3U86iyRFXaW2tEKz2ccZyXM5dyPM8xBvBAHxfCQJd3lbr6k0nKVjKEUe-uEeLGB4K4WI1zdgVlZa7h61Y+mK49BZ9y6WAsDXOCY0xmtTPVWJtx0WKt76RBnsMQVBYAwZQcGyUfi1xkmGtKy2IGKrX6ESX8jglyhAsNMUY51t5w0ukhf+wtAG4mZASGKDJ3D1yzI3Jc44hqt0CGEN+AksBoOCtifMeICREhJGSCkrFUxDDzG+V89hwiZQSEAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0ARgCcAVgAc2AEwBmU6cMA2GTccAWK6YA0IAJ4HDGVNsYzsrc0M3Q3s3YxkAdgBfRJ8uHDxCEnJKKjAAJzzaPOwVYgkAMyLkbDSeTP5KYRZacUlMRUVtNQ027T0EfSsZY2NrNxlIyJsZGSGrH38ED2tTY09TD3irY3i3U2TUjBxYAAtaAHdKAFECooBxMHwAGRaSAFlIIjfaCBIqACUrgAVf4ATQA+ndgeC3lcACIASQAgp0kCBuppMH0DFYrPFDCE9kMTCMrHsFohlp41jE8dtdhsDiBaucMIRBAAxIoAVVg+QAcqhkGAqECAPJ3O5PK7gpHcxFi1GqdSY7EDQy7AkyCKBMw2bbDGwUgZ40YOczxGxuS3axzmNyOJkstmULl5XkCoUi8WS6XggBqCLhV0V8i6Kt6aP6RniCRCFnM0zWZncRr8Bhs8VGnkcFnsw1MjicTqO2FZvE5PL5eUFwqoAGFAUigTL-mKxW8leiI+gtFGAvq3NhDOYrCOIq5tnZjfp4sFtZFjFETA5DIYS9xy+yoG6PTWvVQAFJihH88FtjtdjGR0DRpxuSyOTPmcwOGw2MzmY2hbDapfv19cXtRMNxwUR6AYURtyBWh-loWhkAbMV+X5K56yBBFkPBMUAAUrn5K8ez7W8AmGAlAlMeIqI2WIHy-dMEGMSwogSRd3CCSjjFApg4IQmh6EYER2E4UssF45AmjECRe3aeRCJ6GS1SMPEbGwexTBkWJQkcJ99RnGwnBCJwZHcRx8QSS1uLE+DEPyQpilKCoqhqUTMHEyTXjaDowzRa9FP7dU6WsS0sxGVxdPmBj9FcIdjCfbYPFY0wrSSFJmVc8SqFhABlbKkShc80KuBF-XheTVQC-QiwJfVMxGEzwncSLFiq4cNXxLNVgmJwNX2NLamsvjsvwuEYSuXL8qucqb10AxVisbAbFHJa7RHTxzGMY1wksOxHCXZKPEiPZUsObhBsQpF6wAaTGiaCsBetitKuFpv8kiBkcKxHGwS0PyLIYgm-GrYntB1Qm1VZzCstybKy+FkXBetkNQ9DMLPB6nrKnzlQU4jZoGS0CXMHT-vMGYdPiRwZy+od4giDa4vGdwmLcaHMuykEriRN5CsekqsaUXyiKxSrnFUgzIdzT7iY8Y0R1Usz8Q0qJ9pMk70rOmG+LhZskUR5G0IwrCMf5l7se7XGRfe2cvuwXMNT2oITLMqmotcVSs1xGZiY2D8uP6jLYcRbKkZQw2BfDS2lMMXa7YfPFE3xXElpneXCVsDwPHCFMrGSNLMB+OBtAGzBeCyAQoEjirra9ha7XMvbYk+3NU5MQlYwmUxTXGUJuNOC5rluPIHmeV5iA+CAvh+Egq5m6Nk-iYdwg0pa3AM605cMyiqMSymgjxdcA83F1K3datazAWe3vxowzMsWYTJGOISTTFqX1-WZKcLPZcyb7jwMwJBaCsEbJXzxneNwkDsBr1zGSOIY5IjfgWtvBkKsiwuFZkfdIWtkBgKtjfQIT4QixjJuMA+2xU5kjUmTGIXc4gvh0qBPBSlbBt32sSJ+ZJvBRQdJYHMqwHSzFWHYPOiQgA */
   createMachine(
     {
       context: {
@@ -44,7 +44,8 @@ export const mainMachine =
         },
         events: {} as
           | { type: "RETRY_GET_MEDIA" }
-          | { type: "SUBMIT_NAME"; name: string }
+          | { type: "JOIN_ROOM"; name: string }
+          | { type: "CREATE_ROOM"; name: string }
           | { type: "TOGGLE_AUDIO" }
           | { type: "TOGGLE_VIDEO" }
           | {
@@ -84,7 +85,7 @@ export const mainMachine =
       id: "main",
       states: {
         initializing: {
-          entry: ["saveRoomIdIfExist"],
+          entry: "saveRoomIdIfExist",
           invoke: {
             src: "getLocalMedia",
             onDone: [
@@ -117,18 +118,14 @@ export const mainMachine =
               target: "initializing",
               actions: "toggleVideo",
             },
-            SUBMIT_NAME: [
-              {
-                target: "inRoom",
-                cond: "noRoomId",
-                actions: "saveName",
-              },
-              {
-                target: "connectingToRoom",
-                cond: "hasRoomId",
-                actions: "saveName",
-              },
-            ],
+            CREATE_ROOM: {
+              target: "inRoom",
+              actions: ["saveName", "updateUrl"],
+            },
+            JOIN_ROOM: {
+              target: "connectingToRoom",
+              actions: "saveName",
+            },
           },
         },
         connectingToRoom: {
@@ -143,7 +140,6 @@ export const mainMachine =
           },
         },
         inRoom: {
-          entry: "updateUrl",
           invoke: {
             src: "startMediaAndDataListener",
             onDone: [{}],
@@ -176,10 +172,6 @@ export const mainMachine =
       },
     },
     {
-      guards: {
-        hasRoomId: (context, event) => !!context.roomId,
-        noRoomId: (context, event) => !context.roomId,
-      },
       actions: {
         saveRoomIdIfExist: assign({
           roomId: (context, event) => {
@@ -255,22 +247,20 @@ export const mainMachine =
               [context.roomId]: event.dataConnection,
             };
           },
-          // mediaConnections: (context, event) => {
-          //   invariant(context.roomId);
-          //   return {
-          //     ...context.mediaConnections,
-          //     [context.roomId]: event.mediaConnection,
-          //   };
-          // },
+          mediaConnections: (context, event) => {
+            invariant(context.roomId);
+            return {
+              ...context.mediaConnections,
+              [context.roomId]: event.mediaConnection,
+            };
+          },
         }),
         updateUrl: (context, event) => {
-          if (!context.roomId) {
-            window.history.replaceState(
-              {},
-              "Room: " + context.userId,
-              context.userId
-            );
-          }
+          window.history.replaceState(
+            {},
+            "Room: " + context.userId,
+            context.userId
+          );
         },
       },
       services: {
