@@ -38,7 +38,10 @@ const LocalVideo = () => {
   return (
     <div className="flex flex-1 rounded-3xl shadow bg-base-100 p-2">
       <div className="card w-full h-full">
-        <video className="object-cover w-full h-full" ref={videoRef}></video>
+        <video
+          className="object-cover w-full h-full flip"
+          ref={videoRef}
+        ></video>
         <div className="absolute drop-shadow-md text-white bottom-2 left-5">
           Rifaldhi AW
         </div>

@@ -20,7 +20,7 @@ function App() {
   };
 
   return (
-    <div className="flex h-screen justify-center items-center bg-slate-100">
+    <div className="flex h-screen justify-center items-center bg-base-100">
       {renderContent()}
     </div>
   );
