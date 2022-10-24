@@ -3,6 +3,11 @@
 export interface Typegen0 {
   "@@xstate/typegen": true;
   internalEvents: {
+    "done.invoke.main.connectingToRoom:invocation[0]": {
+      type: "done.invoke.main.connectingToRoom:invocation[0]";
+      data: unknown;
+      __tip: "See the XState TS docs to learn how to strongly type this.";
+    };
     "done.invoke.main.initializing:invocation[0]": {
       type: "done.invoke.main.initializing:invocation[0]";
       data: unknown;
@@ -23,7 +28,7 @@ export interface Typegen0 {
   };
   eventsCausingActions: {
     initPeer: "DISCONNECTED" | "done.invoke.main.initializing:invocation[0]";
-    saveConnectionsFromConnector: "CONNECTION_OPEN";
+    saveConnectionsAndStream: "done.invoke.main.connectingToRoom:invocation[0]";
     saveDataConnection: "DATA_CONNECTION_RECEIVED";
     saveLocalMediaStream: "done.invoke.main.initializing:invocation[0]";
     saveMediaConnection: "MEDIA_CONNECTION_RECEIVED";
@@ -40,7 +45,9 @@ export interface Typegen0 {
   eventsCausingServices: {
     getLocalMedia: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
     startMediaAndDataConnector: "JOIN_ROOM";
-    startMediaAndDataListener: "CONNECTION_OPEN" | "CREATE_ROOM";
+    startMediaAndDataListener:
+      | "CREATE_ROOM"
+      | "done.invoke.main.connectingToRoom:invocation[0]";
   };
   eventsCausingGuards: {};
   eventsCausingDelays: {};

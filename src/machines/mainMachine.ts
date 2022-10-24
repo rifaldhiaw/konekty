@@ -18,7 +18,7 @@ export type StreamData = {
 };
 
 export const mainMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0AJgDMhgGzYAnAFYALObMzjZ+9YA0IAJ4GAjLYv2AOz+AByWPtZ2ljKBAL6xHlw4eIQk5JRUYABOWbRZ2CrEEgBmecjYSTyp-JTCLLTikpiKitpqGk3aeghG-oFW1iFhfsYyMobjHt4IPtiBZoEyC5aGgYaWwaHxiRg4sAAWtADulACiOXkA4mD4ADINJACykESPtBAkVABKpwAqXwBNAD6lz+QMepwAIgBJACCrSQIHamkwXQM5lsMmwZjMxhsPkshMMtncXkQs3mi2Wq3WwWseO2IEqRwwhEEADE8gBVWDZAByqGQYCovwA8pdLrdTkDYVyYaKEap1Ci0T1DD4ZJY5oSQtYbKZopYpgZTFiZBqVoYTDIQmYQv5GczWZROVkefzBcKxRKpUCAGrQyGnBXyNrKzqI7pGGIWBaBQaa9bWFzGnq2AlzWwhQKBUaa5M+MyO3bYFm8Dnc3lZAVCqgAYR+sN+0q+otFj0VSPD6C0kd8ZhWVjGlmMIR8znWxlJ030Pgi2GsubthYJ1jnPmL3DLbKgrvd1c9VAAUqLoXyga3253kRHQFGJj5+lOcVPx3jBqnrIYFxtibiv4Y9ohMYm44KI9AMKIO6-LQXy0LQyD1qKfJ8qcda-NCyFAqKAAKpx8te3a9nevgklqITEl+8a2LYlhZiEn79OEuqrP4mKRIEuqgUwcEIVQEIAMoCbCoIXmhpzQn6UKER0Paon2PSWCEZquLRSyAS4hipvo-jYpq0R2Hq5orrY3FYLxiECfhkLgqcQkiacMkqgp+iWGYswanOzhjhRgxGmSCDEv0tq2PGnH2H4JJxAkTIluZ8GIbCdYANK2fZok-HWElSZCTm3roBiEtY2Akqsc4TDI06INYWK6vMi4EqMupKaZMWVPFfEQjCsJAnWyGoehmHnpl2XSaGiI3nJqqzhqWKDPSZiAWMOLzNpozFaxNqBH4Sy0faZmYBZVACf8pywo8YlZZJY1KBNRHySRilrNgTihc4yYafYqYjNgPj2m56wEiSSzRTs3AdYhkJNj1fUoWhGFYSN125eNSqycRBU9BaxXGIsa4GUsCxmNpmK2NggG2KOwFmHYeKWAdR0wgJsMDc2KO3WjzmPbOaw4ws4zAdtVqjtpVpk5TpVEoBNiLfEMWYO8cDaO1mC8GkAhQGG6MPZjRgNSVlW6gOtGLTT2mFlilPMdEqx0ZqIFtSWBzHGcFxZNcdwPMQzwQK87wkFrXO6+YlXYPavOjpTfiBKm8wvbqkRRY4VEbo7W7OhWbpVjWYCB-l94yLpuZ0bR0QEiO5uASVdH6n4yZREWadgRBYBQZQMEWXnU0uX946-ZErE23Otift+NqRIu4RuRqxitWDySHQlXcY1GIzfnaNh2OMQv+TOhbFTErETOsNq2o38-Lzr952iE2K4vihIrCS2k1bfwTZvGYSLSYDvxEAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0AJgBsADgCM2UwGYArLesAWWzIDsATlvmANCACeBuaGrtgepqbGhp7W5u7mDgC+Cb5cOHiEJOSUVGAATrm0udgqxBIAZoXI2Kk8GfyUwiy04pKYioraahqt2noIRqaGhlaOMvHu7mO2jsa+AQiGMtjWnsau1uHuxtPupq5JKRg4sAAWtADulACi+YUA4mD4ADLNJACykERvtBAkVABKVwAKv8AJoAfTuwPBbyuABEAJIAQQ6SBAXU0mF6Biinmw01sQxkjlcblcPn8iEWy1W60220cE0cBxANXOGEIggAYoUAKqwPIAOVQyDAVCBAHk7ncnldwUjeYiJajVOpMdj+oYZo5sGZzEFTDJiY47HMDNYxstBjFImYvDJ3Cy2RzKDzcvyhSKxZLpbLwQA1BFwq7K+SdNU9NF9Iwmyz2cKM0bmB1m-pJ7BBMZrYmuRajYxOo7Ydm8bl8gW5YWiqgAYUBSKBcv+EolbxV6Ij6C0UZxOdCg0WxmMbgsnlT+i22Hczjctm25Ictn2yVZRZLnKgbo9la9VAAUhKEYLwc3W+2MZHQNHDNZc9gbx4ZNZh9MbLNKQhyffDLZTISYtqD6Ftwoj0AwogbkCtD-LQtDIDQ9CMCI7CcEWoGYOBkHQbByCNGIEhdm08jnp23ZXoE1rYI4jh5rshh7Osjipl+Qy-tsMh2oY8TWMBaSYDBcFULCADKwlIlCJ5XDWVwIv68Ikd0hEavo5jWE4U43hYrgOCa7jjsEU4WLijJDtMbjMiuNRYAJ8HCVcgpwjCVyieJVwKeqPb9Kp8SGVqMiEqY7iuH+qYmMYVHuGpxgbMSLhcbxTA2VQSI1gA0k5LkSYC0myfJYZoheSmeSpdhLGpKweGsiw-npH7GO4VERCYMT2NRdiGAl1k4UJ8LIuCNYSoKgpSUCCKDZJOVyXC7mXrogTOLYVFDtFQS5rEz76REurOI4FjmMFUQ3p1-HdcJIJXEibwTTJU0zUV5FedYJhTuYw7+U+umpq9lgWHYZjhOYhqDMdSVwg2SL9YNw01qN43ZTdeVKAVpFYsV5gzveXjBdpQzre+8z6Bsi3bEugyjBa1oFpZRZdYJiLCQNQ0jYj4aKWRc2ajIhr3rtURmDR2n6f5Vj+e4N5bP5MWmEkK6YD8cDaFZmC8JkAhQKzHkPUYYvhfR5I-jR+r-uO6M-cmv4WiTNgWYc3CnBc1y3LkDzPK8xAfBAXw-CQGuzdeEuhPRhI3ujazWKm06hKbL4bI4yY-gl66uuWnqir790czGlqRG4gO3nYgOuCbDpWEOTjkjYUSuDRCXoZhlBQTZ6fs9er2mNgT4Mmp6zRUFzFLOScfRQDWzBdL1PcLTyDN6jWv7Xs+KkgOjIRPYJszFR1GqcOQ7rPqHUT7PHZs0f0YWia+LOESJJkhSBOMksmb7Q6amvaSVNJEAA */
   createMachine(
     {
       context: {
@@ -83,6 +83,7 @@ export const mainMachine =
             data: {
               mediaConnection: MediaConnection;
               dataConnection: DataConnection;
+              streamData: StreamData;
             };
           };
         },
@@ -138,12 +139,12 @@ export const mainMachine =
         connectingToRoom: {
           invoke: {
             src: "startMediaAndDataConnector",
-          },
-          on: {
-            CONNECTION_OPEN: {
-              target: "inRoom",
-              actions: "saveConnectionsFromConnector",
-            },
+            onDone: [
+              {
+                target: "inRoom",
+                actions: "saveConnectionsAndStream",
+              },
+            ],
           },
         },
         inRoom: {
@@ -241,21 +242,25 @@ export const mainMachine =
             };
           },
         }),
-        saveConnectionsFromConnector: assign({
+        saveConnectionsAndStream: assign({
           dataConnections: (context, event) => {
             invariant(context.roomId);
             return {
               ...context.dataConnections,
-              [context.roomId]: event.dataConnection,
+              [context.roomId]: event.data.dataConnection,
             };
           },
           mediaConnections: (context, event) => {
             invariant(context.roomId);
             return {
               ...context.mediaConnections,
-              [context.roomId]: event.mediaConnection,
+              [context.roomId]: event.data.mediaConnection,
             };
           },
+          streams: (context, event) => [
+            ...context.streams,
+            event.data.streamData,
+          ],
         }),
         updateUrl: (context, event) => {
           window.history.replaceState(
@@ -281,8 +286,8 @@ export const mainMachine =
           }
           return media;
         },
-        startMediaAndDataConnector:
-          (context, event) => (callback, onReceive) => {
+        startMediaAndDataConnector: (context, event) =>
+          new Promise((resolve, reject) => {
             invariant(context.peer);
             invariant(context.roomId);
             invariant(context.localMediaStream);
@@ -305,33 +310,21 @@ export const mainMachine =
               }
             );
 
-            const openListener = () => {
-              callback({
-                type: "CONNECTION_OPEN",
-                dataConnection,
-                mediaConnection,
-              });
-            };
-
             const streamListener = (stream: MediaStream) => {
-              callback({
-                type: "STREAM_RECEIVED",
+              mediaConnection.off("stream", streamListener);
+              resolve({
+                mediaConnection,
+                dataConnection,
                 streamData: {
                   stream,
-                  userId: mediaConnection.metadata.userId,
-                  userName: mediaConnection.metadata.userName,
+                  userId: nanoid(), // TODO: Host Id
+                  userName: "Todo Host Name",
                 },
               });
             };
 
-            dataConnection.on("open", openListener);
             mediaConnection.on("stream", streamListener);
-
-            return () => {
-              dataConnection.off("open", openListener);
-              mediaConnection.off("stream", streamListener);
-            };
-          },
+          }),
         startMediaAndDataListener:
           (
             { peer, localMediaStream, dataConnections, mediaConnections },
