@@ -34,7 +34,7 @@ const ActionButton = (props: {
       }}
       className={
         "btn btn-circle swap mx-2 text-inherit" +
-        (props.isOn ? " btn-outline" : " btn-error") +
+        (props.isOn ? " btn-outline" : " btn-error text-white") +
         (props.loading ? " loading" : "")
       }
     >

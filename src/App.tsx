@@ -1,6 +1,7 @@
 import { useSelector } from "@xstate/react";
 import EntryView from "./components/EntryView";
 import { useMainService } from "./components/MachineProvider";
+import MainView from "./components/MainView";
 
 function App() {
   const service = useMainService();
@@ -9,17 +10,17 @@ function App() {
     s.matches("waitingForUserName")
   );
 
-  const renderContent = () => {
-    if (initializing || waitingForUserName) {
-      return <EntryView />;
-    }
-
-    return <p>Waiting</p>;
-  };
+  if (initializing || waitingForUserName) {
+    return (
+      <div className="flex h-screen justify-center items-center">
+        <EntryView />;
+      </div>
+    );
+  }
 
   return (
-    <div className="flex h-screen justify-center items-center">
-      {renderContent()}
+    <div className="flex w-screen h-screen">
+      <MainView />
     </div>
   );
 }

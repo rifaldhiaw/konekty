@@ -64,7 +64,7 @@ export const mainMachine =
               mediaConnection: MediaConnection;
             }
           | { type: "SEND_MESSAGE"; message: Message; to: string }
-          | { type: "MESSAGE_RECEIVED"; message: Message; from: string }
+          | { type: "MESSAGE_RECEIVED"; message: Message }
           | { type: "ACK_MESSAGE_RECEIVED"; messageId: string }
           | { type: "STREAM_RECEIVED"; stream: MediaStream; userId: string }
           | { type: "DISCONNECTED" },
@@ -304,8 +304,6 @@ export const mainMachine =
             );
 
             const openListener = () => {
-              dataConnection.send("hi!");
-
               callback({
                 type: "CONNECTION_OPEN",
                 dataConnection,
@@ -335,8 +333,10 @@ export const mainMachine =
                 userId: dataConnection.metadata.userId,
               });
               dataConnection.on("data", (data) => {
-                // Will print 'hi!'
-                console.log(data);
+                callback({
+                  type: "MESSAGE_RECEIVED",
+                  message: data as Message,
+                });
               });
             });
 
@@ -348,6 +348,7 @@ export const mainMachine =
               });
               mediaConnection.answer(localMediaStream);
               mediaConnection.on("stream", (remoteStream) => {
+                console.log("STREAM_RECEIVED", mediaConnection.metadata);
                 callback({
                   type: "STREAM_RECEIVED",
                   stream: remoteStream,
