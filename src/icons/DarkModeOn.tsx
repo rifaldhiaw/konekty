@@ -1,8 +1,8 @@
-const DarkModeOn = () => {
+const DarkModeOn = (props: { size?: string }) => {
   return (
     <svg
-      width="1.5em"
-      height="1.5em"
+      width={props.size ? props.size : "1.5em"}
+      height={props.size ? props.size : "1.5em"}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
     >

@@ -38,6 +38,7 @@ export interface Typegen0 {
     saveStream: "STREAM_RECEIVED";
     sendMessage: "SEND_MESSAGE";
     toggleAudio: "TOGGLE_AUDIO";
+    toggleChat: "TOGGLE_CHAT";
     toggleVideo: "TOGGLE_VIDEO";
     updatePendingMessage: "ACK_MESSAGE_RECEIVED";
     updateUrl: "CREATE_ROOM";

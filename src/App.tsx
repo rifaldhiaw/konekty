@@ -19,7 +19,7 @@ function App() {
   }
 
   return (
-    <div className="flex w-screen h-screen">
+    <div className="flex w-screen h-screen" data-theme={"dark"}>
       <MainView />
     </div>
   );

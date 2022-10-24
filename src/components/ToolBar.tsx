@@ -4,23 +4,24 @@ import { useMainService } from "./MachineProvider";
 
 const ToolBar = () => {
   const isChatBoxVisible = true;
-  const isDarkMode = false;
 
   const service = useMainService();
   const isVideoOn = useSelector(service, (s) => s.context.localVideoStatus);
   const isAudioOn = useSelector(service, (s) => s.context.localAudioStatus);
 
   return (
-    <div className="flex bg-base-100 shadow-xl border border-base-300 p-4 justify-center">
+    <div className="flex bg-base-100 p-4 justify-center">
       <ActionButton
-        isOn={isDarkMode}
-        icon="dark"
+        small={true}
+        isOn={true}
+        icon="more"
         onClick={() => {
-          // useGlobalStore.setState({ isDarkMode: !isDarkMode });
+          // service.send({ type: "TOGGLE_CHAT" });
         }}
       />
       <div className="flex flex-1 justify-center">
         <ActionButton
+          small={true}
           isOn={isVideoOn}
           icon="video"
           onClick={() => {
@@ -33,6 +34,7 @@ const ToolBar = () => {
           }}
         />
         <ActionButton
+          small={true}
           isOn={isAudioOn}
           icon="audio"
           onClick={() => {
@@ -45,10 +47,11 @@ const ToolBar = () => {
         />
       </div>
       <ActionButton
+        small={true}
         isOn={isChatBoxVisible}
         icon="chat"
         onClick={() => {
-          // useGlobalStore.setState({ isChatBoxVisible: !isChatBoxVisible });
+          service.send({ type: "TOGGLE_CHAT" });
         }}
       />
     </div>

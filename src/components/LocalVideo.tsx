@@ -1,5 +1,5 @@
 import { useSelector } from "@xstate/react";
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
 import { useMainService } from "./MachineProvider";
 
@@ -48,4 +48,6 @@ const LocalVideo = () => {
   );
 };
 
-export default LocalVideo;
+const LocalVideoMemo = memo(LocalVideo);
+
+export default LocalVideoMemo;

@@ -13,10 +13,6 @@ const ChatBox = () => {
 
   return (
     <div className="card border border-base-200 bg-base-100 flex-1 h-full shadow-lg">
-      <h2 className="text-center text-xl font-semibold p-5 border-b border-base-300">
-        Chat Box
-      </h2>
-
       <div className="flex flex-1 flex-col h-full overflow-y-scroll py-5 p-5 bg-base-200">
         <div className="flex flex-1 flex-col">
           {messages.map((m, i) => {

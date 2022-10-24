@@ -1,9 +1,9 @@
-const AudioOff = () => {
+const AudioOff = (props: { size?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="1.5em"
-      height="1.5em"
+      width={props.size ? props.size : "1.5em"}
+      height={props.size ? props.size : "1.5em"}
       preserveAspectRatio="xMidYMid meet"
       viewBox="0 0 16 16"
     >

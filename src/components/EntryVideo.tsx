@@ -58,6 +58,7 @@ const EntryVideo = () => {
       <div className="absolute z-10 bottom-6 left-0 right-0 flex justify-center text-white">
         <div className="mx-1">
           <ActionButton
+            outline={true}
             isOn={isAudioOn}
             icon={"audio"}
             onClick={() => {
@@ -67,6 +68,7 @@ const EntryVideo = () => {
         </div>
         <div className="mx-1">
           <ActionButton
+            outline={true}
             isOn={isVideoOn}
             icon={"video"}
             onClick={() => {

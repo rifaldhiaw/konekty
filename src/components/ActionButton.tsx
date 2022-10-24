@@ -3,25 +3,36 @@ import AudioOn from "../icons/AudioOn";
 import ChatOn from "../icons/ChatOn";
 import DarkModeOff from "../icons/DarkModeOff";
 import DarkModeOn from "../icons/DarkModeOn";
+import More from "../icons/More";
 import VideoOff from "../icons/VideoOff";
 import VideoOn from "../icons/VideoOn";
 
 const ActionButton = (props: {
   isOn: boolean;
-  icon: "audio" | "video" | "chat" | "dark";
+  icon: "audio" | "video" | "chat" | "dark" | "more";
   loading?: boolean;
+  small?: boolean;
+  outline?: boolean;
   onClick: () => void;
 }) => {
   const iconJsx = (() => {
+    const size = props.small ? "1.2rem" : "1.5rem";
+
     switch (props.icon) {
       case "audio":
-        return props.isOn ? <AudioOn /> : <AudioOff />;
+        return props.isOn ? <AudioOn size={size} /> : <AudioOff size={size} />;
       case "video":
-        return props.isOn ? <VideoOn /> : <VideoOff />;
+        return props.isOn ? <VideoOn size={size} /> : <VideoOff size={size} />;
       case "chat":
-        return <ChatOn />;
+        return <ChatOn size={size} />;
+      case "more":
+        return <More size={size} />;
       case "dark":
-        return props.isOn ? <DarkModeOn /> : <DarkModeOff />;
+        return props.isOn ? (
+          <DarkModeOn size={size} />
+        ) : (
+          <DarkModeOff size={size} />
+        );
     }
   })();
 
@@ -33,9 +44,14 @@ const ActionButton = (props: {
         }
       }}
       className={
-        "btn btn-circle swap mx-2 text-inherit" +
-        (props.isOn ? " btn-outline" : " btn-error text-white") +
-        (props.loading ? " loading" : "")
+        "btn btn-circle swap mx-2 text-white" +
+        (props.isOn
+          ? props.outline
+            ? " btn-outline"
+            : " bg-slate-700"
+          : " btn-error") +
+        (props.loading ? " loading" : "") +
+        (props.small ? " min-h-0" : " w-[56px] h-[56px]")
       }
     >
       {!props.loading && iconJsx}

@@ -18,7 +18,7 @@ export type StreamData = {
 };
 
 export const mainMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0AJgBsADgCM2UwGYArLesAWWzIDsATlvmANCACeBuaGrtgepqbGhp7W5u7mDgC+Cb5cOHiEJOSUVGAATrm0udgqxBIAZoXI2Kk8GfyUwiy04pKYioraahqt2noIRqaGhlaOMvHu7mO2jsa+AQiGMtjWnsau1uHuxtPupq5JKRg4sAAWtADulACi+YUA4mD4ADLNJACykERvtBAkVABKVwAKv8AJoAfTuwPBbyuABEAJIAQQ6SBAXU0mF6Biinmw01sQxkjlcblcPn8iEWy1W60220cE0cBxANXOGEIggAYoUAKqwPIAOVQyDAVCBAHk7ncnldwUjeYiJajVOpMdj+oYZo5sGZzEFTDJiY47HMDNYxstBjFImYvDJ3Cy2RzKDzcvyhSKxZLpbLwQA1BFwq7K+SdNU9NF9Iwmyz2cKM0bmB1m-pJ7BBMZrYmuRajYxOo7Ydm8bl8gW5YWiqgAYUBSKBcv+EolbxV6Ij6C0UZxOdCg0WxmMbgsnlT+i22Hczjctm25Ictn2yVZRZLnKgbo9la9VAAUhKEYLwc3W+2MZHQNHDNZc9gbx4ZNZh9MbLNKQhyffDLZTISYtqD6Ftwoj0AwogbkCtD-LQtDIDQ9CMCI7CcEWoGYOBkHQbByCNGIEhdm08jnp23ZXoE1rYI4jh5rshh7Osjipl+Qy-tsMh2oY8TWMBaSYDBcFULCADKwlIlCJ5XDWVwIv68Ikd0hEavo5jWE4U43hYrgOCa7jjsEU4WLijJDtMbjMiuNRYAJ8HCVcgpwjCVyieJVwKeqPb9Kp8SGVqMiEqY7iuH+qYmMYVHuGpxgbMSLhcbxTA2VQSI1gA0k5LkSYC0myfJYZoheSmeSpdhLGpKweGsiw-npH7GO4VERCYMT2NRdiGAl1k4UJ8LIuCNYSoKgpSUCCKDZJOVyXC7mXrogTOLYVFDtFQS5rEz76REurOI4FjmMFUQ3p1-HdcJIJXEibwTTJU0zUV5FedYJhTuYw7+U+umpq9lgWHYZjhOYhqDMdSVwg2SL9YNw01qN43ZTdeVKAVpFYsV5gzveXjBdpQzre+8z6Bsi3bEugyjBa1oFpZRZdYJiLCQNQ0jYj4aKWRc2ajIhr3rtURmDR2n6f5Vj+e4N5bP5MWmEkK6YD8cDaFZmC8JkAhQKzHkPUYYvhfR5I-jR+r-uO6M-cmv4WiTNgWYc3CnBc1y3LkDzPK8xAfBAXw-CQGuzdeEuhPRhI3ujazWKm06hKbL4bI4yY-gl66uuWnqir790czGlqRG4gO3nYgOuCbDpWEOTjkjYUSuDRCXoZhlBQTZ6fs9er2mNgT4Mmp6zRUFzFLOScfRQDWzBdL1PcLTyDN6jWv7Xs+KkgOjIRPYJszFR1GqcOQ7rPqHUT7PHZs0f0YWia+LOESJJkhSBOMksmb7Q6amvaSVNJEAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0AJgAcMgOzYzMgMzGALAEYH1mQDZDr1wBoQATwPOAKzYhmZ21nauZrYAnC4xdgC+iT5cOHiEJOSUVGAATnm0edgqxBIAZkXI2Gk8mfyUwiy04pKYioraahpt2noIRgnGljL2noGGdobTPv4IDobYMYYyDjGrNjEOgYHRyakYOLAAFrQA7pQAogVFAOJg+AAyLSQAspBEr7QQJFQASpcACp-ACaAH1bkCwa9LgARACSAEFOkgQN1NJg+gZrAsHNhHNYJlY4nZIt4-IgFksVmsNtYtjtjPsQLUzhhCIIAGJFACqsHyADlUMgwFRAQB5W63R6XMGInkI8Uo1TqDFYgaGQLrbCBOwJCLuMxOcyzbGjbDGXamGQyXWamzWZms9mUbl5PmC4WiiVSmVggBq8NhlyV8i6qt6qP6Rh2FimRsCrhkhmsZlcu1NAzs5q1icCo2shn1gSdh2wbN4XN5-LyQpFVAAwgDEYDZX9xeLXsq0RH0FoowZDA5oth07bnCmZHrE5n9A4p-iVjsElNjMsYkyUiyyxWOVA3R7a16qAApcXwgVg9ud7voyOgaOTDfYefuefTYzbBKZ1zWSz56xXEtEx1iLEst1qUR6AYUQ90BWg-loWhkBoehGBEdhODLKDMBguCEKQ5AmjECQ+3aeRb17fsHwCBIYmwHEbETOxAgcUkYjMH8-zMADPxMUJjCHbZS24LBEOQ1CGCYVgOBqMsxMI4iXjaDow1RO8yPVIx5zxPM9R460bU4ikBkA+jXCmDdPBicYkzMET0kwcSUJhABlVzEUhK9LgbS54X9OFKJ6TSBwGNik0sZYFkcXY3As2dCXxRMzGMQtBPpCIYgcphnNyG5ilKCoqjk0SnMUjDWjI1SlHUqjMVC7SbRCewVnMYcokLBLJhfKyVk-RNkyyiD5LKiTXMuAVYWhS53M8y4grVBq2McC18yNNZotcZxM01ejVhS60HGMNNQmyhSJJ9aVZQbAAJFsFvvXQAgmej0smJ97DTQJZz1RZjAsxituO+keLO0aUMRBsAGlptmryAV8-zArUlVguop6wrsNMQmTEx3ASKwZhM9xsA2MwzDiVwOKnJwwdymEEURMEG3FAUBR8wF4VZ7zEYC2EHpCmiwsCT8GMy1M1zsf6YhiWcizsF8VhsvULJsYc6cIqhXOBS5EVeHm-L5gX0ejNiJksewcQcdMrE8OxM22BXrFsUZ8xstxjE3A5Sty2EWyZlm2Y5rnLwRw3kZq1HFqFuddlcRWbQSZbpdlkz9Ayl8cQ8IHPaHcmNYkhFXMD9mG1bfmUZ7NH6pj6Y3Bfa2kwNO1yTmbS-xMNjzDCQ1QeZTBvjgbRagyPhskEcNq60lxze2XVCynWwTFnNj6LxuLLQnExspOc4rny+4nheYh3ggT5vhISfo4x9PRnjrUgJA1MIn+zNjpCWwoiiCYolGJJhu4LuV01ZPQiivo9R8RJ8RrmTHqGyawWIr2HAxRwqUZA2XWIBVK2UcJ4UoPBZy4DBY32mHEJYU57AyxsjiHYXEP7-WtDZD8kR-7e0coQ2qU8lpbD-OELYRZcTOwWCvQIf4tjwI3BMLGtpHQAJrlXa+0YcRU3xEEUI6CIhklnCLPE-1LKe3cFjIayQgA */
   createMachine(
     {
       context: {
@@ -29,6 +29,7 @@ export const mainMachine =
         localMediaStream: new MediaStream(),
         localAudioStatus: false,
         localVideoStatus: true,
+        isChatOpen: false,
         messages: [],
         streams: [],
         dataConnections: {},
@@ -44,6 +45,7 @@ export const mainMachine =
           localMediaStream: MediaStream;
           localAudioStatus: boolean;
           localVideoStatus: boolean;
+          isChatOpen: boolean;
           messages: Message[];
           streams: StreamData[];
           dataConnections: Record<string, DataConnection>;
@@ -53,6 +55,7 @@ export const mainMachine =
           | { type: "RETRY_GET_MEDIA" }
           | { type: "JOIN_ROOM"; name: string }
           | { type: "CREATE_ROOM"; name: string }
+          | { type: "TOGGLE_CHAT" }
           | { type: "TOGGLE_AUDIO" }
           | { type: "TOGGLE_VIDEO" }
           | {
@@ -150,6 +153,8 @@ export const mainMachine =
         inRoom: {
           invoke: {
             src: "startMediaAndDataListener",
+            onDone: [{}],
+            onError: [{}],
           },
           on: {
             MESSAGE_RECEIVED: {
@@ -157,6 +162,9 @@ export const mainMachine =
             },
             SEND_MESSAGE: {
               actions: "sendMessage",
+            },
+            TOGGLE_CHAT: {
+              actions: "toggleChat",
             },
             ACK_MESSAGE_RECEIVED: {
               actions: "updatePendingMessage",
@@ -188,6 +196,12 @@ export const mainMachine =
         }),
         saveLocalMediaStream: assign({
           localMediaStream: (context, event) => event.data,
+        }),
+        toggleChat: assign({
+          isChatOpen: (context, event) => {
+            console.log("!context.isChatOpen", !context.isChatOpen);
+            return !context.isChatOpen;
+          },
         }),
         toggleAudio: assign({
           localAudioStatus: (context, event) => !context.localAudioStatus,

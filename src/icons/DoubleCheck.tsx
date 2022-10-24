@@ -1,9 +1,9 @@
-const DoubleCheck = () => {
+const DoubleCheck = (props: { size?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="1em"
-      height="1em"
+      width={props.size ? props.size : "1em"}
+      height={props.size ? props.size : "1em"}
       preserveAspectRatio="xMidYMid meet"
       viewBox="0 0 16 16"
     >

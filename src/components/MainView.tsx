@@ -1,12 +1,15 @@
+import { useSelector } from "@xstate/react";
 import { ReactNode } from "react";
 import ChatBox from "./ChatBox";
 import LocalVideo from "./LocalVideo";
+import { useMainService } from "./MachineProvider";
 import RemoteAudio from "./RemoteAudio";
 import RemoteVideo from "./RemoteVideo";
 import ToolBar from "./ToolBar";
 
 const MainView = () => {
-  const isChatBoxVisible = true;
+  const service = useMainService();
+  const isChatOpen = useSelector(service, (s) => s.context.isChatOpen);
 
   const renderVideo = (videoJsx: ReactNode) => (
     <div className="flex flex-1 h-0">
@@ -24,10 +27,9 @@ const MainView = () => {
           {renderVideo(<RemoteVideo />)}
           <div className="h-3" />
           {renderVideo(<LocalVideo />)}
-          <div className="h-5" />
         </div>
 
-        {isChatBoxVisible && (
+        {isChatOpen && (
           <div className="w-[400px] h-full py-5">
             <ChatBox />
           </div>

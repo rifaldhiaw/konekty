@@ -1,5 +1,5 @@
 import { useSelector } from "@xstate/react";
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
 import { useMainService } from "./MachineProvider";
 
@@ -44,4 +44,6 @@ const RemoteVideo = () => {
   );
 };
 
-export default RemoteVideo;
+const RemoteVideoMemo = memo(RemoteVideo);
+
+export default RemoteVideoMemo;
