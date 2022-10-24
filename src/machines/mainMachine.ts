@@ -5,6 +5,7 @@ import { assign, createMachine } from "xstate";
 
 export type Message = {
   id: string;
+  userName: string;
   body: string;
   from: string;
   status: "pending" | "success";
@@ -312,10 +313,23 @@ export const mainMachine =
               });
             };
 
+            const streamListener = (stream: MediaStream) => {
+              callback({
+                type: "STREAM_RECEIVED",
+                streamData: {
+                  stream,
+                  userId: mediaConnection.metadata.userId,
+                  userName: mediaConnection.metadata.userName,
+                },
+              });
+            };
+
             dataConnection.on("open", openListener);
+            mediaConnection.on("stream", streamListener);
 
             return () => {
               dataConnection.off("open", openListener);
+              mediaConnection.off("stream", streamListener);
             };
           },
         startMediaAndDataListener:

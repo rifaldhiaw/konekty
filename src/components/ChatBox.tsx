@@ -35,7 +35,7 @@ const ChatBox = () => {
                 }
               >
                 {!isPrevSameOwner && (
-                  <div className="mx-2 mb-1 font-semibold">{m.from}</div>
+                  <div className="mx-2 mb-1 font-semibold">{m.userName}</div>
                 )}
                 <MessageBubble message={m} isMine={isMine} />
               </div>
@@ -82,6 +82,7 @@ function ChatInput() {
   const [message, setMessage] = useState("");
   const service = useMainService();
   const localId = useSelector(service, (s) => s.context.userId);
+  const userName = useSelector(service, (s) => s.context.userName);
 
   // TODO: should handle multiple user
   const dataConnections = useSelector(
@@ -101,6 +102,7 @@ function ChatInput() {
           type: "SEND_MESSAGE",
           message: {
             id: nanoid(),
+            userName,
             body: message,
             from: localId,
             status: "pending",
