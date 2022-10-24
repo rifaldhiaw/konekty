@@ -6,10 +6,8 @@ import { useMainService } from "./MachineProvider";
 const RemoteVideo = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const service = useMainService();
-  const remoteStreams = useSelector(service, (s) => s.context.streams);
-
-  const remoteStream = Object.values(remoteStreams)?.[0];
-  const userName = Object.keys(remoteStreams)?.[0];
+  const streamData = useSelector(service, (s) => s.context.streams?.[0]);
+  const remoteStream = streamData?.stream;
 
   useEffect(() => {
     if (!videoRef.current || !remoteStream) return;
@@ -30,7 +28,7 @@ const RemoteVideo = () => {
           </div>
         </div>
         <div className="absolute drop-shadow-md bottom-2 left-5">
-          {userName}
+          {streamData?.userName}
         </div>
       </div>
     );
@@ -40,7 +38,7 @@ const RemoteVideo = () => {
     <div className="w-full h-full">
       <video className="object-cover w-full h-full" ref={videoRef}></video>;
       <div className="absolute drop-shadow-md text-white bottom-2 left-5">
-        {userName}
+        {streamData?.userName}
       </div>
     </div>
   );

@@ -10,6 +10,12 @@ export type Message = {
   status: "pending" | "success";
 };
 
+export type StreamData = {
+  userId: string;
+  userName: string;
+  stream: MediaStream;
+};
+
 export const mainMachine =
   /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0ARgCcAVgAc2AEwBmU6cMA2GTccAWK6YA0IAJ4HDGVNsYzsrc0M3Q3s3YxkAdgBfRJ8uHDxCEnJKKjAAJzzaPOwVYgkAMyLkbDSeTP5KYRZacUlMRUVtNQ027T0EfSsZY2NrNxlIyJsZGSGrH38ED2tTY09TD3irY3i3U2TUjBxYAAtaAHdKAFECooBxMHwAGRaSAFlIIjfaCBIqACUrgAVf4ATQA+ndgeC3lcACIASQAgp0kCBuppMH0DFYrPFDCE9kMTCMrHsFohlp41jE8dtdhsDiBaucMIRBAAxIoAVVg+QAcqhkGAqECAPJ3O5PK7gpHcxFi1GqdSY7EDQy7AkyCKBMw2bbDGwUgZ40YOczxGxuS3axzmNyOJkstmULl5XkCoUi8WS6XggBqCLhV0V8i6Kt6aP6RniCRCFnM0zWZncRr8Bhs8VGnkcFnsw1MjicTqO2FZvE5PL5eUFwqoAGFAUigTL-mKxW8leiI+gtFGAvq3NhDOYrCOIq5tnZjfp4sFtZFjFETA5DIYS9xy+yoG6PTWvVQAFJihH88FtjtdjGR0DRpxuSyOTPmcwOGw2MzmY2hbDapfv19cXtRMNxwUR6AYURtyBWh-loWhkAbMV+X5K56yBBFkPBMUAAUrn5K8ez7W8AmGAlAlMeIqI2WIHy-dMEGMSwogSRd3CCSjjFApg4IQmh6EYER2E4UssF45AmjECRe3aeRCJ6GS1SMPEbGwexTBkWJQkcJ99RnGwnBCJwZHcRx8QSS1uLE+DEPyQpilKCoqhqUTMHEyTXjaDowzRa9FP7dU6WsS0sxGVxdPmBj9FcIdjCfbYPFY0wrSSFJmVc8SqFhABlbKkShc80KuBF-XheTVQC-QiwJfVMxGEzwncSLFiq4cNXxLNVgmJwNX2NLamsvjsvwuEYSuXL8qucqb10AxVisbAbFHJa7RHTxzGMY1wksOxHCXZKPEiPZUsObhBsQpF6wAaTGiaCsBetitKuFpv8kiBkcKxHGwS0PyLIYgm-GrYntB1Qm1VZzCstybKy+FkXBetkNQ9DMLPB6nrKnzlQU4jZoGS0CXMHT-vMGYdPiRwZy+od4giDa4vGdwmLcaHMuykEriRN5CsekqsaUXyiKxSrnFUgzIdzT7iY8Y0R1Usz8Q0qJ9pMk70rOmG+LhZskUR5G0IwrCMf5l7se7XGRfe2cvuwXMNT2oITLMqmotcVSs1xGZiY2D8uP6jLYcRbKkZQw2BfDS2lMMXa7YfPFE3xXElpneXCVsDwPHCFMrGSNLMB+OBtAGzBeCyAQoEjirra9ha7XMvbYk+3NU5MQlYwmUxTXGUJuNOC5rluPIHmeV5iA+CAvh+Egq5m6Nk-iYdwg0pa3AM605cMyiqMSymgjxdcA83F1K3datazAWe3vxowzMsWYTJGOISTTFqX1-WZKcLPZcyb7jwMwJBaCsEbJXzxneNwkDsBr1zGSOIY5IjfgWtvBkKsiwuFZkfdIWtkBgKtjfQIT4QixjJuMA+2xU5kjUmTGIXc4gvh0qBPBSlbBt32sSJ+ZJvBRQdJYHMqwHSzFWHYPOiQgA */
   createMachine(
@@ -23,7 +29,7 @@ export const mainMachine =
         localAudioStatus: false,
         localVideoStatus: true,
         messages: [],
-        streams: {},
+        streams: [],
         dataConnections: {},
         mediaConnections: {},
       },
@@ -38,7 +44,7 @@ export const mainMachine =
           localAudioStatus: boolean;
           localVideoStatus: boolean;
           messages: Message[];
-          streams: Record<string, MediaStream>;
+          streams: StreamData[];
           dataConnections: Record<string, DataConnection>;
           mediaConnections: Record<string, MediaConnection>;
         },
@@ -66,7 +72,7 @@ export const mainMachine =
           | { type: "SEND_MESSAGE"; message: Message; to: string }
           | { type: "MESSAGE_RECEIVED"; message: Message }
           | { type: "ACK_MESSAGE_RECEIVED"; messageId: string }
-          | { type: "STREAM_RECEIVED"; stream: MediaStream; userId: string }
+          | { type: "STREAM_RECEIVED"; streamData: StreamData }
           | { type: "DISCONNECTED" },
         services: {} as {
           getLocalMedia: {
@@ -214,10 +220,7 @@ export const mainMachine =
           userName: (context, event) => event.name,
         }),
         saveStream: assign({
-          streams: (context, event) => ({
-            ...context.streams,
-            [event.userId]: event.stream,
-          }),
+          streams: (context, event) => [...context.streams, event.streamData],
         }),
         initPeer: assign({
           peer: (context, event) =>
@@ -348,11 +351,13 @@ export const mainMachine =
               });
               mediaConnection.answer(localMediaStream);
               mediaConnection.on("stream", (remoteStream) => {
-                console.log("STREAM_RECEIVED", mediaConnection.metadata);
                 callback({
                   type: "STREAM_RECEIVED",
-                  stream: remoteStream,
-                  userId: mediaConnection.metadata.userId,
+                  streamData: {
+                    stream: remoteStream,
+                    userId: mediaConnection.metadata.userId,
+                    userName: mediaConnection.metadata.userName,
+                  },
                 });
               });
             });
