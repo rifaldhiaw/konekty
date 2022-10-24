@@ -30,7 +30,7 @@ const MainView = () => {
         </div>
 
         {isChatOpen && (
-          <div className="w-[400px] h-full py-5">
+          <div className="w-[400px] h-full pt-5">
             <ChatBox />
           </div>
         )}

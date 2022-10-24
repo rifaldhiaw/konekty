@@ -48,7 +48,7 @@ const ActionButton = (props: {
         (props.isOn
           ? props.outline
             ? " btn-outline"
-            : " bg-slate-700"
+            : " btn-secondary"
           : " btn-error") +
         (props.loading ? " loading" : "") +
         (props.small ? " min-h-0" : " w-[56px] h-[56px]")

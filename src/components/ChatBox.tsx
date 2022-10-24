@@ -116,7 +116,7 @@ function ChatInput() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button type="submit" className="btn ml-5">
+        <button type="submit" className="btn btn-secondary ml-5">
           Send
         </button>
       </div>
