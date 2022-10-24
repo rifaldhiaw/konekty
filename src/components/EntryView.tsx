@@ -1,6 +1,6 @@
 import { useSelector } from "@xstate/react";
 import { FormEventHandler, useState } from "react";
-import LocalVideo from "./LocalVideo";
+import EntryVideo from "./EntryVideo";
 import { useMainService } from "./MachineProvider";
 
 const EntryView = () => {
@@ -38,7 +38,7 @@ const EntryView = () => {
   return (
     <div className="flex container px-8">
       <div className="flex w-7/12 relative">
-        <LocalVideo />
+        <EntryVideo />
       </div>
       <div className="w-5/12 flex justify-center items-center">
         <form className="flex flex-col" onSubmit={onSubmit}>

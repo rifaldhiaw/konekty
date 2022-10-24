@@ -4,7 +4,7 @@ import invariant from "tiny-invariant";
 import ActionButton from "./ActionButton";
 import { useMainService } from "./MachineProvider";
 
-const LocalVideo = () => {
+const EntryVideo = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -79,4 +79,4 @@ const LocalVideo = () => {
   );
 };
 
-export default LocalVideo;
+export default EntryVideo;
