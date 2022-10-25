@@ -10,6 +10,7 @@ const EntryView = () => {
   const connectingToRoom = useSelector(service, (s) =>
     s.matches("connectingToRoom")
   );
+  const error = useSelector(service, (s) => s.context.error);
 
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
@@ -58,7 +59,7 @@ const EntryView = () => {
               className="input input-bordered w-full max-w-xs bg-base-200 text-center"
             />
           </div>
-          <div className={"flex mt-6" + (roomId ? " w-[300px]" : "")}>
+          <div className={"flex mt-5" + (roomId ? " w-[300px]" : "")}>
             <button
               type="submit"
               className={
@@ -78,6 +79,12 @@ const EntryView = () => {
               </button>
             )}
           </div>
+
+          {error && (
+            <div className="bg-red-100 card py-3 px-4 mt-8">
+              {error.message}
+            </div>
+          )}
         </form>
       </div>
     </div>

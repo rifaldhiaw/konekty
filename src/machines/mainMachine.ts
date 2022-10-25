@@ -18,13 +18,14 @@ export type StreamData = {
 };
 
 export const mainMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0AJgAcMgOzYzMgMzGALAEYH1mQDZDr1wBoQATwPOAKzYhmZ21nauZrYAnC4xdgC+iT5cOHiEJOSUVGAATnm0edgqxBIAZkXI2Gk8mfyUwiy04pKYioraahpt2noIRgnGljL2noGGdobTPv4IDobYMYYyDjGrNjEOgYHRyakYOLAAFrQA7pQAogVFAOJg+AAyLSQAspBEr7QQJFQASpcACp-ACaAH1bkCwa9LgARACSAEFOkgQN1NJg+gZrAsHNhHNYJlY4nZIt4-IgFksVmsNtYtjtjPsQLUzhhCIIAGJFACqsHyADlUMgwFRAQB5W63R6XMGInkI8Uo1TqDFYgaGQLrbCBOwJCLuMxOcyzbGjbDGXamGQyXWamzWZms9mUbl5PmC4WiiVSmVggBq8NhlyV8i6qt6qP6Rh2FimRsCrhkhmsZlcu1NAzs5q1icCo2shn1gSdh2wbN4XN5-LyQpFVAAwgDEYDZX9xeLXsq0RH0FoowZDA5oth07bnCmZHrE5n9A4p-iVjsElNjMsYkyUiyyxWOVA3R7a16qAApcXwgVg9ud7voyOgaOTDfYefuefTYzbBKZ1zWSz56xXEtEx1iLEst1qUR6AYUQ90BWg-loWhkBoehGBEdhODLKDMBguCEKQ5AmjECQ+3aeRb17fsHwCBIYmwHEbETOxAgcUkYjMH8-zMADPxMUJjCHbZS24LBEOQ1CGCYVgOBqMsxMI4iXjaDow1RO8yPVIx5zxPM9R460bU4ikBkA+jXCmDdPBicYkzMET0kwcSUJhABlVzEUhK9LgbS54X9OFKJ6TSBwGNik0sZYFkcXY3As2dCXxRMzGMQtBPpCIYgcphnNyG5ilKCoqjk0SnMUjDWjI1SlHUqjMVC7SbRCewVnMYcokLBLJhfKyVk-RNkyyiD5LKiTXMuAVYWhS53M8y4grVBq2McC18yNNZotcZxM01ejVhS60HGMNNQmyhSJJ9aVZQbAAJFsFvvXQAgmej0smJ97DTQJZz1RZjAsxituO+keLO0aUMRBsAGlptmryAV8-zArUlVguop6wrsNMQmTEx3ASKwZhM9xsA2MwzDiVwOKnJwwdymEEURMEG3FAUBR8wF4VZ7zEYC2EHpCmiwsCT8GMy1M1zsf6YhiWcizsF8VhsvULJsYc6cIqhXOBS5EVeHm-L5gX0ejNiJksewcQcdMrE8OxM22BXrFsUZ8xstxjE3A5Sty2EWyZlm2Y5rnLwRw3kZq1HFqFuddlcRWbQSZbpdlkz9Ayl8cQ8IHPaHcmNYkhFXMD9mG1bfmUZ7NH6pj6Y3Bfa2kwNO1yTmbS-xMNjzDCQ1QeZTBvjgbRagyPhskEcNq60lxze2XVCynWwTFnNj6LxuLLQnExspOc4rny+4nheYh3ggT5vhISfo4x9PRnjrUgJA1MIn+zNjpCWwoiiCYolGJJhu4LuV01ZPQiivo9R8RJ8RrmTHqGyawWIr2HAxRwqUZA2XWIBVK2UcJ4UoPBZy4DBY32mHEJYU57AyxsjiHYXEP7-WtDZD8kR-7e0coQ2qU8lpbD-OELYRZcTOwWCvQIf4tjwI3BMLGtpHQAJrlXa+0YcRU3xEEUI6CIhklnCLPE-1LKe3cFjIayQgA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0AJgAcMgOzYzMgMzGALAEYH1mQDZDr1wBoQATwPOAKzYhmZ21nauZrYAnC4xdgC+iT5cOHiEJOSUVGAATnm0edgqxBIAZkXI2Gk8mfyUwiy04pKYioraahpt2noIRgnGljL2noGGdobTPv4IDobYMYYyDjGrNjEOgYHRyakYOLAAFrQA7pQAogVFAOJg+AAyLSQAspBEr7QQJFQASpcACp-ACaAH1bkCwa9LgARACSAEFOkgQN1NJg+gZrAsHNhHNYJlY4nZIt4-IgFksVmsNtYtjtjPsQLUzhhCIIAGJFACqsHyADlUMgwFRAQB5W63R6XMGInkI8Uo1TqDFYgaGQLrbCBOwJCLuMxOcyzbGjbDGXamGQyXWamzWZms9mUbl5PmC4WiiVSmVggBq8NhlyV8i6qt6qP6Rh2FimRsCrhkhmsZlcu1NAzs5q1icCo2shn1gSdh2wbN4XN5-LyQpFVAAwgDEYDZX9xeLXsq0RH0FoowZDA5oth07bnCmZHrE5n9A4p-iVjsElNjMsYkyUiyyxWOVA3R7a16qAApcXwgVg9ud7voyOgaOTDfYefuefTYzbBKZ1zWSz56xXEtEx1iLEst1qUR6AYUQ90BWg-loWhkBoehGBEdhODLKDMBguCEKQ5AmjECQ+3aeRb17fsHwCBIYmwHEbETOxAgcUkYjMH8-zMADPxMUJjCHbZS24HC8MoeDEOQ3IbmKUoKiqGpsOgsBYIkgjkOIl42g6MNUTvMj1SMX8ZAtMCHE-GI4mMYxMwcVx6LMTUPAiNNAhcTcDm4LApJQugGCYVgOCU7zMF8rTWjI3SlH0qjMQHDV5zxPM9R460bU4ikBkA+jXCmDdPBicYkzMET0jCwiZMKOSynwSo8mqWofMIiLSOkCi9JVHpDISox51Mkwpgy4cokLWdCzsF8CpWT9E2TGIyqYXyqBhABlVbEUhK9LgbS54X9OFKO66jdACSJTLMZYFkcXY3Dy8bghYqJjELQT6QiBaILLZrpNWy4BVhaFLnWzbLiOtVerYxwLXzI01mu1xnEzTV6NWMwbJtCy01CRafpQn1pVlBsAAkW3B+9ToGbYizMian3sNzZz1RZjDyxjEeMaIOPArzyuWxEGwAaSBkGtoBXb9sOzqe2O+KaKpuw0xCZMTHcBIrBmLL3GwDYzEunKrEcBxcYq6SYQRREwQbcUBQFHbAXhG3tolg7YXJnr5bnQJPwYj7UzXOxWas2ci0mhYZCKvU8psYcTeW1bgUuRFXmdvbXfdk7ozYiZLHsHF7Nuzw7Ds3VfdMS0I6TIDPO3ULlthFtLet237cdy9xbTqWYq6iHPe2JXw4jxxSSDmJxriF8cQ8DmbKHPW48qhFVubu2G1bN3pYMzPBxWVwX3spMDTtck5j6v8TDY8wwkNHjki3TBvjgbQmswXgsgEKBw1loyXBz7ZdULFOWwJhZxsXoqrO6loJwmEWicc4VxZL3CeC8Yg7wICfG+CQL+vdKb6A8nvLUQEQKpgiKzTMnMQi2CiFECYURRhJC+twXcrpqyehFNgimj4iT4jXMmPURU1gsVAcOBijgXqV3WIBF6i0xKqXwr5DhHtcHTAnusQO-Cio4h2FxShrNrRFQ-JEBhvMlqEUUdvKmWw-zhC2EWXE1gp6gPcksNYiMNwTEVraR0jC5YyxwdGHEDl8RBFCBHCIZJZzezxKzcI1NQJALvokIAA */
   createMachine(
     {
       context: {
         roomId: "",
         userId: nanoid(),
         userName: "",
+        error: undefined,
         peer: undefined,
         localMediaStream: new MediaStream(),
         localAudioStatus: false,
@@ -41,6 +42,7 @@ export const mainMachine =
           roomId: string | undefined;
           userId: string;
           userName: string;
+          error: Error | undefined;
           peer: Peer | undefined;
           localMediaStream: MediaStream;
           localAudioStatus: boolean;
@@ -140,12 +142,19 @@ export const mainMachine =
           },
         },
         connectingToRoom: {
+          entry: "removeError",
           invoke: {
             src: "startMediaAndDataConnector",
             onDone: [
               {
                 target: "inRoom",
                 actions: "saveConnectionsAndStream",
+              },
+            ],
+            onError: [
+              {
+                target: "waitingForUserName",
+                actions: "saveError",
               },
             ],
           },
@@ -254,6 +263,12 @@ export const mainMachine =
             };
           },
         }),
+        saveError: assign({
+          error: (context, event) => event.data as Error,
+        }),
+        removeError: assign({
+          error: (context, event) => undefined,
+        }),
         saveConnectionsAndStream: assign({
           dataConnections: (context, event) => {
             invariant(context.roomId);
@@ -309,6 +324,11 @@ export const mainMachine =
                 userId: context.userId,
                 userName: context.userName,
               },
+            });
+
+            context.peer.once("error", (err) => {
+              console.error(err);
+              reject(err);
             });
 
             const mediaConnection = context.peer.call(

@@ -13,6 +13,10 @@ export interface Typegen0 {
       data: unknown;
       __tip: "See the XState TS docs to learn how to strongly type this.";
     };
+    "error.platform.main.connectingToRoom:invocation[0]": {
+      type: "error.platform.main.connectingToRoom:invocation[0]";
+      data: unknown;
+    };
     "xstate.init": { type: "xstate.init" };
   };
   invokeSrcNameMap: {
@@ -27,9 +31,14 @@ export interface Typegen0 {
     delays: never;
   };
   eventsCausingActions: {
-    initPeer: "DISCONNECTED" | "done.invoke.main.initializing:invocation[0]";
+    initPeer:
+      | "DISCONNECTED"
+      | "done.invoke.main.initializing:invocation[0]"
+      | "error.platform.main.connectingToRoom:invocation[0]";
+    removeError: "JOIN_ROOM";
     saveConnectionsAndStream: "done.invoke.main.connectingToRoom:invocation[0]";
     saveDataConnection: "DATA_CONNECTION_RECEIVED";
+    saveError: "error.platform.main.connectingToRoom:invocation[0]";
     saveLocalMediaStream: "done.invoke.main.initializing:invocation[0]";
     saveMediaConnection: "MEDIA_CONNECTION_RECEIVED";
     saveName: "CREATE_ROOM" | "JOIN_ROOM";

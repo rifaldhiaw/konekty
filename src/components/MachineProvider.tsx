@@ -11,7 +11,7 @@ export const GlobalStateProvider = (props: { children: ReactNode }) => {
   const mainService = useInterpret(mainMachine);
 
   useEffect(() => {
-    mainService.onTransition((state) => console.log(state));
+    mainService.onTransition((state) => console.log(state.value));
   }, [mainService]);
 
   return (
