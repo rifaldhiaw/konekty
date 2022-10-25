@@ -9,7 +9,10 @@ import ToolBar from "./ToolBar";
 
 const MainView = () => {
   const service = useMainService();
-  const isChatOpen = useSelector(service, (s) => s.context.isChatOpen);
+  const isChatVisible = useSelector(
+    service,
+    (s) => s.context.sidebarMode === "chat"
+  );
 
   const renderVideo = (videoJsx: ReactNode) => (
     <div className="flex flex-1 h-0">
@@ -29,7 +32,7 @@ const MainView = () => {
           {renderVideo(<LocalVideo />)}
         </div>
 
-        {isChatOpen && (
+        {isChatVisible && (
           <div className="w-[400px] h-full pt-5">
             <ChatBox />
           </div>

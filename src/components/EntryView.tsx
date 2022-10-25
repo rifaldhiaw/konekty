@@ -7,6 +7,9 @@ const EntryView = () => {
   const [name, setName] = useState("");
   const service = useMainService();
   const roomId = useSelector(service, (s) => s.context.roomId);
+  const connectingToRoom = useSelector(service, (s) =>
+    s.matches("connectingToRoom")
+  );
 
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
@@ -56,7 +59,13 @@ const EntryView = () => {
             />
           </div>
           <div className={"flex mt-6" + (roomId ? " w-[300px]" : "")}>
-            <button type="submit" className="btn btn-primary flex-1 mx-1">
+            <button
+              type="submit"
+              className={
+                "btn btn-primary flex-1 mx-1" +
+                (connectingToRoom ? " loading" : "")
+              }
+            >
               {roomId ? "Join" : "Create Room"}
             </button>
 

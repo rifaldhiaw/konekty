@@ -40,7 +40,6 @@ const LocalVideo = () => {
   return (
     <div className="w-full h-full">
       <video className="object-cover w-full h-full flip" ref={videoRef}></video>
-      ;
       <div className="absolute drop-shadow-md text-white bottom-2 left-5">
         {userName}
       </div>

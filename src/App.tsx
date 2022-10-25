@@ -5,22 +5,19 @@ import MainView from "./components/MainView";
 
 function App() {
   const service = useMainService();
-  const initializing = useSelector(service, (s) => s.matches("initializing"));
-  const waitingForUserName = useSelector(service, (s) =>
-    s.matches("waitingForUserName")
-  );
+  const inRoom = useSelector(service, (s) => s.matches("inRoom"));
 
-  if (initializing || waitingForUserName) {
+  if (inRoom) {
     return (
-      <div className="flex h-screen justify-center items-center">
-        <EntryView />;
+      <div className="flex w-screen h-screen" data-theme={"dark"}>
+        <MainView />
       </div>
     );
   }
 
   return (
-    <div className="flex w-screen h-screen" data-theme={"dark"}>
-      <MainView />
+    <div className="flex h-screen justify-center items-center">
+      <EntryView />;
     </div>
   );
 }

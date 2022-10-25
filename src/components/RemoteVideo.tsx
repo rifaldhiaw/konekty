@@ -21,7 +21,7 @@ const RemoteVideo = () => {
 
   if (!remoteStream) {
     return (
-      <div className="h-full w-full flex justify-center items-center">
+      <div className="h-full w-full flex justify-center items-center bg-base-200">
         <div className="avatar placeholder">
           <div className="bg-base-300 rounded-full w-24">
             <span className="text-3xl font-semibold">US</span>

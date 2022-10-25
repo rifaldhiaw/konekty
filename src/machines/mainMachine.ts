@@ -29,7 +29,7 @@ export const mainMachine =
         localMediaStream: new MediaStream(),
         localAudioStatus: false,
         localVideoStatus: true,
-        isChatOpen: false,
+        sidebarMode: "none",
         messages: [],
         streams: [],
         dataConnections: {},
@@ -45,7 +45,7 @@ export const mainMachine =
           localMediaStream: MediaStream;
           localAudioStatus: boolean;
           localVideoStatus: boolean;
-          isChatOpen: boolean;
+          sidebarMode: "none" | "chat";
           messages: Message[];
           streams: StreamData[];
           dataConnections: Record<string, DataConnection>;
@@ -198,10 +198,8 @@ export const mainMachine =
           localMediaStream: (context, event) => event.data,
         }),
         toggleChat: assign({
-          isChatOpen: (context, event) => {
-            console.log("!context.isChatOpen", !context.isChatOpen);
-            return !context.isChatOpen;
-          },
+          sidebarMode: (context, event) =>
+            context.sidebarMode === "chat" ? "none" : "chat",
         }),
         toggleAudio: assign({
           localAudioStatus: (context, event) => !context.localAudioStatus,
