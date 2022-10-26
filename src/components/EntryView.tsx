@@ -45,7 +45,10 @@ const EntryView = () => {
         <EntryVideo />
       </div>
       <div className="w-5/12 flex justify-center items-center">
-        <form className="flex flex-col" onSubmit={onSubmit}>
+        <form
+          className="flex flex-col justify-center items-center"
+          onSubmit={onSubmit}
+        >
           <h1 className="text-2xl font-semibold text-center">Ready To Join?</h1>
           <div className="form-control w-full max-w-xs mt-10 items-center">
             <label className="label text-center">
@@ -81,7 +84,7 @@ const EntryView = () => {
           </div>
 
           {error && (
-            <div className="bg-red-100 card py-3 px-4 mt-8">
+            <div className="bg-red-100 card py-3 px-4 mt-8 max-w-xs text-center">
               {error.message}
             </div>
           )}
