@@ -41,8 +41,8 @@ export interface Typegen0 {
     saveError: "error.platform.main.connectingToRoom:invocation[0]";
     saveLocalMediaStream: "done.invoke.main.initializing:invocation[0]";
     saveMediaConnection: "MEDIA_CONNECTION_RECEIVED";
+    saveMessage: "MESSAGE_RECEIVED" | "SEND_MESSAGE";
     saveName: "CREATE_ROOM" | "JOIN_ROOM";
-    savePendingMessage: "MESSAGE_RECEIVED";
     saveRoomIdIfExist: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
     saveStream: "STREAM_RECEIVED";
     sendMessage: "SEND_MESSAGE";

@@ -8,7 +8,6 @@ export type Message = {
   userName: string;
   body: string;
   from: string;
-  status: "pending" | "success";
 };
 
 export type StreamData = {
@@ -75,7 +74,7 @@ export const mainMachine =
               dataConnection: DataConnection;
               mediaConnection: MediaConnection;
             }
-          | { type: "SEND_MESSAGE"; message: Message; to: string }
+          | { type: "SEND_MESSAGE"; message: Message; to?: string }
           | { type: "MESSAGE_RECEIVED"; message: Message }
           | { type: "ACK_MESSAGE_RECEIVED"; messageId: string }
           | { type: "STREAM_RECEIVED"; streamData: StreamData }
@@ -167,10 +166,10 @@ export const mainMachine =
           },
           on: {
             MESSAGE_RECEIVED: {
-              actions: "savePendingMessage",
+              actions: "saveMessage",
             },
             SEND_MESSAGE: {
-              actions: "sendMessage",
+              actions: ["sendMessage", "saveMessage"],
             },
             TOGGLE_CHAT: {
               actions: "toggleChat",
@@ -223,10 +222,18 @@ export const mainMachine =
           localVideoStatus: (context, event) => !context.localVideoStatus,
         }),
         sendMessage: (context, event) => {
-          const conn = context.dataConnections[event.to];
-          conn.send(event.message);
+          console.log("send message", event.message);
+
+          if (event.to) {
+            const conn = context.dataConnections[event.to];
+            conn.send(event.message);
+          } else {
+            Object.values(context.dataConnections).forEach((conn) => {
+              conn.send(event.message);
+            });
+          }
         },
-        savePendingMessage: assign({
+        saveMessage: assign({
           messages: (context, event) => [...context.messages, event.message],
         }),
         updatePendingMessage: assign({
@@ -365,6 +372,28 @@ export const mainMachine =
           (callback, onReceive) => {
             invariant(peer);
             invariant(localMediaStream);
+
+            Object.values(dataConnections).forEach((dataConnection) => {
+              dataConnection.on("data", (data) => {
+                callback({
+                  type: "MESSAGE_RECEIVED",
+                  message: data as Message,
+                });
+              });
+            });
+
+            Object.values(mediaConnections).forEach((mediaConnection) => {
+              mediaConnection.on("stream", (remoteStream) => {
+                callback({
+                  type: "STREAM_RECEIVED",
+                  streamData: {
+                    stream: remoteStream,
+                    userId: mediaConnection.metadata.userId,
+                    userName: mediaConnection.metadata.userName,
+                  },
+                });
+              });
+            });
 
             peer.on("connection", (dataConnection) => {
               callback({

@@ -1,8 +1,6 @@
 import { useSelector } from "@xstate/react";
 import { nanoid } from "nanoid";
 import { useState } from "react";
-import DoubleCheck from "../icons/DoubleCheck";
-import SingleCheck from "../icons/SingleCheck";
 import { Message } from "../machines/mainMachine";
 import { useMainService } from "./MachineProvider";
 
@@ -62,13 +60,6 @@ const MessageBubble = (props: { message: Message; isMine: boolean }) => {
         }
       >
         {props.message.body}
-        <span className={props.isMine ? "ml-2" : "mr-2"}>
-          {props.message.status === "pending" ? (
-            <SingleCheck />
-          ) : (
-            <DoubleCheck />
-          )}
-        </span>
       </div>
     </div>
   );
@@ -80,12 +71,10 @@ function ChatInput() {
   const localId = useSelector(service, (s) => s.context.userId);
   const userName = useSelector(service, (s) => s.context.userName);
 
-  // TODO: should handle multiple user
   const dataConnections = useSelector(
     service,
     (s) => s.context.dataConnections
   );
-  const remoteTarget = Object.keys(dataConnections)?.[0];
 
   return (
     <form
@@ -94,16 +83,18 @@ function ChatInput() {
         if (!message.trim()) return;
 
         setMessage("");
-        service.send({
-          type: "SEND_MESSAGE",
-          message: {
-            id: nanoid(),
-            userName,
-            body: message,
-            from: localId,
-            status: "pending",
-          },
-          to: remoteTarget,
+
+        Object.keys(dataConnections).forEach((remoteId) => {
+          service.send({
+            type: "SEND_MESSAGE",
+            message: {
+              id: nanoid(),
+              userName,
+              body: message,
+              from: localId,
+            },
+            to: remoteId,
+          });
         });
       }}
     >
