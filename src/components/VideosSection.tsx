@@ -8,7 +8,7 @@ import RemoteVideo from "./RemoteVideo";
 const aspectOptions = ["4:3", "16:9"];
 
 const videoRatio = (() => {
-  const aspectRatio = aspectOptions[1].split(":").map((v) => parseInt(v, 10));
+  const aspectRatio = aspectOptions[0].split(":").map((v) => parseInt(v, 10));
   return aspectRatio[1] / aspectRatio[0];
 })();
 

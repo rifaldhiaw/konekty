@@ -84,17 +84,14 @@ function ChatInput() {
 
         setMessage("");
 
-        Object.keys(dataConnections).forEach((remoteId) => {
-          service.send({
-            type: "SEND_MESSAGE",
-            message: {
-              id: nanoid(),
-              userName,
-              body: message,
-              from: localId,
-            },
-            to: remoteId,
-          });
+        service.send({
+          type: "SEND_MESSAGE",
+          message: {
+            id: nanoid(),
+            userName,
+            body: message,
+            from: localId,
+          },
         });
       }}
     >

@@ -69,11 +69,6 @@ export const mainMachine =
               dataConnection: DataConnection;
               userId: string;
             }
-          | {
-              type: "CONNECTION_OPEN";
-              dataConnection: DataConnection;
-              mediaConnection: MediaConnection;
-            }
           | { type: "SEND_MESSAGE"; message: Message; to?: string }
           | { type: "MESSAGE_RECEIVED"; message: Message }
           | { type: "ACK_MESSAGE_RECEIVED"; messageId: string }
