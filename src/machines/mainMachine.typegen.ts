@@ -21,8 +21,8 @@ export interface Typegen0 {
   };
   invokeSrcNameMap: {
     getLocalMedia: "done.invoke.main.initializing:invocation[0]";
-    startMediaAndDataConnector: "done.invoke.main.connectingToRoom:invocation[0]";
-    startMediaAndDataListener: "done.invoke.main.inRoom:invocation[0]";
+    startMediaConnector: "done.invoke.main.connectingToRoom:invocation[0]";
+    startMediaListener: "done.invoke.main.inRoom:invocation[0]";
   };
   missingImplementations: {
     actions: never;
@@ -36,26 +36,24 @@ export interface Typegen0 {
       | "done.invoke.main.initializing:invocation[0]"
       | "error.platform.main.connectingToRoom:invocation[0]";
     removeError: "JOIN_ROOM";
-    saveConnectionsAndStream: "done.invoke.main.connectingToRoom:invocation[0]";
-    saveDataConnection: "DATA_CONNECTION_RECEIVED";
     saveError: "error.platform.main.connectingToRoom:invocation[0]";
     saveLocalMediaStream: "done.invoke.main.initializing:invocation[0]";
     saveMediaConnection: "MEDIA_CONNECTION_RECEIVED";
-    saveMessage: "MESSAGE_RECEIVED" | "SEND_MESSAGE";
     saveName: "CREATE_ROOM" | "JOIN_ROOM";
+    saveNewMessage: "MESSAGE_RECEIVED";
+    saveNewStream: "done.invoke.main.connectingToRoom:invocation[0]";
+    saveRoomId: "CREATE_ROOM";
     saveRoomIdIfExist: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
     saveStream: "STREAM_RECEIVED";
-    sendMessage: "SEND_MESSAGE";
     toggleAudio: "TOGGLE_AUDIO";
     toggleChat: "TOGGLE_CHAT";
     toggleVideo: "TOGGLE_VIDEO";
-    updatePendingMessage: "ACK_MESSAGE_RECEIVED";
     updateUrl: "CREATE_ROOM";
   };
   eventsCausingServices: {
     getLocalMedia: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
-    startMediaAndDataConnector: "JOIN_ROOM";
-    startMediaAndDataListener:
+    startMediaConnector: "JOIN_ROOM";
+    startMediaListener:
       | "CREATE_ROOM"
       | "done.invoke.main.connectingToRoom:invocation[0]";
   };

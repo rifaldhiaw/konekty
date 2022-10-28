@@ -22,9 +22,14 @@ const LocalVideo = () => {
     };
   });
 
-  if (!localMediaStream) {
+  console.log(
+    "localMediaStream.getVideoTracks()",
+    localMediaStream.getVideoTracks()
+  );
+
+  if (!localMediaStream || localMediaStream.getVideoTracks().length === 0) {
     return (
-      <div className="h-full w-full flex justify-center items-center">
+      <div className="h-full w-full flex justify-center items-center bg-base-200">
         <div className="avatar placeholder">
           <div className="bg-base-300 rounded-full w-24">
             <span className="text-3xl font-semibold">US</span>
@@ -39,7 +44,10 @@ const LocalVideo = () => {
 
   return (
     <div className="w-full h-full">
-      <video className="object-cover w-full h-full flip" ref={videoRef}></video>
+      <video
+        className="object-cover w-full h-full flip bg-base-200"
+        ref={videoRef}
+      ></video>
       <div className="absolute drop-shadow-md text-white bottom-2 left-5">
         {userName}
       </div>

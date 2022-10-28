@@ -1,7 +1,8 @@
 import { useInterpret } from "@xstate/react";
-import { createContext, ReactNode, useContext, useEffect } from "react";
-import { InterpreterFrom } from "xstate";
+import { createContext, ReactNode, useContext } from "react";
+import { ActorRef, InterpreterFrom } from "xstate";
 import { mainMachine } from "../machines/mainMachine";
+import { MessagingEvent } from "../machines/messagingMachine";
 
 export const GlobalStateContext = createContext({
   mainService: {} as InterpreterFrom<typeof mainMachine>,
@@ -9,10 +10,6 @@ export const GlobalStateContext = createContext({
 
 export const GlobalStateProvider = (props: { children: ReactNode }) => {
   const mainService = useInterpret(mainMachine);
-
-  useEffect(() => {
-    mainService.onTransition((state) => console.log(state.value));
-  }, [mainService]);
 
   return (
     <GlobalStateContext.Provider
@@ -28,4 +25,9 @@ export const GlobalStateProvider = (props: { children: ReactNode }) => {
 export const useMainService = () => {
   const globalContext = useContext(GlobalStateContext);
   return globalContext.mainService;
+};
+
+export const useMessagingService = () => {
+  const service = useMainService();
+  return service.children.get("messagingService") as ActorRef<MessagingEvent>;
 };

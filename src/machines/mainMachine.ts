@@ -1,7 +1,8 @@
 import { nanoid } from "nanoid";
-import Peer, { DataConnection, MediaConnection } from "peerjs";
+import Peer, { MediaConnection } from "peerjs";
 import invariant from "tiny-invariant";
 import { assign, createMachine } from "xstate";
+import { defaultMessagingContext, messagingMachine } from "./messagingMachine";
 
 export type Message = {
   id: string;
@@ -17,7 +18,7 @@ export type StreamData = {
 };
 
 export const mainMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0AJgAcMgOzYzMgMzGALAEYH1mQDZDr1wBoQATwPOAKzYhmZ21nauZrYAnC4xdgC+iT5cOHiEJOSUVGAATnm0edgqxBIAZkXI2Gk8mfyUwiy04pKYioraahpt2noIRgnGljL2noGGdobTPv4IDobYMYYyDjGrNjEOgYHRyakYOLAAFrQA7pQAogVFAOJg+AAyLSQAspBEr7QQJFQASpcACp-ACaAH1bkCwa9LgARACSAEFOkgQN1NJg+gZrAsHNhHNYJlY4nZIt4-IgFksVmsNtYtjtjPsQLUzhhCIIAGJFACqsHyADlUMgwFRAQB5W63R6XMGInkI8Uo1TqDFYgaGQLrbCBOwJCLuMxOcyzbGjbDGXamGQyXWamzWZms9mUbl5PmC4WiiVSmVggBq8NhlyV8i6qt6qP6Rh2FimRsCrhkhmsZlcu1NAzs5q1icCo2shn1gSdh2wbN4XN5-LyQpFVAAwgDEYDZX9xeLXsq0RH0FoowZDA5oth07bnCmZHrE5n9A4p-iVjsElNjMsYkyUiyyxWOVA3R7a16qAApcXwgVg9ud7voyOgaOTDfYefuefTYzbBKZ1zWSz56xXEtEx1iLEst1qUR6AYUQ90BWg-loWhkBoehGBEdhODLKDMBguCEKQ5AmjECQ+3aeRb17fsHwCBIYmwHEbETOxAgcUkYjMH8-zMADPxMUJjCHbZS24HC8MoeDEOQ3IbmKUoKiqGpsOgsBYIkgjkOIl42g6MNUTvMj1SMX8ZAtMCHE-GI4mMYxMwcVx6LMTUPAiNNAhcTcDm4LApJQugGCYVgOCU7zMF8rTWjI3SlH0qjMQHDV5zxPM9R460bU4ikBkA+jXCmDdPBicYkzMET0jCwiZMKOSynwSo8mqWofMIiLSOkCi9JVHpDISox51Mkwpgy4cokLWdCzsF8CpWT9E2TGIyqYXyqBhABlVbEUhK9LgbS54X9OFKO66jdACSJTLMZYFkcXY3Dy8bghYqJjELQT6QiBaILLZrpNWy4BVhaFLnWzbLiOtVerYxwLXzI01mu1xnEzTV6NWMwbJtCy01CRafpQn1pVlBsAAkW3B+9ToGbYizMian3sNzZz1RZjDyxjEeMaIOPArzyuWxEGwAaSBkGtoBXb9sOzqe2O+KaKpuw0xCZMTHcBIrBmLL3GwDYzEunKrEcBxcYq6SYQRREwQbcUBQFHbAXhG3tolg7YXJnr5bnQJPwYj7UzXOxWas2ci0mhYZCKvU8psYcTeW1bgUuRFXmdvbXfdk7ozYiZLHsHF7Nuzw7Ds3VfdMS0I6TIDPO3ULlthFtLet237cdy9xbTqWYq6iHPe2JXw4jxxSSDmJxriF8cQ8DmbKHPW48qhFVubu2G1bN3pYMzPBxWVwX3spMDTtck5j6v8TDY8wwkNHjki3TBvjgbQmswXgsgEKBw1loyXBz7ZdULFOWwJhZxsXoqrO6loJwmEWicc4VxZL3CeC8Yg7wICfG+CQL+vdKb6A8nvLUQEQKpgiKzTMnMQi2CiFECYURRhJC+twXcrpqyehFNgimj4iT4jXMmPURU1gsVAcOBijgXqV3WIBF6i0xKqXwr5DhHtcHTAnusQO-Cio4h2FxShrNrRFQ-JEBhvMlqEUUdvKmWw-zhC2EWXE1gp6gPcksNYiMNwTEVraR0jC5YyxwdGHEDl8RBFCBHCIZJZzezxKzcI1NQJALvokIAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0AJgAcANkPYAjAFYALKcsBmU9ce2A7JdMAaEAE8DJ0tsBxlHGQBOCNNjYxtrUwBfRN8uHDxCEnJKKjAAJzzaPOwVYgkAMyLkbDSeTP5KYRZacUlMRUVtNQ027T0EfXCwq2sIw0cImQ8ZU3dfAIQvbGtjW0NDGPdbMMiklJBa2AALWgB3SgBRAqKAcTB8ABkWkgBZSCIX2ggSKgAlC4AKr8AJoAfRugNBLwuABEAJIAQU6SBA3U0mD6Bkclnc1mwZjWUQc5giXnmiCWKzWG2MWx20WMyVSGBwpwwhEEADEigBVWD5AByqGQYCoAIA8jcbg8LqCETz4eLkap1OjMQMNrY8TIdYYZJ5bFFrNY5v4sTI8ZYIo53KZHCZbE5DdYmQcWdg2bwubz+XkhSKxZLpbKAGpwmEXJXyLqq3oo-pGBzBWnuMbGOymUKmhb6ba2bDWryWbbmYwmSyu2qejlQbl5PmC4WigDC-wRANlv3F4peytRsfQWnjBnWa2wJYio1xxdsjnJA0shncI1neoitlWM0sFf2VfZlDrDb9TaoAClxXCBaCuz2+2i46AE4ZrIZ89ZF7aJq-Z2t56NlmM0SONYkRAbMlbuqI9AMKINYArQvy0LQyA0PQjAiOwnCQdBYCwZQ8GIchTRiBIg7tPId4DkOj4jjqjjYLa24mBEWyGOu2aILM44zpYxgWsxuIQdwUGYDBcEIUhKH5IUxSlBUVQ1Nhom4eJhHIMRzxtB00YoveZHqom6bYCYMhsfq6zjHOZqLO49GOMY1q6vYpj2IYQnpJgamBlKMqgs2AAS7aUT0+nDguJoRMZ9jYhEZaLmWhjzoMtj5qZDosUuTqMru7pYF50LwgifnigKAoXM2AJwiV17lRccIhrCwVqmF+hFvRjrbixNo2i4iXWYukXGM4rFppmvGOO5TBeQAykCFwIi8NXNnVDUwk1D66IEL7BGM2Jaq+diTFZCzhAW7gOduni2eu9oujl3B5ZJVDwtNzYlWVFWNTpKohdRm0ahsMjLLMNqjLEmVJWuIQ4jakSMeYO77JgXxwNotQZHw2SCDGv0Yi12IzCEMx6lqmYg0lxZ4uYepDHEepbJNxxnJc1x5HcjzPMQbwQB8XwkDjzU0QMe3BFMtoyMWpgS9aPjWZMBamZ4wHrOd5gTfdrL7t69a+v6YACxtT4rDtEyptOR2ThTTghO4tvrlaDmGJTk0iWJ+ESchBuhULRjhBY53rOZ2w2LY85assdMyA5Q16mx6vMg9nmSV7f0JlaXGxFEEsuY6tp9TmNhA8+xpDVH4zGsW7kp3jPv2uM+IuWx0ReGxZLWbm1oFtiDjhJLtm2skyRAA */
   createMachine(
     {
       context: {
@@ -26,13 +27,12 @@ export const mainMachine =
         userName: "",
         error: undefined,
         peer: undefined,
+        messages: [],
         localMediaStream: new MediaStream(),
         localAudioStatus: false,
-        localVideoStatus: true,
+        localVideoStatus: false,
         sidebarMode: "none",
-        messages: [],
         streams: [],
-        dataConnections: {},
         mediaConnections: {},
       },
       tsTypes: {} as import("./mainMachine.typegen").Typegen0,
@@ -43,13 +43,12 @@ export const mainMachine =
           userName: string;
           error: Error | undefined;
           peer: Peer | undefined;
+          messages: Message[];
           localMediaStream: MediaStream;
           localAudioStatus: boolean;
           localVideoStatus: boolean;
           sidebarMode: "none" | "chat";
-          messages: Message[];
           streams: StreamData[];
-          dataConnections: Record<string, DataConnection>;
           mediaConnections: Record<string, MediaConnection>;
         },
         events: {} as
@@ -64,24 +63,16 @@ export const mainMachine =
               mediaConnection: MediaConnection;
               userId: string;
             }
-          | {
-              type: "DATA_CONNECTION_RECEIVED";
-              dataConnection: DataConnection;
-              userId: string;
-            }
-          | { type: "SEND_MESSAGE"; message: Message; to?: string }
           | { type: "MESSAGE_RECEIVED"; message: Message }
-          | { type: "ACK_MESSAGE_RECEIVED"; messageId: string }
           | { type: "STREAM_RECEIVED"; streamData: StreamData }
           | { type: "DISCONNECTED" },
         services: {} as {
           getLocalMedia: {
             data: MediaStream;
           };
-          startMediaAndDataConnector: {
+          startMediaConnector: {
             data: {
               mediaConnection: MediaConnection;
-              dataConnection: DataConnection;
               streamData: StreamData;
             };
           };
@@ -127,7 +118,7 @@ export const mainMachine =
             },
             CREATE_ROOM: {
               target: "inRoom",
-              actions: ["saveName", "updateUrl"],
+              actions: ["saveName", "saveRoomId", "updateUrl"],
             },
             JOIN_ROOM: {
               target: "connectingToRoom",
@@ -138,11 +129,11 @@ export const mainMachine =
         connectingToRoom: {
           entry: "removeError",
           invoke: {
-            src: "startMediaAndDataConnector",
+            src: "startMediaConnector",
             onDone: [
               {
                 target: "inRoom",
-                actions: "saveConnectionsAndStream",
+                actions: "saveNewStream",
               },
             ],
             onError: [
@@ -154,32 +145,34 @@ export const mainMachine =
           },
         },
         inRoom: {
-          invoke: {
-            src: "startMediaAndDataListener",
-            onDone: [{}],
-            onError: [{}],
-          },
+          invoke: [
+            {
+              src: "startMediaListener",
+            },
+            {
+              id: "messagingService",
+              src: messagingMachine,
+              data: (context, event) => ({
+                ...defaultMessagingContext,
+                userId: context.userId,
+                userName: context.userName,
+                peer: context.peer,
+                mainHostId: context.roomId,
+              }),
+            },
+          ],
           on: {
             MESSAGE_RECEIVED: {
-              actions: "saveMessage",
-            },
-            SEND_MESSAGE: {
-              actions: ["sendMessage", "saveMessage"],
+              actions: "saveNewMessage",
             },
             TOGGLE_CHAT: {
               actions: "toggleChat",
-            },
-            ACK_MESSAGE_RECEIVED: {
-              actions: "updatePendingMessage",
             },
             MEDIA_CONNECTION_RECEIVED: {
               actions: "saveMediaConnection",
             },
             STREAM_RECEIVED: {
               actions: "saveStream",
-            },
-            DATA_CONNECTION_RECEIVED: {
-              actions: "saveDataConnection",
             },
             DISCONNECTED: {
               target: "waitingForUserName",
@@ -216,28 +209,8 @@ export const mainMachine =
         toggleVideo: assign({
           localVideoStatus: (context, event) => !context.localVideoStatus,
         }),
-        sendMessage: (context, event) => {
-          console.log("send message", event.message);
-
-          if (event.to) {
-            const conn = context.dataConnections[event.to];
-            conn.send(event.message);
-          } else {
-            Object.values(context.dataConnections).forEach((conn) => {
-              conn.send(event.message);
-            });
-          }
-        },
-        saveMessage: assign({
+        saveNewMessage: assign({
           messages: (context, event) => [...context.messages, event.message],
-        }),
-        updatePendingMessage: assign({
-          messages: (context, event) =>
-            context.messages.map((m) =>
-              m.id === event.messageId
-                ? ({ ...m, status: "success" } as Message)
-                : m
-            ),
         }),
         saveName: assign({
           userName: (context, event) => event.name,
@@ -257,28 +230,13 @@ export const mainMachine =
             };
           },
         }),
-        saveDataConnection: assign({
-          dataConnections: (context, event) => {
-            return {
-              ...context.dataConnections,
-              [event.userId]: event.dataConnection,
-            };
-          },
-        }),
         saveError: assign({
           error: (context, event) => event.data as Error,
         }),
         removeError: assign({
           error: (context, event) => undefined,
         }),
-        saveConnectionsAndStream: assign({
-          dataConnections: (context, event) => {
-            invariant(context.roomId);
-            return {
-              ...context.dataConnections,
-              [context.roomId]: event.data.dataConnection,
-            };
-          },
+        saveNewStream: assign({
           mediaConnections: (context, event) => {
             invariant(context.roomId);
             return {
@@ -290,6 +248,9 @@ export const mainMachine =
             ...context.streams,
             event.data.streamData,
           ],
+        }),
+        saveRoomId: assign({
+          roomId: (context, event) => context.userId,
         }),
         updateUrl: (context, event) => {
           window.history.replaceState(
@@ -315,23 +276,11 @@ export const mainMachine =
           }
           return media;
         },
-        startMediaAndDataConnector: (context, event) =>
+        startMediaConnector: (context, event) =>
           new Promise((resolve, reject) => {
             invariant(context.peer);
             invariant(context.roomId);
             invariant(context.localMediaStream);
-
-            const dataConnection = context.peer.connect(context.roomId, {
-              metadata: {
-                userId: context.userId,
-                userName: context.userName,
-              },
-            });
-
-            context.peer.once("error", (err) => {
-              console.error(err);
-              reject(err);
-            });
 
             const mediaConnection = context.peer.call(
               context.roomId,
@@ -348,7 +297,6 @@ export const mainMachine =
               mediaConnection.off("stream", streamListener);
               resolve({
                 mediaConnection,
-                dataConnection,
                 streamData: {
                   stream,
                   userId: nanoid(), // TODO: Host Id
@@ -359,23 +307,11 @@ export const mainMachine =
 
             mediaConnection.on("stream", streamListener);
           }),
-        startMediaAndDataListener:
-          (
-            { peer, localMediaStream, dataConnections, mediaConnections },
-            event
-          ) =>
+        startMediaListener:
+          ({ peer, localMediaStream, mediaConnections }, event) =>
           (callback, onReceive) => {
             invariant(peer);
             invariant(localMediaStream);
-
-            Object.values(dataConnections).forEach((dataConnection) => {
-              dataConnection.on("data", (data) => {
-                callback({
-                  type: "MESSAGE_RECEIVED",
-                  message: data as Message,
-                });
-              });
-            });
 
             Object.values(mediaConnections).forEach((mediaConnection) => {
               mediaConnection.on("stream", (remoteStream) => {
@@ -386,20 +322,6 @@ export const mainMachine =
                     userId: mediaConnection.metadata.userId,
                     userName: mediaConnection.metadata.userName,
                   },
-                });
-              });
-            });
-
-            peer.on("connection", (dataConnection) => {
-              callback({
-                type: "DATA_CONNECTION_RECEIVED",
-                dataConnection,
-                userId: dataConnection.metadata.userId,
-              });
-              dataConnection.on("data", (data) => {
-                callback({
-                  type: "MESSAGE_RECEIVED",
-                  message: data as Message,
                 });
               });
             });
@@ -425,9 +347,6 @@ export const mainMachine =
 
             return () => {
               peer.removeAllListeners();
-              Object.values(dataConnections).forEach((d) =>
-                d.removeAllListeners()
-              );
               Object.values(mediaConnections).forEach((d) =>
                 d.removeAllListeners()
               );
@@ -436,9 +355,3 @@ export const mainMachine =
       },
     }
   );
-
-/**
- * TODO:
- * - update room URL on host enter
- * - host should send active user list on someone new connected
- */

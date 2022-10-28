@@ -19,7 +19,7 @@ const RemoteVideo = () => {
     };
   });
 
-  if (!remoteStream) {
+  if (!remoteStream || remoteStream.getVideoTracks().length === 0) {
     return (
       <div className="h-full w-full flex justify-center items-center bg-base-200">
         <div className="avatar placeholder">
@@ -36,7 +36,11 @@ const RemoteVideo = () => {
 
   return (
     <div className="w-full h-full">
-      <video className="object-cover w-full h-full" ref={videoRef}></video>;
+      <video
+        className="object-cover w-full h-full bg-base-200"
+        ref={videoRef}
+      ></video>
+      ;
       <div className="absolute drop-shadow-md text-white bottom-2 left-5">
         {streamData?.userName}
       </div>

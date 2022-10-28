@@ -2,7 +2,7 @@ import { useSelector } from "@xstate/react";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { Message } from "../machines/mainMachine";
-import { useMainService } from "./MachineProvider";
+import { useMainService, useMessagingService } from "./MachineProvider";
 
 const ChatBox = () => {
   const service = useMainService();
@@ -68,13 +68,10 @@ const MessageBubble = (props: { message: Message; isMine: boolean }) => {
 function ChatInput() {
   const [message, setMessage] = useState("");
   const service = useMainService();
+  const msgService = useMessagingService();
+
   const localId = useSelector(service, (s) => s.context.userId);
   const userName = useSelector(service, (s) => s.context.userName);
-
-  const dataConnections = useSelector(
-    service,
-    (s) => s.context.dataConnections
-  );
 
   return (
     <form
@@ -83,8 +80,7 @@ function ChatInput() {
         if (!message.trim()) return;
 
         setMessage("");
-
-        service.send({
+        msgService.send({
           type: "SEND_MESSAGE",
           message: {
             id: nanoid(),
@@ -97,6 +93,7 @@ function ChatInput() {
     >
       <div className="flex">
         <input
+          autoFocus={true}
           className="input input-bordered flex-1 bg-base-200"
           type="text"
           name="message"
