@@ -257,9 +257,9 @@ export const messagingMachine =
 
           return () => {
             context.peer?.off("connection", connListener);
-            context.userConnectionData.forEach((u) =>
-              u.connection?.removeAllListeners()
-            );
+            context.userConnectionData.forEach((u) => {
+              u.connection?.removeAllListeners();
+            });
           };
         },
       },
@@ -298,7 +298,6 @@ export const messagingMachine =
             target?.connection?.send(event.message);
           } else {
             context.userConnectionData.forEach((v) => {
-              console.log("send message to", v.name);
               v.connection?.send(event.message);
             });
           }
@@ -334,10 +333,7 @@ export const messagingMachine =
             },
             users: context.userConnectionData
               .filter((v) => v.id !== event.userId)
-              .map((v) => {
-                delete v.connection;
-                return v;
-              }),
+              .map((v) => ({ ...v, connection: undefined })),
           };
 
           context.userConnectionData
