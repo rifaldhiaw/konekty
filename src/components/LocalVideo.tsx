@@ -22,11 +22,6 @@ const LocalVideo = () => {
     };
   });
 
-  console.log(
-    "localMediaStream.getVideoTracks()",
-    localMediaStream.getVideoTracks()
-  );
-
   if (!localMediaStream || localMediaStream.getVideoTracks().length === 0) {
     return (
       <div className="h-full w-full flex justify-center items-center bg-base-200">
