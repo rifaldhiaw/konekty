@@ -40,11 +40,13 @@ export interface Typegen0 {
     saveLocalMediaStream: "done.invoke.main.initializing:invocation[0]";
     saveMediaConnection: "MEDIA_CONNECTION_RECEIVED";
     saveName: "CREATE_ROOM" | "JOIN_ROOM";
-    saveNewMessage: "MESSAGE_RECEIVED";
     saveNewStream: "done.invoke.main.connectingToRoom:invocation[0]";
     saveRoomId: "CREATE_ROOM";
     saveRoomIdIfExist: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
     saveStream: "STREAM_RECEIVED";
+    startMessagingService:
+      | "CREATE_ROOM"
+      | "done.invoke.main.connectingToRoom:invocation[0]";
     toggleAudio: "TOGGLE_AUDIO";
     toggleChat: "TOGGLE_CHAT";
     toggleVideo: "TOGGLE_VIDEO";

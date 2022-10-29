@@ -1,7 +1,14 @@
 import Peer, { DataConnection } from "peerjs";
 import invariant from "tiny-invariant";
-import { assign, createMachine, sendParent } from "xstate";
-import { Message } from "./mainMachine";
+import { assign, createMachine, interpret } from "xstate";
+import create from "zustand";
+
+export type Message = {
+  id: string;
+  userName: string;
+  body: string;
+  from: string;
+};
 
 type UserConnectionData = {
   id: string;
@@ -16,6 +23,13 @@ type initialCallResp = {
 };
 
 export type MessagingEvent =
+  | {
+      type: "START";
+      userId: string;
+      userName: string;
+      mainHostId: string;
+      peer: Peer;
+    }
   | {
       type: "CONNECTION_RECEIVED";
       userId: string;
@@ -44,7 +58,7 @@ export const defaultMessagingContext = {
 };
 
 export const messagingMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QFs6wIZQJYDsoDoBjAexxzEIBdcoAVYgWXVwAljZKBiCUsfXAG7EA1n1SwM2PEVLkqNek1btKCQcULpqpANoAGALr6DiUAAd2WbTlMgAHogC0AZmcB2fHoCMrgKwBOACYvN0D-ADZwgBoQAE9EL3D8ZwAOfxTwlL0UsMDfABYvFIBfYpjxSRoZMgpqPEVmHDYOTjAAJzbiNvwzABstADMu5HwKzCqSGvl6xkbm1XVNa2NjWwtYKyxSWwcER180-DD-PxSA7x8Y+IQff3wvX0DvfOc9E-y9PV9S8rRx6VwACViMRkJwAMIAeQActCAKLg2hwgAiAH1aJDUQBVADKcMBqyQIHWm22RN2gXwbjcXnStI+ekCzl82SuCSCRweXnyvlCenc-kePxAYykBCBILBUNhCNoAEkYajAQi4XKAGoownmSzWHaIZz5FL4cJ6D5ZcLUlJnDJsvZePT4R72t7hXyZT4HNzC0VVCWgzgMOE4nEAQQA4nClSr1ZrDGsdVsbOTEIF8vg0m4vmFHm63AFbY4fB4gv4Xv5Qik3M50t8yiK-mL+Dhgf68dC0YHg+G4VriQmyaAKZT-Kbq-lwvknplfL5nAXAhP7uPy+9Qq49F66z6Ac3JRCYfDEQroajwQAZSF45G9km65M3I7+B6Gif8jJpPK21JeTwjrKprwimcLw8m9BtfV3f1lQARSxINaGxPFAVRM85RxWgb37JNB31V17g3fxSweE43FLW1ALuHkXSdQI3AtNx8jAiR-nFSCpQPWVj1RfFAUhAk4yJW9Ez1PZnEdJ1QgXQUzldfJbUCFI015cInzzA1aMUpjKgBCBejAThMI2O8cL2E0PFNcIQgeBc-ECAtMnTZxIkI0imWyIItJY-hdP0nQvBMQSsJElxQnTbNClNbkLS8eyjRSJyaW8RlXkAkphRwYgIDgWxtwISY5DqOhZmUDh4yM4T70ccInOSBKQOCNJEjnOIEgdHIFMnU0mSk2tfmYxs-WQMrSWw+wnGrdNClIicUkArlPxahBKXcWaVLonlAieQVPIGnzhuMsa9jdJJznCBrx1mh4Cy5R1q3qmkgk+LwdpofaKpMqrFNq6LNqKJ9qoLZkxKi8tuvtaTwlKUogA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QFs6wIZQJYDsoDoBjAexxzEIBdcoAVYgWXVwAljZKBiCUsfXAG7EA1n1SwM2PEVLkqNek1btKCQcULpqpANoAGALr6DiUAAd2WbTlMgAHogC0AZmcB2fHoCMrgKwBOACYvN0D-ADZwgBoQAE9EL3D8ZwAOfxTwlL0UsMDfABYvFIBfYpjxSRp+HAAlYmJkTgBhAHkAOTaAUSbaToARAH1aFoGAVQBlTprjWwtYKyxSWwcEQPw3Ny90rfy9PUDnX2yY+IQtteDfL3zfUL13f19A0vK0TCrcOobm9q6egEl2gMat1Ov8AGr9GZIEBzBZLGErZz5FL4cJ6XZZcIbFIpXwZE5OLx6fBPYl6CK+TJ7fFuF4gCrvaSfeqNBidcbjACCAHFOsDQRCoYZZpZrMtEIF8vg0m49E9HnlsQFCQhHD4PEF-PlnP5Qik3Lq8fTGVICCzvpM2oN2ZzeZ1oeYxYsbIjJWt-BjdflwvlAnpMr5fM5VY5Ar78Ndwnr-MjQq49HSygy3mbql9Gq0Ot1aIC2gMmgAZFqTPqO2HOhGgFZefBhLwFDK7VKZIK+VWpWsU7L7QpFZxePIm1MfWqszgggCKow5tDGkxqA0L-3GtHLcPFboQznCvkjif82obsbc2tVXi2+BuFN3wUCbmxbnyw4kTPNY++Wb+uaBUxqLWmEUYQ3F0JTVZxSTJUJw0ePFd3yVVAhSaVbmjEJgz9NxkJfSpmQgAAbMBOFXLkajXICnXmTdqyccI8jRR5dx8SICnbOIiSKfBDzcK5rj9IoFRwt9+AIoiSLInQvBMYDK1dGjwPCCD5UeJ8H0UnIDVDC9UW43j8n4vEwlKZMcGICA4FsU0qhIMgKGoPBFGYHA2A4UUqNArdHEUpJXGxQdgjSRIQ3Ys4SRyJC-QxA4YN8IS0wtZA3PhOT7CcXUZUKU9fRSC8G0HNjTjWdwcujB8bkCf1Hjij5RKS6jUrVIMkhyAMg1uEJ70CUN-VraNDylZTsj9aq8Dqjz5K85Dkh3TYKqKfwgtDQ4IKjdIouJJVjOKIA */
   createMachine(
     {
       context: defaultMessagingContext,
@@ -78,11 +92,6 @@ export const messagingMachine =
               {
                 target: "inRoom",
                 actions: "saveHostConnAndUserList",
-              },
-            ],
-            onError: [
-              {
-                actions: "sendParentConnectionError",
               },
             ],
           },
@@ -121,16 +130,20 @@ export const messagingMachine =
           },
         },
         idle: {
-          always: [
-            {
-              target: "connectingToMainHost",
-              cond: "meNonHost",
-            },
-            {
-              target: "inRoom",
-              cond: "meHost",
-            },
-          ],
+          on: {
+            START: [
+              {
+                target: "connectingToMainHost",
+                cond: "meNonHost",
+                actions: "saveUserAndRoomInfo",
+              },
+              {
+                target: "inRoom",
+                cond: "meHost",
+                actions: "saveUserAndRoomInfo",
+              },
+            ],
+          },
         },
       },
     },
@@ -264,10 +277,15 @@ export const messagingMachine =
         },
       },
       actions: {
+        saveUserAndRoomInfo: assign({
+          userId: (context, event) => event.userId,
+          userName: (context, event) => event.userName,
+          mainHostId: (context, event) => event.mainHostId,
+          peer: (context, event) => event.peer,
+        }),
         saveHostConnAndUserList: assign({
           userConnectionData: (context, event) => event.data.userConnectionData,
         }),
-        sendParentConnectionError: sendParent("CONNECT_TO_HOST_FAILED"),
         updateConnection: assign({
           userConnectionData: (context, event) => {
             return context.userConnectionData.map((d) =>
@@ -286,10 +304,9 @@ export const messagingMachine =
             } as UserConnectionData,
           ],
         }),
-        saveMessage: sendParent((context, event) => ({
-          type: "MESSAGE_RECEIVED",
-          message: event.message,
-        })),
+        saveMessage: assign({
+          messages: (context, event) => [...context.messages, event.message],
+        }),
         sendMessage: (context, event) => {
           if (event.to) {
             const target = context.userConnectionData.find(
@@ -342,8 +359,30 @@ export const messagingMachine =
         },
       },
       guards: {
-        meHost: (context, event) => context.userId === context.mainHostId,
-        meNonHost: (context, event) => context.userId !== context.mainHostId,
+        meHost: (context, event) => event.userId === event.mainHostId,
+        meNonHost: (context, event) => event.userId !== event.mainHostId,
       },
     }
   );
+
+export const msgService = interpret(messagingMachine, {
+  devTools: true,
+  id: "MESSAGING - " + Date.now(),
+});
+
+type MsgServiceState = ReturnType<typeof msgService["getSnapshot"]>;
+
+export const useMsgService = create<MsgServiceState>((set) => {
+  msgService
+    .onTransition((state) => {
+      const initialStateChanged =
+        state.changed === undefined && Object.keys(state.children).length;
+
+      if (state.changed || initialStateChanged) {
+        set(state);
+      }
+    })
+    .start();
+
+  return msgService.getSnapshot();
+});

@@ -3,14 +3,7 @@ import Peer, { MediaConnection } from "peerjs";
 import invariant from "tiny-invariant";
 import { assign, createMachine, interpret } from "xstate";
 import create from "zustand";
-import { defaultMessagingContext, messagingMachine } from "./messagingMachine";
-
-export type Message = {
-  id: string;
-  userName: string;
-  body: string;
-  from: string;
-};
+import { msgService } from "./messagingMachine";
 
 export type StreamData = {
   userId: string;
@@ -28,7 +21,6 @@ export const mainMachine =
         userName: "",
         error: undefined,
         peer: undefined,
-        messages: [],
         localMediaStream: new MediaStream(),
         localAudioStatus: false,
         localVideoStatus: false,
@@ -44,7 +36,6 @@ export const mainMachine =
           userName: string;
           error: Error | undefined;
           peer: Peer | undefined;
-          messages: Message[];
           localMediaStream: MediaStream;
           localAudioStatus: boolean;
           localVideoStatus: boolean;
@@ -64,7 +55,6 @@ export const mainMachine =
               mediaConnection: MediaConnection;
               userId: string;
             }
-          | { type: "MESSAGE_RECEIVED"; message: Message }
           | { type: "STREAM_RECEIVED"; streamData: StreamData }
           | { type: "DISCONNECTED" },
         services: {} as {
@@ -146,26 +136,11 @@ export const mainMachine =
           },
         },
         inRoom: {
-          invoke: [
-            {
-              src: "startMediaListener",
-            },
-            {
-              id: "messagingService",
-              src: messagingMachine,
-              data: (context, event) => ({
-                ...defaultMessagingContext,
-                userId: context.userId,
-                userName: context.userName,
-                peer: context.peer,
-                mainHostId: context.roomId,
-              }),
-            },
-          ],
+          entry: "startMessagingService",
+          invoke: {
+            src: "startMediaListener",
+          },
           on: {
-            MESSAGE_RECEIVED: {
-              actions: "saveNewMessage",
-            },
             TOGGLE_CHAT: {
               actions: "toggleChat",
             },
@@ -209,9 +184,6 @@ export const mainMachine =
         }),
         toggleVideo: assign({
           localVideoStatus: (context, event) => !context.localVideoStatus,
-        }),
-        saveNewMessage: assign({
-          messages: (context, event) => [...context.messages, event.message],
         }),
         saveName: assign({
           userName: (context, event) => event.name,
@@ -259,6 +231,17 @@ export const mainMachine =
             "Room: " + context.userId,
             context.userId
           );
+        },
+        startMessagingService: (context, event) => {
+          invariant(context.peer);
+
+          msgService.send({
+            type: "START",
+            peer: context.peer,
+            mainHostId: context.roomId ?? "",
+            userId: context.userId,
+            userName: context.userName,
+          });
         },
       },
       services: {
@@ -357,7 +340,10 @@ export const mainMachine =
     }
   );
 
-export const mainService = interpret(mainMachine);
+export const mainService = interpret(mainMachine, {
+  devTools: true,
+  id: "MAIN - " + Date.now(),
+});
 
 type MainServiceState = ReturnType<typeof mainService["getSnapshot"]>;
 

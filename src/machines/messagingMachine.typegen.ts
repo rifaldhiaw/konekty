@@ -3,15 +3,10 @@
 export interface Typegen0 {
   "@@xstate/typegen": true;
   internalEvents: {
-    "": { type: "" };
     "done.invoke.messaging.connectingToMainHost:invocation[0]": {
       type: "done.invoke.messaging.connectingToMainHost:invocation[0]";
       data: unknown;
       __tip: "See the XState TS docs to learn how to strongly type this.";
-    };
-    "error.platform.messaging.connectingToMainHost:invocation[0]": {
-      type: "error.platform.messaging.connectingToMainHost:invocation[0]";
-      data: unknown;
     };
     "xstate.init": { type: "xstate.init" };
   };
@@ -31,24 +26,24 @@ export interface Typegen0 {
     saveConnection: "CONNECTION_RECEIVED";
     saveHostConnAndUserList: "done.invoke.messaging.connectingToMainHost:invocation[0]";
     saveMessage: "MESSAGE_RECEIVED" | "SEND_MESSAGE";
+    saveUserAndRoomInfo: "START";
     sendMessage: "SEND_MESSAGE";
-    sendParentConnectionError: "error.platform.messaging.connectingToMainHost:invocation[0]";
     sendUserList: "REQUEST_USER_LIST";
     updateConnection: "CONNECTED_TO_USER";
     updateConnectionStatusError: "CONNECTION_ERROR";
   };
   eventsCausingServices: {
-    connectToHost: "";
+    connectToHost: "START";
     connectToUserList:
-      | ""
+      | "START"
       | "done.invoke.messaging.connectingToMainHost:invocation[0]";
     listenForNewConnection:
-      | ""
+      | "START"
       | "done.invoke.messaging.connectingToMainHost:invocation[0]";
   };
   eventsCausingGuards: {
-    meHost: "";
-    meNonHost: "";
+    meHost: "START";
+    meNonHost: "START";
   };
   eventsCausingDelays: {};
   matchesStates: "connectingToMainHost" | "idle" | "inRoom";

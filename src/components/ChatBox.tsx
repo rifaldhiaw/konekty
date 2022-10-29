@@ -1,10 +1,14 @@
 import { nanoid } from "nanoid";
 import { useState } from "react";
-import { Message, useMainService } from "../machines/mainMachine";
-import { useMessagingService } from "./MachineProvider";
+import { useMainService } from "../machines/mainMachine";
+import {
+  Message,
+  msgService,
+  useMsgService,
+} from "../machines/messagingMachine";
 
 const ChatBox = () => {
-  const messages = useMainService((s) => s.context.messages);
+  const messages = useMsgService((s) => s.context.messages);
   const localId = useMainService((s) => s.context.userId);
 
   return (
@@ -65,7 +69,6 @@ const MessageBubble = (props: { message: Message; isMine: boolean }) => {
 
 function ChatInput() {
   const [message, setMessage] = useState("");
-  const msgService = useMessagingService();
 
   const localId = useMainService((s) => s.context.userId);
   const userName = useMainService((s) => s.context.userName);
