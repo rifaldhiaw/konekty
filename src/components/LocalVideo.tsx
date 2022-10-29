@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
 import { useMainService } from "../machines/mainMachine";
+import VideoPlaceholder from "./VideoPlaceholder";
 
 const LocalVideo = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -19,18 +20,7 @@ const LocalVideo = () => {
   });
 
   if (!localMediaStream || localMediaStream.getVideoTracks().length === 0) {
-    return (
-      <div className="h-full w-full flex justify-center items-center bg-base-200">
-        <div className="avatar placeholder">
-          <div className="bg-base-300 rounded-full w-24">
-            <span className="text-3xl font-semibold">US</span>
-          </div>
-        </div>
-        <div className="absolute drop-shadow-md bottom-2 left-5">
-          {userName}
-        </div>
-      </div>
-    );
+    return <VideoPlaceholder name={userName} />;
   }
 
   return (
