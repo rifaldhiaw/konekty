@@ -1,13 +1,11 @@
-import { useSelector } from "@xstate/react";
+import { mainService, useMainService } from "../machines/mainMachine";
 import ActionButton from "./ActionButton";
-import { useMainService } from "./MachineProvider";
 
 const ToolBar = () => {
   const isChatBoxVisible = true;
 
-  const service = useMainService();
-  const isVideoOn = useSelector(service, (s) => s.context.localVideoStatus);
-  const isAudioOn = useSelector(service, (s) => s.context.localAudioStatus);
+  const isVideoOn = useMainService((s) => s.context.localVideoStatus);
+  const isAudioOn = useMainService((s) => s.context.localAudioStatus);
 
   return (
     <div className="flex bg-base-100 p-4 justify-center">
@@ -51,7 +49,7 @@ const ToolBar = () => {
         isOn={isChatBoxVisible}
         icon="chat"
         onClick={() => {
-          service.send({ type: "TOGGLE_CHAT" });
+          mainService.send({ type: "TOGGLE_CHAT" });
         }}
       />
     </div>

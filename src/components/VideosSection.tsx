@@ -1,8 +1,7 @@
-import { useSelector } from "@xstate/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { debounce } from "throttle-debounce";
+import { useMainService } from "../machines/mainMachine";
 import LocalVideo from "./LocalVideo";
-import { useMainService } from "./MachineProvider";
 import RemoteVideo from "./RemoteVideo";
 
 const aspectOptions = ["4:3", "16:9"];
@@ -42,14 +41,8 @@ const VideosSection = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [conW, conH] = useElementSize(containerRef);
 
-  const service = useMainService();
-  const sidebarHidden = useSelector(
-    service,
-    (s) => s.context.sidebarMode === "none"
-  );
-
-  const totalConnection = useSelector(
-    service,
+  const sidebarHidden = useMainService((s) => s.context.sidebarMode === "none");
+  const totalConnection = useMainService(
     (s) => Object.keys(s.context.mediaConnections).length
   );
 

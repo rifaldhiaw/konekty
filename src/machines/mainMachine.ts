@@ -1,7 +1,8 @@
 import { nanoid } from "nanoid";
 import Peer, { MediaConnection } from "peerjs";
 import invariant from "tiny-invariant";
-import { assign, createMachine } from "xstate";
+import { assign, createMachine, interpret } from "xstate";
+import create from "zustand";
 import { defaultMessagingContext, messagingMachine } from "./messagingMachine";
 
 export type Message = {
@@ -355,3 +356,22 @@ export const mainMachine =
       },
     }
   );
+
+export const mainService = interpret(mainMachine);
+
+type MainServiceState = ReturnType<typeof mainService["getSnapshot"]>;
+
+export const useMainService = create<MainServiceState>((set) => {
+  mainService
+    .onTransition((state) => {
+      const initialStateChanged =
+        state.changed === undefined && Object.keys(state.children).length;
+
+      if (state.changed || initialStateChanged) {
+        set(state);
+      }
+    })
+    .start();
+
+  return mainService.getSnapshot();
+});

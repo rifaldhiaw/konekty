@@ -22,7 +22,7 @@ export const GlobalStateProvider = (props: { children: ReactNode }) => {
   );
 };
 
-export const useMainService = () => {
+const useMainService = () => {
   const globalContext = useContext(GlobalStateContext);
   return globalContext.mainService;
 };

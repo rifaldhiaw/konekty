@@ -1,28 +1,25 @@
-import { useSelector } from "@xstate/react";
 import { FormEventHandler, useState } from "react";
+import { mainService, useMainService } from "../machines/mainMachine";
 import EntryVideo from "./EntryVideo";
-import { useMainService } from "./MachineProvider";
 
 const EntryView = () => {
   const [name, setName] = useState("");
-  const service = useMainService();
-  const roomId = useSelector(service, (s) => s.context.roomId);
-  const connectingToRoom = useSelector(service, (s) =>
-    s.matches("connectingToRoom")
-  );
-  const error = useSelector(service, (s) => s.context.error);
+
+  const roomId = useMainService((s) => s.context.roomId);
+  const connectingToRoom = useMainService((s) => s.matches("connectingToRoom"));
+  const error = useMainService((s) => s.context.error);
 
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
     if (!name) return;
 
     if (roomId) {
-      service.send({
+      mainService.send({
         type: "JOIN_ROOM",
         name,
       });
     } else {
-      service.send({
+      mainService.send({
         type: "CREATE_ROOM",
         name,
       });
@@ -33,7 +30,7 @@ const EntryView = () => {
     e.preventDefault();
     if (!name) return;
 
-    service.send({
+    mainService.send({
       type: "CREATE_ROOM",
       name,
     });

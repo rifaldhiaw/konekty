@@ -1,16 +1,12 @@
-import { useSelector } from "@xstate/react";
 import { memo, useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
-import { useMainService } from "./MachineProvider";
+import { useMainService } from "../machines/mainMachine";
 
 const LocalVideo = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const service = useMainService();
-  const localMediaStream = useSelector(
-    service,
-    (s) => s.context.localMediaStream
-  );
-  const userName = useSelector(service, (s) => s.context.userName);
+
+  const localMediaStream = useMainService((s) => s.context.localMediaStream);
+  const userName = useMainService((s) => s.context.userName);
 
   useEffect(() => {
     if (!videoRef.current || !localMediaStream) return;

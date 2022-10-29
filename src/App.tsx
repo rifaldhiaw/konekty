@@ -1,11 +1,9 @@
-import { useSelector } from "@xstate/react";
 import EntryView from "./components/EntryView";
-import { useMainService } from "./components/MachineProvider";
 import MainView from "./components/MainView";
+import { useMainService } from "./machines/mainMachine";
 
 function App() {
-  const service = useMainService();
-  const inRoom = useSelector(service, (s) => s.matches("inRoom"));
+  const inRoom = useMainService((s) => s.matches("inRoom"));
 
   if (inRoom) {
     return (

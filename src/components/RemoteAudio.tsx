@@ -1,12 +1,10 @@
-import { useSelector } from "@xstate/react";
 import { useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
-import { useMainService } from "./MachineProvider";
+import { useMainService } from "../machines/mainMachine";
 
 const RemoteAudio = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const service = useMainService();
-  const remoteStreamData = useSelector(service, (s) => s.context.streams?.[0]);
+  const remoteStreamData = useMainService((s) => s.context.streams?.[0]);
 
   // Get Local Audio Stream
   useEffect(() => {

@@ -1,20 +1,18 @@
-import { useSelector } from "@xstate/react";
 import { useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
+import { mainService, useMainService } from "../machines/mainMachine";
 import ActionButton from "./ActionButton";
-import { useMainService } from "./MachineProvider";
 
 const EntryVideo = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const videoRef = useRef<HTMLVideoElement>(null);
-  const service = useMainService();
 
-  const isInitializing = useSelector(service, (s) => s.matches("initializing"));
+  const isInitializing = useMainService((s) => s.matches("initializing"));
 
-  const localStream = useSelector(service, (s) => s.context.localMediaStream);
-  const isAudioOn = useSelector(service, (s) => s.context.localAudioStatus);
-  const isVideoOn = useSelector(service, (s) => s.context.localVideoStatus);
+  const localStream = useMainService((s) => s.context.localMediaStream);
+  const isAudioOn = useMainService((s) => s.context.localAudioStatus);
+  const isVideoOn = useMainService((s) => s.context.localVideoStatus);
 
   useEffect(() => {
     if (!videoRef.current) return;
@@ -62,7 +60,7 @@ const EntryVideo = () => {
             isOn={isAudioOn}
             icon={"audio"}
             onClick={() => {
-              service.send("TOGGLE_AUDIO");
+              mainService.send("TOGGLE_AUDIO");
             }}
           />
         </div>
@@ -72,7 +70,7 @@ const EntryVideo = () => {
             isOn={isVideoOn}
             icon={"video"}
             onClick={() => {
-              service.send("TOGGLE_VIDEO");
+              mainService.send("TOGGLE_VIDEO");
             }}
           />
         </div>

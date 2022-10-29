@@ -1,12 +1,10 @@
-import { useSelector } from "@xstate/react";
 import { memo, useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
-import { useMainService } from "./MachineProvider";
+import { useMainService } from "../machines/mainMachine";
 
 const RemoteVideo = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const service = useMainService();
-  const streamData = useSelector(service, (s) => s.context.streams?.[0]);
+  const streamData = useMainService((s) => s.context.streams?.[0]);
   const remoteStream = streamData?.stream;
 
   useEffect(() => {

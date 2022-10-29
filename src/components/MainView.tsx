@@ -1,16 +1,12 @@
-import { useSelector } from "@xstate/react";
+import { useMainService } from "../machines/mainMachine";
 import ChatBox from "./ChatBox";
-import { useMainService } from "./MachineProvider";
+
 import RemoteAudio from "./RemoteAudio";
 import ToolBar from "./ToolBar";
 import VideosSection from "./VideosSection";
 
 const MainView = () => {
-  const service = useMainService();
-  const isChatVisible = useSelector(
-    service,
-    (s) => s.context.sidebarMode === "chat"
-  );
+  const isChatVisible = useMainService((s) => s.context.sidebarMode === "chat");
 
   return (
     <div className="flex flex-1 flex-col">

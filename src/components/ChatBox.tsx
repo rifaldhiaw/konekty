@@ -1,13 +1,11 @@
-import { useSelector } from "@xstate/react";
 import { nanoid } from "nanoid";
 import { useState } from "react";
-import { Message } from "../machines/mainMachine";
-import { useMainService, useMessagingService } from "./MachineProvider";
+import { Message, useMainService } from "../machines/mainMachine";
+import { useMessagingService } from "./MachineProvider";
 
 const ChatBox = () => {
-  const service = useMainService();
-  const messages = useSelector(service, (s) => s.context.messages);
-  const localId = useSelector(service, (s) => s.context.userId);
+  const messages = useMainService((s) => s.context.messages);
+  const localId = useMainService((s) => s.context.userId);
 
   return (
     <div className="card border border-base-200 bg-base-100 flex-1 h-full shadow-lg">
@@ -67,11 +65,10 @@ const MessageBubble = (props: { message: Message; isMine: boolean }) => {
 
 function ChatInput() {
   const [message, setMessage] = useState("");
-  const service = useMainService();
   const msgService = useMessagingService();
 
-  const localId = useSelector(service, (s) => s.context.userId);
-  const userName = useSelector(service, (s) => s.context.userName);
+  const localId = useMainService((s) => s.context.userId);
+  const userName = useMainService((s) => s.context.userName);
 
   return (
     <form
