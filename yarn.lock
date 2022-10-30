@@ -1265,11 +1265,6 @@ yaml@^1.10.2:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-1.10.2.tgz#2301c5ffbf12b467de8da2333a459e29e7920e4b"
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
-zustand-middleware-xstate@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/zustand-middleware-xstate/-/zustand-middleware-xstate-1.1.1.tgz#94fff8d79430672318844a027907dc0f564fef56"
-  integrity sha512-WNKGWzWwytk5dfnIR595r0BkA9ojhxgw29MG0IQzSW/DNf4x2rrdW5paqB4Hpf6NVWO00OiEuvmqmNknHmnfdA==
-
 zustand@^4.1.3:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.1.3.tgz#72bc4c0ed8ed906fbd92c7c20cde8dd6114c018f"

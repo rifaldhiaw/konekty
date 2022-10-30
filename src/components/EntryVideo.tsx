@@ -57,6 +57,7 @@ const EntryVideo = () => {
           </div>
         )}
         <video
+          playsInline={true}
           className="object-cover w-full h-full flip bg-black"
           ref={videoRef}
         ></video>

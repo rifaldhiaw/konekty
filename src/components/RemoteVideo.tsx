@@ -33,6 +33,7 @@ const RemoteVideo = (props: {
   return (
     <div className="w-full h-full">
       <video
+        playsInline={true}
         className={
           "object-cover w-full h-full bg-base-200" +
           (isvideoOn ? "" : " hidden")
