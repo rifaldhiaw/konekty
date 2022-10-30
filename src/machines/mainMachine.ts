@@ -18,13 +18,14 @@ export type StreamData = {
 };
 
 export const mainMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxADIDyAwgII0D6AsgKIAiAkk6wBKnJtwCaAbQAMAXUSgADgHtYBdEszyQAD0QBaAMwAWAwHZspgIwA2AJynTUgwetSAHABoQAT32WATEYWRv5uVga2lgZS1m7WAL7xXmhY2ADuGISYUABiSgBOAKqwYPkAcqjIYFQMwkwAKpxCdHTs0nJIIMqqhBpaugh6-rau2ACsBmP+llGWI0ZevoOWpm7Y1oEzE7EjY6YJSSApOBlq2XlFJeWV1QBSdLxlza3tWt1qfZ0DQ7ZjY+tuIy2SZxWz+FzWRaISz-IxjKKmEIxELWRG2RLJDA4LCCJRKZBUep0ADixJoTQYAAkGq9Ou9epovvppm4pNh-NMDJYpI5EaioQhhtgTLsjPspFIxtYYW4MUcselMpRiqUaOhYPgqIUAMqcQSsGi8bX1IScBicXgANR4tMUKg+jNA30CplsFm5ExhMNdiIFQpF1iMbmivykkQmcuOWoACtwGk0dXrWHH6kxbV17Qz+vouZY1n9uYXbHCDMG-WLxlN9mY3Hs3IF-IlDpglBA4FpjrhMGoSORKG9M+pHToc6i3YCOXNpqiQgYBXobP52SEwu5HFNbDFIwrTllcgUVdcqgOekPs4MDP4pEEjGKbHXbPZPD4-EHgqEwi5r6spI3Dp2cTxZATwdc8hkvNY7HsIxLDhKwQnnWDrGwdxpVsMJXCmSU-0xVJd2VK41Q1ECsyZQZ-DsZDQkmcEwj2SJIRfBApmwMFXVo4trC-QJtywEizzIwxTH8cwJ2mMEbERcF5wo8wNhgzYxnQx89ibeIgA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxADIDyAwgII0D6AsgKIAiAkk6wBKnJtwCaAbQAMAXUSgADgHtYBdEszyQAD0QBaAMwAOKQHZsUgGwBGIwFYALACY7lg1IMOANCACe+gE5zAwCDazsnIKNLCKMAgF94nzQsbAB3DEJMKAAxJQAnAFVYMHyAOVRkMCoAZU4AFVZOQUE6QWk5JBBlVUINLV0EQzs4i1MAywcrcYcTUx9-BFdsUzjjJ08zNwdrROSMHAy1bLyikvLK6oZhJnrOITo6dg6tHrV+rsHDA0jsIxMpP9HBsDHYFvpwtZsE5TA4QpYAq4wrY9iAUodMpRTsVShUqlQAFJ0XhlB5PF5dN59TSffQGH52CyRIzWdwBayhJzghDOP5SaxSAJOGwBQFmJyo9G4TCCJRKZBUep0ADiypo9wYAAlbhTFCp3jTQF8XJZzKs7GFTHYOasjN4-IhlqtQgEJtaHJYjMLJQd0pjsjj8jR0LB8FRCnVBKwaLwao1hAxOLwAGo8XXdfXUgb6Jx2gIWOyOQGmYwOIWWblOtaWU1OJzWNzWCVJNEHcMABW4t3uEearC79SY6ap6kNOjps3McRGRlh1lMIIrDoQMIc2FFTlm9YCdoMbksiRbmCUEDgWileEIJHIlFemdH2aGUzL2FspkFkxCcKt3L0rLXazhJudirFauwtlKRxZLkBSBniYB3r0D60kMoIlisQpSHC-LCiWBi-k2UIhGEnoBA4qyblIdg+qkWCyvKiEGo+ejCjuFgOB6timjuBjzMuf62Cse6zB45HRDE1EQb6UGUIGwahoxWYoYYViMpYuZTAKO6TtyJjQqYpiTBs4oJFJWCKchRr6FMQSvrOH5wmRvFgvxlH6Rx0yzj8omHvEQA */
   createMachine(
     {
       context: {
         roomId: "",
         userId: nanoid(),
         userName: "",
+        error: undefined,
         peer: undefined,
         remoteUserData: [],
         sidebarMode: "none",
@@ -35,12 +36,15 @@ export const mainMachine =
           roomId: string | undefined;
           userId: string;
           userName: string;
+          error: Error | undefined;
           peer: Peer | undefined;
           remoteUserData: UserData[];
           sidebarMode: "none" | "chat";
         },
         events: {} as
           | { type: "JOIN_ROOM"; name: string }
+          | { type: "SET_ERROR"; error: Error }
+          | { type: "CLEAR_ERROR" }
           | { type: "UPDATE_USER_DATA"; userData: UserData[] }
           | { type: "USER_LIST_RECEIVED"; userData: UserData[] }
           | { type: "LOCAL_MEDIA_READY" }
@@ -57,7 +61,7 @@ export const mainMachine =
       id: "main",
       states: {
         initializing: {
-          entry: ["saveRoomIdIfExist", "startMediaService"],
+          entry: ["saveRoomIdIfExist", "startMediaService", "initPeer"],
           on: {
             LOCAL_MEDIA_READY: {
               target: "waitingForUserName",
@@ -65,8 +69,14 @@ export const mainMachine =
           },
         },
         waitingForUserName: {
-          entry: "initPeer",
+          exit: "clearError",
+          invoke: {
+            src: "startPeerListener",
+          },
           on: {
+            SET_ERROR: {
+              actions: "setError",
+            },
             CREATE_ROOM: {
               target: "inRoom",
               actions: [
@@ -84,6 +94,9 @@ export const mainMachine =
         },
         inRoom: {
           entry: "startMediaCall",
+          invoke: {
+            src: "startPeerListener",
+          },
           on: {
             TOGGLE_CHAT: {
               actions: "toggleChat",
@@ -101,7 +114,31 @@ export const mainMachine =
       },
     },
     {
+      services: {
+        startPeerListener: (context, event) => (callback, onReceive) => {
+          invariant(context.peer);
+
+          const errorListener = (error: Error) => {
+            callback({
+              type: "SET_ERROR",
+              error,
+            });
+          };
+
+          context.peer.on("error", errorListener);
+
+          return () => {
+            context.peer?.off("error", errorListener);
+          };
+        },
+      },
       actions: {
+        clearError: assign({
+          error: (context, event) => undefined,
+        }),
+        setError: assign({
+          error: (context, event) => event.error,
+        }),
         updateUserData: assign({
           remoteUserData: (context, event) => event.userData,
         }),

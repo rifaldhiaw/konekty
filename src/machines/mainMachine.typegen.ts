@@ -4,8 +4,13 @@ export interface Typegen0 {
   "@@xstate/typegen": true;
   internalEvents: {
     "xstate.init": { type: "xstate.init" };
+    "xstate.stop": { type: "xstate.stop" };
   };
-  invokeSrcNameMap: {};
+  invokeSrcNameMap: {
+    startPeerListener:
+      | "done.invoke.main.waitingForUserName:invocation[0]"
+      | "done.invoke.main.inRoom:invocation[0]";
+  };
   missingImplementations: {
     actions: never;
     services: never;
@@ -13,10 +18,12 @@ export interface Typegen0 {
     delays: never;
   };
   eventsCausingActions: {
-    initPeer: "LOCAL_MEDIA_READY";
+    clearError: "CREATE_ROOM" | "JOIN_ROOM" | "xstate.stop";
+    initPeer: "xstate.init";
     saveName: "CREATE_ROOM" | "JOIN_ROOM";
     saveRoomId: "CREATE_ROOM";
     saveRoomIdIfExist: "xstate.init";
+    setError: "SET_ERROR";
     startMediaCall: "CREATE_ROOM" | "USER_LIST_RECEIVED";
     startMediaService: "xstate.init";
     startMessagingService: "CREATE_ROOM" | "JOIN_ROOM";
@@ -24,7 +31,12 @@ export interface Typegen0 {
     updateUrl: "CREATE_ROOM";
     updateUserData: "UPDATE_USER_DATA" | "USER_LIST_RECEIVED";
   };
-  eventsCausingServices: {};
+  eventsCausingServices: {
+    startPeerListener:
+      | "CREATE_ROOM"
+      | "LOCAL_MEDIA_READY"
+      | "USER_LIST_RECEIVED";
+  };
   eventsCausingGuards: {};
   eventsCausingDelays: {};
   matchesStates:
