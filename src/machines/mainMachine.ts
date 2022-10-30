@@ -164,7 +164,7 @@ export const mainMachine =
 
 export const mainService = interpret(mainMachine, {
   devTools: true,
-  id: "MAIN - " + Date.now().toString().slice(-4, -1),
+  id: "MAIN - " + new Date().getMinutes() + ":" + new Date().getSeconds(),
 });
 
 type MainServiceState = ReturnType<typeof mainService["getSnapshot"]>;

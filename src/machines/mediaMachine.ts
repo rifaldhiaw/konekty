@@ -328,7 +328,7 @@ const mediaMachine =
 
 export const mediaService = interpret(mediaMachine, {
   devTools: true,
-  id: "MEDIA - " + Date.now().toString().slice(-4, -1),
+  id: "MEDIA - " + new Date().getMinutes() + ":" + new Date().getSeconds(),
 });
 
 type MediaServiceState = ReturnType<typeof mediaService["getSnapshot"]>;

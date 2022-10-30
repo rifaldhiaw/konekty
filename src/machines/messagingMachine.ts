@@ -385,7 +385,7 @@ export const messagingMachine =
 
 export const msgService = interpret(messagingMachine, {
   devTools: true,
-  id: "MESSAGING - " + Date.now().toString().slice(-4, -1),
+  id: "MESSAGING - " + new Date().getMinutes() + ":" + new Date().getSeconds(),
 });
 
 type MsgServiceState = ReturnType<typeof msgService["getSnapshot"]>;
