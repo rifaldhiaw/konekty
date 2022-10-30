@@ -1,8 +1,10 @@
 import { useEffect, useRef } from "react";
+import { debounce } from "throttle-debounce";
 import invariant from "tiny-invariant";
 import { useMainService } from "../machines/mainMachine";
 import { mediaService, useMediaService } from "../machines/mediaMachine";
 import ActionButton from "./ActionButton";
+import { videoRatio } from "./VideosSection";
 
 const EntryVideo = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -30,13 +32,19 @@ const EntryVideo = () => {
   }, [localStream]);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const listener = debounce(100, () => {
+      if (!containerRef.current) return;
+      const w = containerRef.current.offsetWidth;
+      const h = w ? w * videoRatio : 0;
+      const fixedH = Math.floor(h);
+      containerRef.current.style.height = fixedH + "px";
+    });
 
-    const w = containerRef.current.offsetWidth;
-    const h = w ? (w * 9) / 16 : 0;
-    const fixedH = Math.floor(h);
-    containerRef.current.style.height = fixedH + "px";
-  });
+    window.addEventListener("resize", listener);
+    return () => {
+      window.removeEventListener("resize", listener);
+    };
+  }, []);
 
   return (
     <div ref={containerRef} className="flex flex-1">
@@ -54,7 +62,7 @@ const EntryVideo = () => {
         ></video>
       </div>
 
-      <div className="absolute z-10 bottom-6 left-0 right-0 flex justify-center text-white">
+      <div className="absolute z-10 bottom-4 md:bottom-6 left-0 right-0 flex justify-center text-white">
         <div className="mx-1">
           <ActionButton
             outline={true}

@@ -7,7 +7,7 @@ import RemoteVideo from "./RemoteVideo";
 
 const aspectOptions = ["4:3", "16:9"];
 
-const videoRatio = (() => {
+export const videoRatio = (() => {
   const aspectRatio = aspectOptions[1].split(":").map((v) => parseInt(v, 10));
   return aspectRatio[1] / aspectRatio[0];
 })();
@@ -48,7 +48,8 @@ const VideosSection = () => {
   const totalUser = userStreamData.length + 1;
 
   const videoW = useMemo(() => {
-    const newW = conW - (sidebarHidden ? 0 : sidebarWidth);
+    const newW =
+      conW - (sidebarHidden || window.innerWidth < 1024 ? 0 : sidebarWidth);
 
     const isAreaOverContainer = (increment: number) => {
       let w = 0;

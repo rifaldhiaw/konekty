@@ -40,11 +40,11 @@ const EntryView = () => {
   };
 
   return (
-    <div className="flex container px-8">
-      <div className="flex w-7/12 relative">
+    <div className="flex flex-col md:flex-row items-center container gap-16">
+      <div className="flex w-full md:w-8/12 relative px-10 md:px-0 lg:px-8">
         <EntryVideo />
       </div>
-      <div className="w-5/12 flex justify-center items-center">
+      <div className="w-full md:w-4/12 flex justify-center items-center">
         <form
           className="flex flex-col justify-center items-center"
           onSubmit={onSubmit}

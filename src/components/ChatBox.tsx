@@ -94,7 +94,7 @@ function ChatInput() {
       <div className="flex">
         <input
           autoFocus={true}
-          className="input input-bordered flex-1 bg-base-200"
+          className="input input-bordered flex-1 bg-base-200 min-w-0"
           type="text"
           name="message"
           id="message"
