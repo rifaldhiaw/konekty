@@ -182,51 +182,50 @@ export const messagingMachine =
           });
         },
         connectToUserList: (context, event) => (callback, onReceive) => {
-          context.userConnectionData
-            .filter((v) => v.status !== "connected")
-            .forEach((userData) => {
-              invariant(context.peer);
+          context.userConnectionData.forEach((userData) => {
+            invariant(context.peer);
 
-              const conn = (() => {
-                if (userData.connection) return userData.connection;
+            const conn = (() => {
+              if (userData.connection) return userData.connection;
 
-                return context.peer.connect(userData.id, {
-                  metadata: {
-                    userId: context.userId,
-                    userName: context.userName,
-                  },
-                });
-              })();
-
-              conn.on("data", (message) => {
-                callback({
-                  type: "MESSAGE_RECEIVED",
-                  message: message as Message,
-                });
+              return context.peer.connect(userData.id, {
+                metadata: {
+                  userId: context.userId,
+                  userName: context.userName,
+                },
               });
+            })();
 
-              conn.on("open", () => {
-                callback({
-                  type: "CONNECTED_TO_USER",
-                  userId: userData.id,
-                  connection: conn,
-                });
-              });
-
-              conn.once("error", () => {
-                callback({
-                  type: "CONNECTION_ERROR",
-                  userId: userData.id,
-                });
-              });
-
-              conn.once("close", () => {
-                callback({
-                  type: "CONNECTION_CLOSED",
-                  userId: userData.id,
-                });
+            conn.on("data", (message) => {
+              new Audio("./pop.mp3").play();
+              callback({
+                type: "MESSAGE_RECEIVED",
+                message: message as Message,
               });
             });
+
+            conn.on("open", () => {
+              callback({
+                type: "CONNECTED_TO_USER",
+                userId: userData.id,
+                connection: conn,
+              });
+            });
+
+            conn.once("error", () => {
+              callback({
+                type: "CONNECTION_ERROR",
+                userId: userData.id,
+              });
+            });
+
+            conn.once("close", () => {
+              callback({
+                type: "CONNECTION_CLOSED",
+                userId: userData.id,
+              });
+            });
+          });
         },
         listenForNewConnection: (context, event) => (callback, onReceive) => {
           const connListener = (conn: DataConnection) => {
@@ -248,6 +247,7 @@ export const messagingMachine =
                 return;
               }
 
+              new Audio("./pop.mp3").play();
               callback({
                 type: "MESSAGE_RECEIVED",
                 message: message as Message,
@@ -302,7 +302,13 @@ export const messagingMachine =
         updateConnection: assign({
           userConnectionData: (context, event) => {
             return context.userConnectionData.map((d) =>
-              d.id === event.userId ? { ...d, connection: event.connection } : d
+              d.id === event.userId
+                ? ({
+                    ...d,
+                    connection: event.connection,
+                    status: "connected",
+                  } as UserConnectionData)
+                : d
             );
           },
         }),

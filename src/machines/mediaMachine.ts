@@ -235,6 +235,8 @@ const mediaMachine =
               userName,
             });
 
+            new Audio("./enter.mp3").play();
+
             conn.on("stream", (stream) => {
               callback({
                 type: "STREAM_RECEIVED",
