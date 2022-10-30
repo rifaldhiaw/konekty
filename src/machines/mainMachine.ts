@@ -1,9 +1,15 @@
 import { nanoid } from "nanoid";
-import Peer, { MediaConnection } from "peerjs";
+import Peer from "peerjs";
 import invariant from "tiny-invariant";
 import { assign, createMachine, interpret } from "xstate";
 import create from "zustand";
+import { mediaService } from "./mediaMachine";
 import { msgService } from "./messagingMachine";
+
+export type UserData = {
+  id: string;
+  name: string;
+};
 
 export type StreamData = {
   userId: string;
@@ -12,21 +18,16 @@ export type StreamData = {
 };
 
 export const mainMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxBAPaZi6YButA1o2lkwUaRZigIsrAMapC9ANoAGALqy5iUAAdasXvWUgAHogC0AJgAcANkPYAjAFYALKcsBmU9ce2A7JdMAaEAE8DJ0tsBxlHGQBOCNNjYxtrUwBfRN8uHDxCEnJKKjAAJzzaPOwVYgkAMyLkbDSeTP5KYRZacUlMRUVtNQ027T0EfXCwq2sIw0cImQ8ZU3dfAIQvbGtjW0NDGPdbMMiklJBa2AALWgB3SgBRAqKAcTB8ABkWkgBZSCIX2ggSKgAlC4AKr8AJoAfRugNBLwuABEAJIAQU6SBA3U0mD6Bkclnc1mwZjWUQc5giXnmiCWKzWG2MWx20WMyVSGBwpwwhEEADEigBVWD5AByqGQYCoAIA8jcbg8LqCETz4eLkap1OjMQMNrY8TIdYYZJ5bFFrNY5v4sTI8ZYIo53KZHCZbE5DdYmQcWdg2bwubz+XkhSKxZLpbKAGpwmEXJXyLqq3oo-pGBzBWnuMbGOymUKmhb6ba2bDWryWbbmYwmSyu2qejlQbl5PmC4WigDC-wRANlv3F4peytRsfQWnjBnWa2wJYio1xxdsjnJA0shncI1neoitlWM0sFf2VfZlDrDb9TaoAClxXCBaCuz2+2i46AE4ZrIZ89ZF7aJq-Z2t56NlmM0SONYkRAbMlbuqI9AMKINYArQvy0LQyA0PQjAiOwnCQdBYCwZQ8GIchTRiBIg7tPId4DkOj4jjqjjYLa24mBEWyGOu2aILM44zpYxgWsxuIQdwUGYDBcEIUhKH5IUxSlBUVQ1Nhom4eJhHIMRzxtB00YoveZHqom6bYCYMhsfq6zjHOZqLO49GOMY1q6vYpj2IYQnpJgamBlKMqgs2AAS7aUT0+nDguJoRMZ9jYhEZaLmWhjzoMtj5qZDosUuTqMru7pYF50LwgifnigKAoXM2AJwiV17lRccIhrCwVqmF+hFvRjrbixNo2i4iXWYukXGM4rFppmvGOO5TBeQAykCFwIi8NXNnVDUwk1D66IEL7BGM2Jaq+diTFZCzhAW7gOduni2eu9oujl3B5ZJVDwtNzYlWVFWNTpKohdRm0ahsMjLLMNqjLEmVJWuIQ4jakSMeYO77JgXxwNotQZHw2SCDGv0Yi12IzCEMx6lqmYg0lxZ4uYepDHEepbJNxxnJc1x5HcjzPMQbwQB8XwkDjzU0QMe3BFMtoyMWpgS9aPjWZMBamZ4wHrOd5gTfdrL7t69a+v6YACxtT4rDtEyptOR2ThTTghO4tvrlaDmGJTk0iWJ+ESchBuhULRjhBY53rOZ2w2LY85assdMyA5Q16mx6vMg9nmSV7f0JlaXGxFEEsuY6tp9TmNhA8+xpDVH4zGsW7kp3jPv2uM+IuWx0ReGxZLWbm1oFtiDjhJLtm2skyRAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QFsCGBLAdgOi+gLuqgDboBeWUAxADIDyAwgII0D6AsgKIAiAkk6wBKnJtwCaAbQAMAXUSgADgHtYBdEszyQAD0QBaAMwAWAwHZspgIwA2AJynTUgwetSAHABoQAT32WATEYWRv5uVga2lgZS1m7WAL7xXmhY2ADuGISYUABiSgBOAKqwYPkAcqjIYFQMwkwAKpxCdHTs0nJIIMqqhBpaugh6-rau2ACsBmP+llGWI0ZevoOWpm7Y1oEzE7EjY6YJSSApOBlq2XlFJeWV1QBSdLxlza3tWt1qfZ0DQ7ZjY+tuIy2SZxWz+FzWRaISz-IxjKKmEIxELWRG2RLJDA4LCCJRKZBUep0ADixJoTQYAAkGq9Ou9epovvppm4pNh-NMDJYpI5EaioQhhtgTLsjPspFIxtYYW4MUcselMpRiqUaOhYPgqIUAMqcQSsGi8bX1IScBicXgANR4tMUKg+jNA30CplsFm5ExhMNdiIFQpF1iMbmivykkQmcuOWoACtwGk0dXrWHH6kxbV17Qz+vouZY1n9uYXbHCDMG-WLxlN9mY3Hs3IF-IlDpglBA4FpjrhMGoSORKG9M+pHToc6i3YCOXNpqiQgYBXobP52SEwu5HFNbDFIwrTllcgUVdcqgOekPs4MDP4pEEjGKbHXbPZPD4-EHgqEwi5r6spI3Dp2cTxZATwdc8hkvNY7HsIxLDhKwQnnWDrGwdxpVsMJXCmSU-0xVJd2VK41Q1ECsyZQZ-DsZDQkmcEwj2SJIRfBApmwMFXVo4trC-QJtywEizzIwxTH8cwJ2mMEbERcF5wo8wNhgzYxnQx89ibeIgA */
   createMachine(
     {
       context: {
         roomId: "",
         userId: nanoid(),
         userName: "",
-        error: undefined,
         peer: undefined,
-        localMediaStream: new MediaStream(),
-        localAudioStatus: false,
-        localVideoStatus: false,
+        remoteUserData: [],
         sidebarMode: "none",
-        streams: [],
-        mediaConnections: {},
       },
       tsTypes: {} as import("./mainMachine.typegen").Typegen0,
       schema: {
@@ -34,124 +35,66 @@ export const mainMachine =
           roomId: string | undefined;
           userId: string;
           userName: string;
-          error: Error | undefined;
           peer: Peer | undefined;
-          localMediaStream: MediaStream;
-          localAudioStatus: boolean;
-          localVideoStatus: boolean;
+          remoteUserData: UserData[];
           sidebarMode: "none" | "chat";
-          streams: StreamData[];
-          mediaConnections: Record<string, MediaConnection>;
         },
         events: {} as
-          | { type: "RETRY_GET_MEDIA" }
           | { type: "JOIN_ROOM"; name: string }
+          | { type: "UPDATE_USER_DATA"; userData: UserData[] }
+          | { type: "USER_LIST_RECEIVED"; userData: UserData[] }
+          | { type: "LOCAL_MEDIA_READY" }
           | { type: "CREATE_ROOM"; name: string }
-          | { type: "TOGGLE_CHAT" }
-          | { type: "TOGGLE_AUDIO" }
-          | { type: "TOGGLE_VIDEO" }
-          | {
-              type: "MEDIA_CONNECTION_RECEIVED";
-              mediaConnection: MediaConnection;
-              userId: string;
-            }
-          | { type: "STREAM_RECEIVED"; streamData: StreamData }
-          | { type: "DISCONNECTED" },
-        services: {} as {
-          getLocalMedia: {
-            data: MediaStream;
-          };
-          startMediaConnector: {
-            data: {
-              mediaConnection: MediaConnection;
-              streamData: StreamData;
-            };
-          };
-        },
+          | { type: "TOGGLE_CHAT" },
       },
       predictableActionArguments: true,
+      on: {
+        UPDATE_USER_DATA: {
+          actions: "updateUserData",
+        },
+      },
       initial: "initializing",
       id: "main",
       states: {
         initializing: {
-          entry: "saveRoomIdIfExist",
-          invoke: {
-            src: "getLocalMedia",
-            onDone: [
-              {
-                target: "waitingForUserName",
-                actions: "saveLocalMediaStream",
-              },
-            ],
-            onError: [
-              {
-                target: "showingErrorGetLocalMediaModal",
-              },
-            ],
-          },
-        },
-        showingErrorGetLocalMediaModal: {
+          entry: ["saveRoomIdIfExist", "startMediaService"],
           on: {
-            RETRY_GET_MEDIA: {
-              target: "initializing",
+            LOCAL_MEDIA_READY: {
+              target: "waitingForUserName",
             },
           },
         },
         waitingForUserName: {
           entry: "initPeer",
           on: {
-            TOGGLE_AUDIO: {
-              actions: "toggleAudio",
-            },
-            TOGGLE_VIDEO: {
-              target: "initializing",
-              actions: "toggleVideo",
-            },
             CREATE_ROOM: {
               target: "inRoom",
-              actions: ["saveName", "saveRoomId", "updateUrl"],
+              actions: [
+                "saveName",
+                "saveRoomId",
+                "updateUrl",
+                "startMessagingService",
+              ],
             },
             JOIN_ROOM: {
-              target: "connectingToRoom",
-              actions: "saveName",
+              target: "waitingUserList",
+              actions: ["saveName", "startMessagingService"],
             },
-          },
-        },
-        connectingToRoom: {
-          entry: "removeError",
-          invoke: {
-            src: "startMediaConnector",
-            onDone: [
-              {
-                target: "inRoom",
-                actions: "saveNewStream",
-              },
-            ],
-            onError: [
-              {
-                target: "waitingForUserName",
-                actions: "saveError",
-              },
-            ],
           },
         },
         inRoom: {
-          entry: "startMessagingService",
-          invoke: {
-            src: "startMediaListener",
-          },
+          entry: "startMediaCall",
           on: {
             TOGGLE_CHAT: {
               actions: "toggleChat",
             },
-            MEDIA_CONNECTION_RECEIVED: {
-              actions: "saveMediaConnection",
-            },
-            STREAM_RECEIVED: {
-              actions: "saveStream",
-            },
-            DISCONNECTED: {
-              target: "waitingForUserName",
+          },
+        },
+        waitingUserList: {
+          on: {
+            USER_LIST_RECEIVED: {
+              target: "inRoom",
+              actions: "updateUserData",
             },
           },
         },
@@ -159,6 +102,12 @@ export const mainMachine =
     },
     {
       actions: {
+        updateUserData: assign({
+          remoteUserData: (context, event) => event.userData,
+        }),
+        startMediaService: (context, event) => {
+          mediaService.send("START");
+        },
         saveRoomIdIfExist: assign({
           roomId: (context, event) => {
             const urlArr = window.location.href.split("/");
@@ -166,61 +115,16 @@ export const mainMachine =
             return roomId.trim();
           },
         }),
-        saveLocalMediaStream: assign({
-          localMediaStream: (context, event) => event.data,
-        }),
         toggleChat: assign({
           sidebarMode: (context, event) =>
             context.sidebarMode === "chat" ? "none" : "chat",
         }),
-        toggleAudio: assign({
-          localAudioStatus: (context, event) => !context.localAudioStatus,
-          localMediaStream: (context, event) => {
-            context.localMediaStream
-              ?.getAudioTracks()
-              .forEach((v) => (v.enabled = !context.localAudioStatus));
-            return context.localMediaStream;
-          },
-        }),
-        toggleVideo: assign({
-          localVideoStatus: (context, event) => !context.localVideoStatus,
-        }),
         saveName: assign({
           userName: (context, event) => event.name,
-        }),
-        saveStream: assign({
-          streams: (context, event) => [...context.streams, event.streamData],
         }),
         initPeer: assign({
           peer: (context, event) =>
             !!context.peer ? context.peer : new Peer(context.userId),
-        }),
-        saveMediaConnection: assign({
-          mediaConnections: (context, event) => {
-            return {
-              ...context.mediaConnections,
-              [event.userId]: event.mediaConnection,
-            };
-          },
-        }),
-        saveError: assign({
-          error: (context, event) => event.data as Error,
-        }),
-        removeError: assign({
-          error: (context, event) => undefined,
-        }),
-        saveNewStream: assign({
-          mediaConnections: (context, event) => {
-            invariant(context.roomId);
-            return {
-              ...context.mediaConnections,
-              [context.roomId]: event.data.mediaConnection,
-            };
-          },
-          streams: (context, event) => [
-            ...context.streams,
-            event.data.streamData,
-          ],
         }),
         saveRoomId: assign({
           roomId: (context, event) => context.userId,
@@ -240,109 +144,29 @@ export const mainMachine =
             peer: context.peer,
             mainHostId: context.roomId ?? "",
             userId: context.userId,
+            userName: event.name,
+          });
+        },
+        startMediaCall: (context, event) => {
+          invariant(context.peer);
+
+          console.log("starting call to", context.remoteUserData);
+
+          mediaService.send({
+            userId: context.userId,
             userName: context.userName,
+            type: "START_CALL",
+            peer: context.peer,
+            userData: context.remoteUserData,
           });
         },
-      },
-      services: {
-        getLocalMedia: async (context, event) => {
-          if (context.localMediaStream && !context.localVideoStatus) {
-            context.localMediaStream.getVideoTracks().forEach((t) => t.stop());
-          }
-
-          const media = await navigator.mediaDevices.getUserMedia({
-            audio: true,
-            video: context.localVideoStatus,
-          });
-
-          if (!context.localAudioStatus) {
-            media.getAudioTracks().forEach((v) => (v.enabled = false));
-          }
-          return media;
-        },
-        startMediaConnector: (context, event) =>
-          new Promise((resolve, reject) => {
-            invariant(context.peer);
-            invariant(context.roomId);
-            invariant(context.localMediaStream);
-
-            const mediaConnection = context.peer.call(
-              context.roomId,
-              context.localMediaStream,
-              {
-                metadata: {
-                  userId: context.userId,
-                  userName: context.userName,
-                },
-              }
-            );
-
-            const streamListener = (stream: MediaStream) => {
-              mediaConnection.off("stream", streamListener);
-              resolve({
-                mediaConnection,
-                streamData: {
-                  stream,
-                  userId: nanoid(), // TODO: Host Id
-                  userName: "Todo Host Name",
-                },
-              });
-            };
-
-            mediaConnection.on("stream", streamListener);
-          }),
-        startMediaListener:
-          ({ peer, localMediaStream, mediaConnections }, event) =>
-          (callback, onReceive) => {
-            invariant(peer);
-            invariant(localMediaStream);
-
-            Object.values(mediaConnections).forEach((mediaConnection) => {
-              mediaConnection.on("stream", (remoteStream) => {
-                callback({
-                  type: "STREAM_RECEIVED",
-                  streamData: {
-                    stream: remoteStream,
-                    userId: mediaConnection.metadata.userId,
-                    userName: mediaConnection.metadata.userName,
-                  },
-                });
-              });
-            });
-
-            peer.on("call", (mediaConnection) => {
-              callback({
-                type: "MEDIA_CONNECTION_RECEIVED",
-                mediaConnection,
-                userId: mediaConnection.metadata.userId,
-              });
-              mediaConnection.answer(localMediaStream);
-              mediaConnection.on("stream", (remoteStream) => {
-                callback({
-                  type: "STREAM_RECEIVED",
-                  streamData: {
-                    stream: remoteStream,
-                    userId: mediaConnection.metadata.userId,
-                    userName: mediaConnection.metadata.userName,
-                  },
-                });
-              });
-            });
-
-            return () => {
-              peer.removeAllListeners();
-              Object.values(mediaConnections).forEach((d) =>
-                d.removeAllListeners()
-              );
-            };
-          },
       },
     }
   );
 
 export const mainService = interpret(mainMachine, {
   devTools: true,
-  id: "MAIN - " + Date.now(),
+  id: "MAIN - " + Date.now().toString().slice(-4, -1),
 });
 
 type MainServiceState = ReturnType<typeof mainService["getSnapshot"]>;
@@ -350,6 +174,8 @@ type MainServiceState = ReturnType<typeof mainService["getSnapshot"]>;
 export const useMainService = create<MainServiceState>((set) => {
   mainService
     .onTransition((state) => {
+      console.log("state", state.value);
+
       const initialStateChanged =
         state.changed === undefined && Object.keys(state.children).length;
 

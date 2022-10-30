@@ -1,11 +1,12 @@
-import { mainService, useMainService } from "../machines/mainMachine";
+import { mainService } from "../machines/mainMachine";
+import { mediaService, useMediaService } from "../machines/mediaMachine";
 import ActionButton from "./ActionButton";
 
 const ToolBar = () => {
   const isChatBoxVisible = true;
 
-  const isVideoOn = useMainService((s) => s.context.localVideoStatus);
-  const isAudioOn = useMainService((s) => s.context.localAudioStatus);
+  const isVideoOn = useMediaService((s) => s.context.localVideoStatus);
+  const isAudioOn = useMediaService((s) => s.context.localAudioStatus);
 
   return (
     <div className="flex bg-base-100 p-4 justify-center">
@@ -36,11 +37,7 @@ const ToolBar = () => {
           isOn={isAudioOn}
           icon="audio"
           onClick={() => {
-            // if (isAudioOn) {
-            //   sendAudioConnEvent("MUTE");
-            // } else {
-            //   sendAudioConnEvent("UNMUTE");
-            // }
+            mediaService.send("TOGGLE_AUDIO");
           }}
         />
       </div>

@@ -31,6 +31,7 @@ export interface Typegen0 {
     sendUserList: "REQUEST_USER_LIST";
     updateConnection: "CONNECTED_TO_USER";
     updateConnectionStatusError: "CONNECTION_ERROR";
+    updateUserListInView: "CONNECTION_RECEIVED";
   };
   eventsCausingServices: {
     connectToHost: "START";

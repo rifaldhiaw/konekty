@@ -2,6 +2,7 @@ import Peer, { DataConnection } from "peerjs";
 import invariant from "tiny-invariant";
 import { assign, createMachine, interpret } from "xstate";
 import create from "zustand";
+import { mainService, UserData } from "./mainMachine";
 
 export type Message = {
   id: string;
@@ -10,16 +11,9 @@ export type Message = {
   from: string;
 };
 
-type UserConnectionData = {
-  id: string;
-  name: string;
+type UserConnectionData = UserData & {
   connection?: DataConnection;
   status: "idle" | "connecting" | "connected" | "error";
-};
-
-type initialCallResp = {
-  host: Omit<UserConnectionData, "connection" | "status">;
-  users: Omit<UserConnectionData, "connection" | "status">[];
 };
 
 export type MessagingEvent =
@@ -58,7 +52,7 @@ export const defaultMessagingContext = {
 };
 
 export const messagingMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QFs6wIZQJYDsoDoBjAexxzEIBdcoAVYgWXVwAljZKBiCUsfXAG7EA1n1SwM2PEVLkqNek1btKCQcULpqpANoAGALr6DiUAAd2WbTlMgAHogC0AZmcB2fHoCMrgKwBOACYvN0D-ADZwgBoQAE9EL3D8ZwAOfxTwlL0UsMDfABYvFIBfYpjxSRp+HAAlYmJkTgBhAHkAOTaAUSbaToARAH1aFoGAVQBlTprjWwtYKyxSWwcEQPw3Ny90rfy9PUDnX2yY+IQtteDfL3zfUL13f19A0vK0TCrcOobm9q6egEl2gMat1Ov8AGr9GZIEBzBZLGErZz5FL4cJ6XZZcIbFIpXwZE5OLx6fBPYl6CK+TJ7fFuF4gCrvaSfeqNBidcbjACCAHFOsDQRCoYZZpZrMtEIF8vg0m49E9HnlsQFCQhHD4PEF-PlnP5Qik3Lq8fTGVICCzvpM2oN2ZzeZ1oeYxYsbIjJWt-BjdflwvlAnpMr5fM5VY5Ar78Ndwnr-MjQq49HSygy3mbql9Gq0Ot1aIC2gMmgAZFqTPqO2HOhGgFZefBhLwFDK7VKZIK+VWpWsU7L7QpFZxePIm1MfWqszgggCKow5tDGkxqA0L-3GtHLcPFboQznCvkjif82obsbc2tVXi2+BuFN3wUCbmxbnyw4kTPNY++Wb+uaBUxqLWmEUYQ3F0JTVZxSTJUJw0ePFd3yVVAhSaVbmjEJgz9NxkJfSpmQgAAbMBOFXLkajXICnXmTdqyccI8jRR5dx8SICnbOIiSKfBDzcK5rj9IoFRwt9+AIoiSLInQvBMYDK1dGjwPCCD5UeJ8H0UnIDVDC9UW43j8n4vEwlKZMcGICA4FsU0qhIMgKGoPBFGYHA2A4UUqNArdHEUpJXGxQdgjSRIQ3Ys4SRyJC-QxA4YN8IS0wtZA3PhOT7CcXUZUKU9fRSC8G0HNjTjWdwcujB8bkCf1Hjij5RKS6jUrVIMkhyAMg1uEJ70CUN-VraNDylZTsj9aq8Dqjz5K85Dkh3TYKqKfwgtDQ4IKjdIouJJVjOKIA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QFs6wIZQJYDsoDoBjAexxzEIBdcoAVYgWXVwAljZKBiCUsfXAG7EA1n1SwM2PEVLkqNek1btKCQcULpqpANoAGALr6DiUAAd2WbTlMgAHogC0AZmcB2fHoCMrgKwBOACYvN0D-ADZwgBoQAE9EL3D8ZwAOfxTwlL0UsMDfABYvFIBfYpjxSRp+HAAlYmJkTgBhAHkAOTaAUSbaToARAH1aFoGAVQBlTprjWwtYKyxSWwcEQPw3Ny90rfy9PUDnX2yY+IQtteDfL3zfUL13f19A0vK0TCrcOobm9q6egEl2gMat1Ov8AGr9GZIEBzBZLGErZz5FL4cL3fxuPRXTFeXzROJOUL4HL5ZHOLyBFJHA7OF4gCrvaSfeqNBidcbjACCAHFOsDQRCoYZZpZrMtEIF8iTMdiwk98W4AicnD4PEF-GTMVS3M50r56YypAQWd9Jm1BuzObzOtDzGLFjZEZK1v49Fr8uF8oE9JlfL5nCqEI5Al78Ndwpj-MjQq49G5DW9jdUvo1Wh1urRAW0Bk0ADItSZ9O2wh0I0ArLz4MJ4lFe+4ZNJ5IOpKt6N1ZKVeIoUvKJiRMk21VmcEEARVGHNoY0mNQGef+41oJbh4udCGc4V84fj-k1eOjbk1Qe7-nwN3bW+CgTc4Q2+X7lWZw++6b+WaBUxqLWmIphq8dCVg2cfB-WCUJQ0eakt3yIMqWlW5IxCANvTcFIHzKBkkw+CAABswE4JcuRqZc-3teY1wrJxwjyNFHi3HxIgKXwg0cbtUT3JVu3yb0iiefxH0Hfg8IIoiSJ0LwTH-MsnSo4CwjoyMAxSZFMSuVj2PwTirmuXjqTCUpMJwYgIDgWwjSqEgyAoag8EUZgcDYDhRQowD10ccJN2STdNkCYI0kSQNCTOPQST89CfW9ZxIINTCLOfVMXPhWT7CcPUSUKI8vRSbs8UpFjgrWdwcsjW8bj89tYteAdkywESkso1Lg39JIcl9f1bhCG9AlYn0q0jPcpWxDtvUE40GrcuSPPQ7y70pfz-EC1jDhAiNMRyjr7gOQziiAA */
   createMachine(
     {
       context: defaultMessagingContext,
@@ -110,7 +104,7 @@ export const messagingMachine =
               actions: "updateConnection",
             },
             CONNECTION_RECEIVED: {
-              actions: "saveConnection",
+              actions: ["saveConnection", "updateUserListInView"],
             },
             MESSAGE_RECEIVED: {
               actions: "saveMessage",
@@ -164,65 +158,75 @@ export const messagingMachine =
             });
 
             conn.once("data", (data) => {
-              const meta = data as initialCallResp;
+              const userData = data as UserData[];
 
-              const userData = meta.users.map(
-                (u): UserConnectionData => ({ ...u, status: "idle" })
-              );
+              mainService.send({
+                type: "USER_LIST_RECEIVED",
+                userData: userData,
+              });
+
+              const userConnectionData: UserConnectionData[] = userData
+                .filter((v) => v.id !== context.userId)
+                .map((u) => {
+                  if (u.id === context.mainHostId) {
+                    return { ...u, connection: conn, status: "connected" };
+                  }
+
+                  return { ...u, status: "idle" };
+                });
 
               resolve({
-                userConnectionData: [
-                  { ...meta.host, connection: conn, status: "connected" },
-                  ...userData,
-                ],
+                userConnectionData,
               });
             });
           });
         },
         connectToUserList: (context, event) => (callback, onReceive) => {
-          context.userConnectionData.forEach((userData) => {
-            invariant(context.peer);
+          context.userConnectionData
+            .filter((v) => v.status !== "connected")
+            .forEach((userData) => {
+              invariant(context.peer);
 
-            const conn = (() => {
-              if (userData.connection) return userData.connection;
+              const conn = (() => {
+                if (userData.connection) return userData.connection;
 
-              return context.peer.connect(userData.id, {
-                metadata: {
-                  userId: context.userId,
-                  userName: context.userName,
-                },
+                return context.peer.connect(userData.id, {
+                  metadata: {
+                    userId: context.userId,
+                    userName: context.userName,
+                  },
+                });
+              })();
+
+              conn.on("data", (message) => {
+                callback({
+                  type: "MESSAGE_RECEIVED",
+                  message: message as Message,
+                });
               });
-            })();
 
-            conn.on("data", (message) => {
-              callback({
-                type: "MESSAGE_RECEIVED",
-                message: message as Message,
+              conn.on("open", () => {
+                callback({
+                  type: "CONNECTED_TO_USER",
+                  userId: userData.id,
+                  connection: conn,
+                });
+              });
+
+              conn.once("error", () => {
+                callback({
+                  type: "CONNECTION_ERROR",
+                  userId: userData.id,
+                });
+              });
+
+              conn.once("close", () => {
+                callback({
+                  type: "CONNECTION_CLOSED",
+                  userId: userData.id,
+                });
               });
             });
-
-            conn.on("open", () => {
-              callback({
-                type: "CONNECTED_TO_USER",
-                userId: userData.id,
-                connection: conn,
-              });
-            });
-
-            conn.once("error", () => {
-              callback({
-                type: "CONNECTION_ERROR",
-                userId: userData.id,
-              });
-            });
-
-            conn.once("close", () => {
-              callback({
-                type: "CONNECTION_CLOSED",
-                userId: userData.id,
-              });
-            });
-          });
         },
         listenForNewConnection: (context, event) => (callback, onReceive) => {
           const connListener = (conn: DataConnection) => {
@@ -277,6 +281,15 @@ export const messagingMachine =
         },
       },
       actions: {
+        updateUserListInView: (context, event) => {
+          mainService.send({
+            type: "UPDATE_USER_DATA",
+            userData: context.userConnectionData.map((v) => ({
+              id: v.id,
+              name: v.name,
+            })),
+          });
+        },
         saveUserAndRoomInfo: assign({
           userId: (context, event) => event.userId,
           userName: (context, event) => event.userName,
@@ -343,19 +356,24 @@ export const messagingMachine =
             ),
         }),
         sendUserList: (context, event) => {
-          const initialResp: initialCallResp = {
-            host: {
+          const userList: UserData[] = context.userConnectionData
+            .filter((v) => v.id !== event.userId)
+            .map((v) => ({
+              id: v.id,
+              name: v.name,
+            }));
+
+          const userListIncludeMe: UserData[] = [
+            ...userList,
+            {
               id: context.userId,
               name: context.userName,
             },
-            users: context.userConnectionData
-              .filter((v) => v.id !== event.userId)
-              .map((v) => ({ ...v, connection: undefined })),
-          };
+          ];
 
           context.userConnectionData
             .find((v) => v.id === event.userId)
-            ?.connection?.send(initialResp);
+            ?.connection?.send(userListIncludeMe);
         },
       },
       guards: {
@@ -367,7 +385,7 @@ export const messagingMachine =
 
 export const msgService = interpret(messagingMachine, {
   devTools: true,
-  id: "MESSAGING - " + Date.now(),
+  id: "MESSAGING - " + Date.now().toString().slice(-4, -1),
 });
 
 type MsgServiceState = ReturnType<typeof msgService["getSnapshot"]>;

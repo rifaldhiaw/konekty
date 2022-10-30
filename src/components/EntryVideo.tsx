@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
-import { mainService, useMainService } from "../machines/mainMachine";
+import { useMainService } from "../machines/mainMachine";
+import { mediaService, useMediaService } from "../machines/mediaMachine";
 import ActionButton from "./ActionButton";
 
 const EntryVideo = () => {
@@ -10,9 +11,9 @@ const EntryVideo = () => {
 
   const isInitializing = useMainService((s) => s.matches("initializing"));
 
-  const localStream = useMainService((s) => s.context.localMediaStream);
-  const isAudioOn = useMainService((s) => s.context.localAudioStatus);
-  const isVideoOn = useMainService((s) => s.context.localVideoStatus);
+  const localStream = useMediaService((s) => s.context.localMediaStream);
+  const isAudioOn = useMediaService((s) => s.context.localAudioStatus);
+  const isVideoOn = useMediaService((s) => s.context.localVideoStatus);
 
   useEffect(() => {
     if (!videoRef.current) return;
@@ -60,7 +61,7 @@ const EntryVideo = () => {
             isOn={isAudioOn}
             icon={"audio"}
             onClick={() => {
-              mainService.send("TOGGLE_AUDIO");
+              mediaService.send("TOGGLE_AUDIO");
             }}
           />
         </div>
@@ -70,7 +71,7 @@ const EntryVideo = () => {
             isOn={isVideoOn}
             icon={"video"}
             onClick={() => {
-              mainService.send("TOGGLE_VIDEO");
+              mediaService.send("TOGGLE_VIDEO");
             }}
           />
         </div>

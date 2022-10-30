@@ -3,27 +3,9 @@
 export interface Typegen0 {
   "@@xstate/typegen": true;
   internalEvents: {
-    "done.invoke.main.connectingToRoom:invocation[0]": {
-      type: "done.invoke.main.connectingToRoom:invocation[0]";
-      data: unknown;
-      __tip: "See the XState TS docs to learn how to strongly type this.";
-    };
-    "done.invoke.main.initializing:invocation[0]": {
-      type: "done.invoke.main.initializing:invocation[0]";
-      data: unknown;
-      __tip: "See the XState TS docs to learn how to strongly type this.";
-    };
-    "error.platform.main.connectingToRoom:invocation[0]": {
-      type: "error.platform.main.connectingToRoom:invocation[0]";
-      data: unknown;
-    };
     "xstate.init": { type: "xstate.init" };
   };
-  invokeSrcNameMap: {
-    getLocalMedia: "done.invoke.main.initializing:invocation[0]";
-    startMediaConnector: "done.invoke.main.connectingToRoom:invocation[0]";
-    startMediaListener: "done.invoke.main.inRoom:invocation[0]";
-  };
+  invokeSrcNameMap: {};
   missingImplementations: {
     actions: never;
     services: never;
@@ -31,41 +13,24 @@ export interface Typegen0 {
     delays: never;
   };
   eventsCausingActions: {
-    initPeer:
-      | "DISCONNECTED"
-      | "done.invoke.main.initializing:invocation[0]"
-      | "error.platform.main.connectingToRoom:invocation[0]";
-    removeError: "JOIN_ROOM";
-    saveError: "error.platform.main.connectingToRoom:invocation[0]";
-    saveLocalMediaStream: "done.invoke.main.initializing:invocation[0]";
-    saveMediaConnection: "MEDIA_CONNECTION_RECEIVED";
+    initPeer: "LOCAL_MEDIA_READY";
     saveName: "CREATE_ROOM" | "JOIN_ROOM";
-    saveNewStream: "done.invoke.main.connectingToRoom:invocation[0]";
     saveRoomId: "CREATE_ROOM";
-    saveRoomIdIfExist: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
-    saveStream: "STREAM_RECEIVED";
-    startMessagingService:
-      | "CREATE_ROOM"
-      | "done.invoke.main.connectingToRoom:invocation[0]";
-    toggleAudio: "TOGGLE_AUDIO";
+    saveRoomIdIfExist: "xstate.init";
+    startMediaCall: "CREATE_ROOM" | "USER_LIST_RECEIVED";
+    startMediaService: "xstate.init";
+    startMessagingService: "CREATE_ROOM" | "JOIN_ROOM";
     toggleChat: "TOGGLE_CHAT";
-    toggleVideo: "TOGGLE_VIDEO";
     updateUrl: "CREATE_ROOM";
+    updateUserData: "UPDATE_USER_DATA" | "USER_LIST_RECEIVED";
   };
-  eventsCausingServices: {
-    getLocalMedia: "RETRY_GET_MEDIA" | "TOGGLE_VIDEO" | "xstate.init";
-    startMediaConnector: "JOIN_ROOM";
-    startMediaListener:
-      | "CREATE_ROOM"
-      | "done.invoke.main.connectingToRoom:invocation[0]";
-  };
+  eventsCausingServices: {};
   eventsCausingGuards: {};
   eventsCausingDelays: {};
   matchesStates:
-    | "connectingToRoom"
     | "inRoom"
     | "initializing"
-    | "showingErrorGetLocalMediaModal"
-    | "waitingForUserName";
+    | "waitingForUserName"
+    | "waitingUserList";
   tags: never;
 }

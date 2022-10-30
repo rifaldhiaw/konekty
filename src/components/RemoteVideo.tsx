@@ -1,25 +1,25 @@
 import { memo, useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
-import { useMainService } from "../machines/mainMachine";
 import VideoPlaceholder from "./VideoPlaceholder";
 
-const RemoteVideo = () => {
+const RemoteVideo = (props: {
+  stream: MediaStream | undefined;
+  name: string;
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const streamData = useMainService((s) => s.context.streams?.[0]);
-  const remoteStream = streamData?.stream;
 
   useEffect(() => {
-    if (!videoRef.current || !remoteStream) return;
+    if (!videoRef.current || !props.stream) return;
 
-    videoRef.current.srcObject = remoteStream;
+    videoRef.current.srcObject = props.stream;
     videoRef.current.onloadedmetadata = () => {
       invariant(videoRef.current);
       videoRef.current.play();
     };
   });
 
-  if (!remoteStream || remoteStream.getVideoTracks().length === 0) {
-    return <VideoPlaceholder name={streamData?.userName} />;
+  if (!props.stream || props.stream.getVideoTracks().length === 0) {
+    return <VideoPlaceholder name={props.name} />;
   }
 
   return (
@@ -30,7 +30,7 @@ const RemoteVideo = () => {
       ></video>
       ;
       <div className="absolute drop-shadow-md text-white bottom-2 left-5">
-        {streamData?.userName}
+        {props.name}
       </div>
     </div>
   );

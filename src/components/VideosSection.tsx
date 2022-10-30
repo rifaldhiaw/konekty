@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { debounce } from "throttle-debounce";
 import { useMainService } from "../machines/mainMachine";
+import { useMediaService } from "../machines/mediaMachine";
 import LocalVideo from "./LocalVideo";
 import RemoteVideo from "./RemoteVideo";
 
@@ -42,12 +43,9 @@ const VideosSection = () => {
   const [conW, conH] = useElementSize(containerRef);
 
   const sidebarHidden = useMainService((s) => s.context.sidebarMode === "none");
-  const totalConnection = useMainService(
-    (s) => Object.keys(s.context.mediaConnections).length
-  );
+  const userStreamData = useMediaService((s) => s.context.userData);
 
-  const totalUser = totalConnection + 1;
-  const totalRemoteUserArr = new Array(totalConnection).fill(0);
+  const totalUser = userStreamData.length + 1;
 
   const videoW = useMemo(() => {
     const newW = conW - (sidebarHidden ? 0 : sidebarWidth);
@@ -93,11 +91,14 @@ const VideosSection = () => {
             </div>
           </div>
         </div>
-        {totalRemoteUserArr.map((_, i) => (
-          <div key={i} style={{ width: videoW, height: videoW * videoRatio }}>
+        {userStreamData.map((user) => (
+          <div
+            key={user.id}
+            style={{ width: videoW, height: videoW * videoRatio }}
+          >
             <div className="w-full h-full rounded-3xl shadow bg-base-100 p-2">
               <div className="card h-full w-full">
-                <RemoteVideo />
+                <RemoteVideo stream={user.stream} name={user.name} />
               </div>
             </div>
           </div>

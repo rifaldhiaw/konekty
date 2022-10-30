@@ -1,13 +1,17 @@
 import { FormEventHandler, useState } from "react";
 import { mainService, useMainService } from "../machines/mainMachine";
+import { useMsgService } from "../machines/messagingMachine";
 import EntryVideo from "./EntryVideo";
 
 const EntryView = () => {
   const [name, setName] = useState("");
 
   const roomId = useMainService((s) => s.context.roomId);
-  const connectingToRoom = useMainService((s) => s.matches("connectingToRoom"));
-  const error = useMainService((s) => s.context.error);
+  const connectingToRoom = useMsgService((s) =>
+    s.matches("connectingToMainHost")
+  );
+  // const error = useMainService((s) => s.context.error);
+  const error = "";
 
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
@@ -82,7 +86,7 @@ const EntryView = () => {
 
           {error && (
             <div className="bg-red-100 card py-3 px-4 mt-8 max-w-xs text-center">
-              {error.message}
+              {error}
             </div>
           )}
         </form>
