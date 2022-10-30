@@ -1,7 +1,6 @@
 import { useMainService } from "../machines/mainMachine";
 import ChatBox from "./ChatBox";
 
-import RemoteAudio from "./RemoteAudio";
 import ToolBar from "./ToolBar";
 import VideosSection from "./VideosSection";
 
@@ -19,9 +18,6 @@ const MainView = () => {
           </div>
         )}
       </div>
-
-      <RemoteAudio />
-
       <ToolBar />
     </div>
   );

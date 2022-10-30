@@ -3,6 +3,7 @@ import { debounce } from "throttle-debounce";
 import { useMainService } from "../machines/mainMachine";
 import { useMediaService } from "../machines/mediaMachine";
 import LocalVideo from "./LocalVideo";
+import RemoteAudio from "./RemoteAudio";
 import RemoteVideo from "./RemoteVideo";
 
 const aspectOptions = ["4:3", "16:9"];
@@ -100,6 +101,7 @@ const VideosSection = () => {
             <div className="w-full h-full rounded-3xl shadow bg-base-100 p-2">
               <div className="card h-full w-full">
                 <RemoteVideo stream={user.stream} name={user.name} />
+                <RemoteAudio stream={user.stream} />
               </div>
             </div>
           </div>

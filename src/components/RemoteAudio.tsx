@@ -1,23 +1,21 @@
 import { useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
-import { useMediaService } from "../machines/mediaMachine";
 
-const RemoteAudio = () => {
+const RemoteAudio = (props: { stream: MediaStream | undefined }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const remoteStreamData = useMediaService((s) => s.context.userData?.[0]);
 
   // Get Local Audio Stream
   useEffect(() => {
-    if (!!remoteStreamData?.stream) {
+    if (!!props.stream) {
       invariant(audioRef.current);
-      audioRef.current.srcObject = remoteStreamData?.stream;
+      audioRef.current.srcObject = props.stream;
 
       audioRef.current.onloadedmetadata = () => {
         invariant(audioRef.current);
         audioRef.current.play();
       };
     }
-  }, [remoteStreamData?.stream]);
+  }, [props.stream]);
 
   return <audio autoPlay={true} className="hidden" ref={audioRef}></audio>;
 };
