@@ -7,6 +7,7 @@ import VideoPlaceholder from "./VideoPlaceholder";
 const LocalVideo = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const localVideoStatus = useMediaService((s) => s.context.localVideoStatus);
   const localMediaStream = useMediaService((s) => s.context.localMediaStream);
   const userName = useMainService((s) => s.context.userName);
 
@@ -20,7 +21,7 @@ const LocalVideo = () => {
     };
   });
 
-  if (!localMediaStream || localMediaStream.getVideoTracks().length === 0) {
+  if (localVideoStatus === false) {
     return <VideoPlaceholder name={userName} />;
   }
 

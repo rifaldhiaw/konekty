@@ -24,12 +24,12 @@ export interface Typegen0 {
   eventsCausingActions: {
     answerTheCall: "CALL_RECEIVED";
     removeConnection: "CONNECTION_CLOSED";
-    replaceVideoTrack: "TOGGLE_VIDEO";
     saveConnection: "CALL_RECEIVED";
     saveLocalMediaStream: "done.invoke.media.gettingLocalMedia:invocation[0]";
     saveStream: "STREAM_RECEIVED";
     saveUserDataAndPeer: "START_CALL";
     setConnectionToError: "CONNECTION_ERROR";
+    stopOrReplaceVideoTrack: "TOGGLE_VIDEO";
     tellLocalMediaReady: "done.invoke.media.gettingLocalMedia:invocation[0]";
     toggleAudio: "TOGGLE_AUDIO";
     toggleVideo: "TOGGLE_VIDEO";

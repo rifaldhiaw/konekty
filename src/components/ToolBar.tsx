@@ -24,12 +24,7 @@ const ToolBar = () => {
           isOn={isVideoOn}
           icon="video"
           onClick={() => {
-            // if (videoState.matches("inCall")) {
-            //   sendVideoCallerEvent("VIDEO_OFF");
-            // }
-            // if (videoState.matches("idle")) {
-            //   sendVideoCallerEvent("VIDEO_ON");
-            // }
+            mediaService.send("TOGGLE_VIDEO");
           }}
         />
         <ActionButton

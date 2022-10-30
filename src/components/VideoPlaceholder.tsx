@@ -4,7 +4,7 @@ const VideoPlaceholder = (props: { name: string }) => {
       <div className="avatar placeholder">
         <div className="bg-base-300 rounded-full w-32">
           <span className="text-6xl font-semibold">
-            {props.name?.[0] ?? ""}
+            {props.name?.[0].toUpperCase() ?? ""}
           </span>
         </div>
       </div>

@@ -11,7 +11,7 @@ type UserMediaConnectionData = UserData & {
 };
 
 const mediaMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QFtIEsCGA6NEA2YAxAMoAqAggEqkDaADALqKgAOA9rGgC5psB2zEAA9EAWgDM4gGxSs4gOwBWcQEYpAFgCc66XUUAaEAE8xm+VhVL18zYvl1rO+QF9nh1BEw4+lNm2QkpJQAouQAsgD6IQDCwQCSAGrBACL0TEgg7Jw8-IIiCKIATA50WNqKAByaKoWFUmoV6oYmBYVaWMrqKhWNKnQV4o0Vru7o2Gg+fgHR5AAys1HBsYkpaYJZ3LwCGflFdKpldpWadNUVhT3NYgoVWOqK2uL74urnFVKKIyAeXhO+-oRogB5AByIKWpDioIiwUolCBlDWGQ2OW2oF2xVeWEKlXEinUXRk0iaxkQfXMCgemjaGhUD3k6i+P3GkwBwLBEKhIIi0VmQOIq0Y6w4m1yOzExWUZXuGh6qkUtXkVwQtwqekcCnUHzMwzc3zG3n+AVIQIA4qbZsEIuQAKrJKFI1gi1F5MSWRSlKQ9JRyrQKcTKop1Cx0eQfBl0wpmaxMg1-KaEE3my0RBJxZLBIGOzLOraugqWeodap9FTUuiFeSXUkFBR3KTyGzFc4qVv7WOebAwLg8PhQWZsADGGDwYTGhAg-DA3gAbmwANbT5lYbu9-tDkdjzsICZz4eotLZlF58WtCqKRRycQ4hk6+wqQM1T1SBSVxQqLR0BxSDteVcTddh1HccwAAJ1AthQKwFg8AwLgADNIOQLBl3-PsByArdMB3Pg9zgrZDyFZFczFdFrjoL0sCUHE7CqU5zikR8zCwbU1CeWxanDX9sFgAALNgAHcAOCcDIIwzdxxCIIAE0IlNYJSAiMIUjicgjxItFhGuC5zEcWiLzaXEmPMbVikrAYekUF9uKwPAN2AztKDADAICMQIqEUmZ5nU7ITzI1pr0KMowxOSpzzMKzH2KFiXwZKzCjUGx8RsuzMLGJyXLcpMLStW17SzIinV80itNaBVzDDCiBnUfYZC1QNZAbAZTlxVR7hsFL7KwjAMtcxMzRy1N00zHzRU0jFzk0MoKKsBR9nfAMa1ERqq3Y1qP0qD5XD1Pg2AgOBBGXXACGFYrxuuV5LzLV53TaE57kDZj3WsWx7A1XVRk7Q0plOsb8z2eQVAsf1lC-QpVE0RaWlEFQXhYqwpFqcluk0H89VQsAewA8SHMwX6XVPCRQ3EO5AajCpLH6JQobdBKLCsaxznsRstBsvjBOE0TQJx7r8b80qiZsDowzVGQpFsB8lsrEmKkbSQGXqaRBk6tLHOc1y+ZKjFFYsC4pAcQZxbxEloZqIHnrVCjYrMcRuM187a2UEnrop6jPwepatV0h4CT0c9YboOltucIA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QFtIEsCGA6NEA2YAxAMoAqAggEqkDaADALqKgAOA9rGgC5psB2zEAA9EAWgDM4gGxSs4gOwBWcQEYpAFgCc66XUUAaEAE8xm+VhVL18zYvl1rO+QF9nh1BEw4+lNm2QkpJQAouQAsgD6IQDCwQCSAGrBACL0TEgg7Jw8-IIiCKIATCrq6lgAHCqF5YWS5Yo1koYmCCV0WNXl2lJ0KuXqKpoqiq7u6NhoPn4B0eQAMnNRwbGJKWmCWdy8Ahn5RSriihWF6opq5ZW29c2IhYVYjmflkgO24qejIB5ek77+hNEAPIAOWBy1IcRBEWClEogMo6wymxyO1Aez6tiwdHkJ3UUksvW6NwKhTOWEUFMUhU0th61kUUk+3wmU3+QNB4MhwIi0TmgOIa0YGw4W1yuzEGM0WCk9gOMspmik5WJEnU5WlhQ0mjqxXs8nUTPG3j+AVIgIA4ua5sEIuQAKrJSGI1gilF5CXPe42KSqcq9OiaOjY4kqFRYqr62k4ob9TSGzwsk2EM2W60RBJxZLBQHOzKu7bugp9GUdUm2U6UlR6EMlDp4mVqhTFP0jNxfI0wLg8PhQOZsADGGDwYXGhAg-DA3gAbmwANaT5lYTvd3sDocjhMISYzwcotK55EF8Uk+pHSSkyPycqylVVdoyJtKEqBhyMtuL5eTVeD4ejsAAJ3-Nh-ywFg8AwLgADNgOQLAPzALsvz7H8N0wLc+B3CDtn3IUkXzMU0TEcQ6CVLAlFJOwugDGopFvMxpUUIYfQDKlNTseMvFgAALNgAHcv2CQDgOQ9dRxCIIAE0InNYJSAiMIUjicgD3w1FhCI6pzEeK8KROBpxDo8wpEYwo6EKK9xAuBlxA47A8DXX8E0oMAMAgIxAioOTZgWFTsiPQiSXEO4sDMKRAwaeozAZW9TOlH19QZYoZXLWysHslDxmc1z3JTK0bXtR0c1wl0-II9SSSpcx5B6JV3joaQNFo4wxFkGVnhY55VFOGxUvS0SnJctzkwtPL00zbNfNFNS9mqakQpIqwFHqs4DOagpWosjrJBKBpjNcNs+DYCA4EERdcAIYVSumoi1SOQY1UsKktAcAw1tEejHusWx7EcSzUt+aZLqmwsihI9piLUeQSn1GwFFvd5pSsHFNKkE5pFSz8exExzMCBt1jwkbFxAeKHqUqexr2UGKw0+6waj1SNUu4viBKE-9sdQjA8f88rCZsclqr9GQwrOFVzOJ695EkfV8WkP73yNPqcYwLK3O5sqZtlixqjpSywsOdRqYsKw-RI+KzBshWE3V66CkOSQLG0cmnsDU4VScDUtSpTRilsFR9ucIA */
   createMachine(
     {
       context: {
@@ -65,6 +65,7 @@ const mediaMachine =
           | {
               type: "STREAM_RECEIVED";
               stream: MediaStream;
+              connection: MediaConnection;
               userId: string;
               userName: string;
             }
@@ -120,7 +121,7 @@ const mediaMachine =
               actions: "toggleAudio",
             },
             TOGGLE_VIDEO: {
-              actions: "replaceVideoTrack",
+              actions: ["toggleVideo", "stopOrReplaceVideoTrack"],
             },
           },
         },
@@ -197,6 +198,7 @@ const mediaMachine =
             conn.on("stream", (stream) => {
               callback({
                 type: "STREAM_RECEIVED",
+                connection: conn,
                 stream: stream,
                 userId: u.id,
                 userName: u.name,
@@ -234,6 +236,7 @@ const mediaMachine =
             conn.on("stream", (stream) => {
               callback({
                 type: "STREAM_RECEIVED",
+                connection: conn,
                 stream: stream,
                 userId,
                 userName,
@@ -247,7 +250,7 @@ const mediaMachine =
               });
             });
 
-            conn.on("error", () => {
+            conn.on("error", (e) => {
               callback({
                 type: "CONNECTION_ERROR",
                 userId,
@@ -288,24 +291,61 @@ const mediaMachine =
         toggleVideo: assign({
           localVideoStatus: (context, event) => !context.localVideoStatus,
         }),
-        replaceVideoTrack: (context, event) => {},
+        stopOrReplaceVideoTrack: async (context, event) => {
+          if (!context.localVideoStatus) {
+            context.localMediaStream?.getVideoTracks().forEach((v) => {
+              v.stop();
+            });
+            const activeLocal = context.localMediaStream.getVideoTracks()[0];
+            context.localMediaStream.removeTrack(activeLocal);
+          } else {
+            const mediaStream = await navigator.mediaDevices.getUserMedia({
+              video: true,
+            });
+
+            const videoTrack = mediaStream.getVideoTracks()[0];
+
+            context.userData.forEach((v) => {
+              const sender = v.connection?.peerConnection
+                .getSenders()
+                .find((v) => v?.track?.kind === videoTrack.kind);
+              sender?.replaceTrack(videoTrack);
+            });
+
+            context.localMediaStream.addTrack(videoTrack);
+          }
+        },
         saveStream: assign({
           userData: (context, event) =>
             context.userData.map((u) =>
-              u.id === event.userId ? { ...u, stream: event.stream } : u
+              u.id === event.userId
+                ? { ...u, stream: event.stream, connection: event.connection }
+                : u
             ),
         }),
         saveConnection: assign({
-          userData: (context, event) => [
-            ...context.userData,
-            {
-              id: event.userId,
-              name: event.userName,
-              connection: event.connection,
-              stream: undefined,
-              status: "connected",
-            } as UserMediaConnectionData,
-          ],
+          userData: (context, event) => {
+            const found =
+              context.userData.findIndex((v) => v.id === event.userId) !== -1;
+            if (found) {
+              return context.userData.map((v) =>
+                v.id === event.userId
+                  ? { ...v, connection: event.connection }
+                  : v
+              );
+            } else {
+              return [
+                ...context.userData,
+                {
+                  id: event.userId,
+                  name: event.userName,
+                  connection: event.connection,
+                  stream: undefined,
+                  status: "connected",
+                } as UserMediaConnectionData,
+              ];
+            }
+          },
         }),
         setConnectionToError: assign({
           userData: (context, event) =>
