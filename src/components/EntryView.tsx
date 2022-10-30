@@ -10,8 +10,7 @@ const EntryView = () => {
   const connectingToRoom = useMsgService((s) =>
     s.matches("connectingToMainHost")
   );
-  // const error = useMainService((s) => s.context.error);
-  const error = "";
+  const error = useMainService((s) => s.context.error);
 
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
@@ -86,7 +85,7 @@ const EntryView = () => {
 
           {error && (
             <div className="bg-red-100 card py-3 px-4 mt-8 max-w-xs text-center">
-              {error}
+              {error.message}
             </div>
           )}
         </form>
