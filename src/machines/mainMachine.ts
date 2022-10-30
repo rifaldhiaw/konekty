@@ -150,8 +150,6 @@ export const mainMachine =
         startMediaCall: (context, event) => {
           invariant(context.peer);
 
-          console.log("starting call to", context.remoteUserData);
-
           mediaService.send({
             userId: context.userId,
             userName: context.userName,
@@ -174,8 +172,6 @@ type MainServiceState = ReturnType<typeof mainService["getSnapshot"]>;
 export const useMainService = create<MainServiceState>((set) => {
   mainService
     .onTransition((state) => {
-      console.log("state", state.value);
-
       const initialStateChanged =
         state.changed === undefined && Object.keys(state.children).length;
 
