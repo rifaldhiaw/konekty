@@ -41,7 +41,7 @@ const RemoteVideo = (props: {
         }
         ref={videoRef}
       ></video>
-      <div className="absolute drop-shadow-md text-white bottom-2 left-5">
+      <div className="absolute text-shadow text-white bottom-2 left-5">
         {props.name}
       </div>
       {shouldShowPlaceholder && <VideoPlaceholder name={props.name} />}

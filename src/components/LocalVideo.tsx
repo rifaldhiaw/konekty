@@ -33,7 +33,7 @@ const LocalVideo = () => {
         muted={true}
         className="object-cover w-full h-full flip bg-base-200"
       ></video>
-      <div className="absolute drop-shadow-md text-white bottom-2 left-5">
+      <div className="absolute text-shadow text-white bottom-2 left-5">
         {userName}
       </div>
     </div>
