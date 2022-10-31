@@ -176,7 +176,7 @@ const mediaMachine =
           const media = await navigator.mediaDevices.getUserMedia({
             audio: true,
             video: context.localVideoStatus
-              ? { width: 640, height: 320 }
+              ? { width: 640, height: 360 }
               : false,
           });
 
@@ -304,7 +304,7 @@ const mediaMachine =
             context.localMediaStream.removeTrack(activeLocal);
           } else {
             const mediaStream = await navigator.mediaDevices.getUserMedia({
-              video: { width: 640, height: 320 },
+              video: { width: 640, height: 360 },
             });
 
             const videoTrack = mediaStream.getVideoTracks()[0];
