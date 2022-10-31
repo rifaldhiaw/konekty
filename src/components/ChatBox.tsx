@@ -48,6 +48,18 @@ const ChatBox = () => {
 };
 
 const MessageBubble = (props: { message: Message; isMine: boolean }) => {
+  const urlRegex =
+    /^[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
+  const httpRegex =
+    /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+
+  const isUrl =
+    urlRegex.test(props.message.body) || httpRegex.test(props.message.body);
+
+  const urlTarget = httpRegex.test(props.message.body)
+    ? props.message.body
+    : "https://" + props.message.body;
+
   return (
     <div
       className={
@@ -61,7 +73,18 @@ const MessageBubble = (props: { message: Message; isMine: boolean }) => {
           (props.isMine ? "flex-row" : "flex-row-reverse")
         }
       >
-        {props.message.body}
+        {isUrl ? (
+          <a
+            href={urlTarget}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            {props.message.body}
+          </a>
+        ) : (
+          props.message.body
+        )}
       </div>
     </div>
   );
