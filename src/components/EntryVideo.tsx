@@ -32,13 +32,16 @@ const EntryVideo = () => {
   }, [localStream]);
 
   useEffect(() => {
-    const listener = debounce(100, () => {
+    const setVideoHeight = () => {
       if (!containerRef.current) return;
       const w = containerRef.current.offsetWidth;
       const h = w ? w * videoRatio : 0;
       const fixedH = Math.floor(h);
       containerRef.current.style.height = fixedH + "px";
-    });
+    };
+
+    setVideoHeight();
+    const listener = debounce(100, setVideoHeight);
 
     window.addEventListener("resize", listener);
     return () => {
