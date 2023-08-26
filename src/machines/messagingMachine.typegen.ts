@@ -17,9 +17,9 @@ export interface Typegen0 {
   };
   missingImplementations: {
     actions: never;
-    services: never;
-    guards: never;
     delays: never;
+    guards: never;
+    services: never;
   };
   eventsCausingActions: {
     removeConnection: "CONNECTION_CLOSED";
@@ -33,6 +33,11 @@ export interface Typegen0 {
     updateConnectionStatusError: "CONNECTION_ERROR";
     updateUserListInView: "CONNECTION_RECEIVED";
   };
+  eventsCausingDelays: {};
+  eventsCausingGuards: {
+    meHost: "START";
+    meNonHost: "START";
+  };
   eventsCausingServices: {
     connectToHost: "START";
     connectToUserList:
@@ -42,11 +47,6 @@ export interface Typegen0 {
       | "START"
       | "done.invoke.messaging.connectingToMainHost:invocation[0]";
   };
-  eventsCausingGuards: {
-    meHost: "START";
-    meNonHost: "START";
-  };
-  eventsCausingDelays: {};
   matchesStates: "connectingToMainHost" | "idle" | "inRoom";
   tags: never;
 }

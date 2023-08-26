@@ -1,3 +1,4 @@
+// million-ignore
 const DarkModeOff = (props: { size?: string }) => {
   return (
     <svg

@@ -1,3 +1,4 @@
+// million-ignore
 const ChatOn = (props: { size?: string }) => {
   return (
     <svg

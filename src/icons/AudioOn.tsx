@@ -1,3 +1,4 @@
+// million-ignore
 const AudioOn = (props: { size?: string }) => {
   return (
     <svg

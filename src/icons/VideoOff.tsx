@@ -1,3 +1,4 @@
+// million-ignore
 const VideoOff = (props: { size?: string }) => {
   return (
     <svg

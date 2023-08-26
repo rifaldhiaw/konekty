@@ -1,5 +1,6 @@
 import AudioOff from "../icons/AudioOff";
 import AudioOn from "../icons/AudioOn";
+import Board from "../icons/Board";
 import ChatOn from "../icons/ChatOn";
 import DarkModeOff from "../icons/DarkModeOff";
 import DarkModeOn from "../icons/DarkModeOn";
@@ -9,7 +10,8 @@ import VideoOn from "../icons/VideoOn";
 
 const ActionButton = (props: {
   isOn: boolean;
-  icon: "audio" | "video" | "chat" | "dark" | "more";
+  icon: "audio" | "video" | "chat" | "dark" | "more" | "board";
+  neutralMode?: boolean;
   loading?: boolean;
   small?: boolean;
   outline?: boolean;
@@ -25,6 +27,8 @@ const ActionButton = (props: {
         return props.isOn ? <VideoOn size={size} /> : <VideoOff size={size} />;
       case "chat":
         return <ChatOn size={size} />;
+      case "board":
+        return <Board size={size} />;
       case "more":
         return <More size={size} />;
       case "dark":
@@ -45,7 +49,11 @@ const ActionButton = (props: {
       }}
       className={
         "btn btn-circle swap mx-2 text-white" +
-        (props.isOn
+        (props.neutralMode
+          ? props.isOn
+            ? " btn-primary"
+            : " btn-secondary"
+          : props.isOn
           ? props.outline
             ? " btn-outline"
             : " btn-secondary"

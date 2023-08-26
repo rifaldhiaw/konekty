@@ -13,7 +13,7 @@ const ChatBox = () => {
 
   return (
     <div className="card border border-base-200 bg-base-100 flex-1 h-full shadow-lg">
-      <div className="flex flex-auto h-0 flex-col-reverse overflow-y-scroll py-5 p-5 bg-base-200">
+      <div className="flex flex-auto h-0 flex-col-reverse overflow-y-scroll py-5 p-5 bg-base-100">
         <div className="flex flex-1 flex-col">
           {messages.map((m, i) => {
             const isMine = m.from === localId;

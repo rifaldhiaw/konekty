@@ -8,14 +8,14 @@ export interface Typegen0 {
   };
   invokeSrcNameMap: {
     startPeerListener:
-      | "done.invoke.main.waitingForUserName:invocation[0]"
-      | "done.invoke.main.inRoom:invocation[0]";
+      | "done.invoke.main.inRoom:invocation[0]"
+      | "done.invoke.main.waitingForUserName:invocation[0]";
   };
   missingImplementations: {
     actions: never;
-    services: never;
-    guards: never;
     delays: never;
+    guards: never;
+    services: never;
   };
   eventsCausingActions: {
     clearError: "CREATE_ROOM" | "JOIN_ROOM" | "xstate.stop";
@@ -31,14 +31,14 @@ export interface Typegen0 {
     updateUrl: "CREATE_ROOM";
     updateUserData: "UPDATE_USER_DATA" | "USER_LIST_RECEIVED";
   };
+  eventsCausingDelays: {};
+  eventsCausingGuards: {};
   eventsCausingServices: {
     startPeerListener:
       | "CREATE_ROOM"
       | "LOCAL_MEDIA_READY"
       | "USER_LIST_RECEIVED";
   };
-  eventsCausingGuards: {};
-  eventsCausingDelays: {};
   matchesStates:
     | "inRoom"
     | "initializing"

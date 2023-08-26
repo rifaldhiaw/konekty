@@ -17,9 +17,9 @@ export interface Typegen0 {
   };
   missingImplementations: {
     actions: never;
-    services: never;
-    guards: never;
     delays: never;
+    guards: never;
+    services: never;
   };
   eventsCausingActions: {
     answerTheCall: "CALL_RECEIVED";
@@ -34,13 +34,13 @@ export interface Typegen0 {
     toggleAudio: "TOGGLE_AUDIO";
     toggleVideo: "TOGGLE_VIDEO";
   };
+  eventsCausingDelays: {};
+  eventsCausingGuards: {};
   eventsCausingServices: {
     callAllUserInRoom: "START_CALL";
     getLocalMedia: "RETRY_GET_MEDIA" | "START" | "TOGGLE_VIDEO";
     startNewCallListener: "START_CALL";
   };
-  eventsCausingGuards: {};
-  eventsCausingDelays: {};
   matchesStates:
     | "gettingLocalMedia"
     | "idle"

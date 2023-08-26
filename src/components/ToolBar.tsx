@@ -1,3 +1,4 @@
+import { layoutService, useLayoutService } from "../machines/layoutMachine";
 import { mainService } from "../machines/mainMachine";
 import { mediaService, useMediaService } from "../machines/mediaMachine";
 import ActionButton from "./ActionButton";
@@ -7,9 +8,10 @@ const ToolBar = () => {
 
   const isVideoOn = useMediaService((s) => s.context.localVideoStatus);
   const isAudioOn = useMediaService((s) => s.context.localAudioStatus);
+  const isBoardFocused = useLayoutService((s) => s.matches("boardFocused"));
 
   return (
-    <div className="flex bg-base-100 p-4 justify-center">
+    <div className="flex p-4 justify-center">
       <ActionButton
         small={true}
         isOn={true}
@@ -33,6 +35,15 @@ const ToolBar = () => {
           icon="audio"
           onClick={() => {
             mediaService.send("TOGGLE_AUDIO");
+          }}
+        />
+        <ActionButton
+          small={true}
+          isOn={isBoardFocused}
+          icon="board"
+          neutralMode={true}
+          onClick={() => {
+            layoutService.send("TOGGLE_BOARD");
           }}
         />
       </div>

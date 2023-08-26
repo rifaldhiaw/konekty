@@ -1,3 +1,4 @@
+// million-ignore
 const DoubleCheck = (props: { size?: string }) => {
   return (
     <svg

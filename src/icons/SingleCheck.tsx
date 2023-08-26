@@ -1,3 +1,4 @@
+// million-ignore
 const SingleCheck = (props: { size?: string }) => {
   return (
     <svg
