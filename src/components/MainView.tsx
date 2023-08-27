@@ -5,6 +5,7 @@ import ChatBox from "./ChatBox";
 import ToolBar from "./ToolBar";
 import VideosSection from "./VideosSection";
 import { useLayoutService } from "../machines/layoutMachine";
+import AudioGlobalPlayer from "./AudioGlobalPlayer";
 
 const MainView = () => {
   const isChatVisible = useMainService((s) => s.context.sidebarMode === "chat");
@@ -42,6 +43,7 @@ const MainView = () => {
         {renderView()}
       </div>
       <ToolBar />
+      <AudioGlobalPlayer />
     </div>
   );
 };

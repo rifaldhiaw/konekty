@@ -1,4 +1,3 @@
-// million-ignore
 const Board = (props: { size?: string }) => {
   return (
     <svg

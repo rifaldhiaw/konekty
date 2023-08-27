@@ -1,4 +1,3 @@
-// million-ignore
 const AudioOff = (props: { size?: string }) => {
   return (
     <svg

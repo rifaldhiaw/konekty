@@ -1,4 +1,3 @@
-// million-ignore
 const More = (props: { size?: string }) => {
   return (
     <svg

@@ -101,7 +101,6 @@ const VideosSection = () => {
             <div className="w-full h-full rounded-3xl shadow bg-base-100 p-2">
               <div className="card h-full w-full">
                 <RemoteVideo stream={user.stream} name={user.name} />
-                <RemoteAudio stream={user.stream} />
               </div>
             </div>
           </div>

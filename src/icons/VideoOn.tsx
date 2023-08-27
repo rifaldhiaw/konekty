@@ -1,4 +1,3 @@
-// million-ignore
 const VideoOn = (props: { size?: string }) => {
   return (
     <svg
